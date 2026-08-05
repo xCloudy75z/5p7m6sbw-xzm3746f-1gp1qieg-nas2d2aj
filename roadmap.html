@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Project roadmap — Interceptor Engagement Sim</title>
+<script>
+  (function(){ try{ var t=localStorage.getItem('theme'); if(!t) t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    document.documentElement.setAttribute('data-theme',t);}catch(e){} })();
+</script>
+<style>
+  :root{ --ink:#eef1f5; --card:#ffffff; --card2:#f7f9fc; --line:#dde3ea; --txt:#1f2733; --soft:#5a6470; --faint:#8a94a1;
+    --accent:#0e8fb0; --accent-soft:rgba(14,143,176,.10); --accent-strong:#0a6f8a;
+    --green:#1e8a3b; --amber:#c9760a; --red:#c0392b; --purple:#7b5cd6; --radius:14px; --shadow:0 10px 30px rgba(16,24,40,.10);
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace; }
+  @media (prefers-color-scheme:dark){ :root{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--accent-soft:rgba(34,211,238,.12);--accent-strong:#67e8f9;--green:#3fb950;--amber:#f5a524;--red:#f85149;--purple:#a78bfa;--shadow:0 10px 30px rgba(0,0,0,.4);} }
+  :root[data-theme="dark"]{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--accent-soft:rgba(34,211,238,.12);--accent-strong:#67e8f9;--green:#3fb950;--amber:#f5a524;--red:#f85149;--purple:#a78bfa;--shadow:0 10px 30px rgba(0,0,0,.4);}
+  :root[data-theme="light"]{ --ink:#eef1f5;--card:#ffffff;--card2:#f7f9fc;--line:#dde3ea;--txt:#1f2733;--soft:#5a6470;--faint:#8a94a1;
+    --accent:#0e8fb0;--accent-soft:rgba(14,143,176,.10);--accent-strong:#0a6f8a;--green:#1e8a3b;--amber:#c9760a;--red:#c0392b;--purple:#7b5cd6;--shadow:0 10px 30px rgba(16,24,40,.10);}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:radial-gradient(1100px 460px at 78% -10%, var(--accent-soft), transparent 60%), var(--ink);
+    color:var(--txt);font-family:var(--sans);line-height:1.55;min-height:100vh}
+  .wrap{max-width:940px;margin:0 auto;padding:clamp(28px,6vw,64px) 20px 80px}
+  .back{font-family:var(--mono);font-size:12px;color:var(--accent);text-decoration:none}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+  h1{font-size:clamp(28px,5vw,40px);margin:8px 0 6px;letter-spacing:-.02em}
+  .lede{color:var(--soft);font-size:16px;max-width:66ch;margin:0 0 18px}
+  .goal{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:0 0 8px}
+  .goal b{color:var(--accent-strong)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:22px 0 6px;font-family:var(--mono);font-size:11.5px}
+  .legend span{display:inline-flex;align-items:center;gap:6px;color:var(--soft)}
+  .legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .sec{margin-top:26px}
+  .sec-h{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+  .sec-h h2{font-size:16px;margin:0}
+  .sec-h .pill{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+  .rows{display:flex;flex-direction:column;gap:10px}
+  .row{background:var(--card);border:1px solid var(--line);border-left-width:4px;border-radius:12px;padding:13px 16px}
+  .row h3{margin:0 0 3px;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .row p{margin:0;font-size:13.5px;color:var(--soft)}
+  .row a{color:var(--accent);text-decoration:none;font-size:12.5px;font-family:var(--mono)}
+  .row a:hover{text-decoration:underline}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .d-done{background:var(--green)} .d-active{background:var(--amber)} .d-wait{background:var(--red)}
+  .d-next{background:var(--accent)} .d-later{background:var(--purple)}
+  .b-done{border-left-color:var(--green)} .b-active{border-left-color:var(--amber)} .b-wait{border-left-color:var(--red)}
+  .b-next{border-left-color:var(--accent)} .b-later{border-left-color:var(--purple)}
+  .p-done{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green)}
+  .p-active{background:color-mix(in srgb,var(--amber) 16%,transparent);color:var(--amber)}
+  .p-wait{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+  .p-next{background:var(--accent-soft);color:var(--accent-strong)}
+  .p-later{background:color-mix(in srgb,var(--purple) 15%,transparent);color:var(--purple)}
+  footer{margin-top:36px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+  .toggle{position:fixed;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+    background:var(--card);color:var(--txt);cursor:pointer;font-size:17px;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle light/dark">🌙</button>
+<div class="wrap">
+  <a class="back" href="index.html">← hub</a>
+  <div class="eyebrow">Interceptor Engagement Sim</div>
+  <h1>Project roadmap</h1>
+  <p class="lede">The whole picture on one page: what the tool is, what's already built, what we're deciding
+    now, the one thing we're waiting on, and what we can keep building meanwhile.</p>
+
+  <div class="goal">
+    <b>The goal.</b> A MATLAB tool (physics core also runs in Octave) that models a head-on air intercept:
+    a proximity-fuzed warhead bursts a few metres from a UAV, hundreds of fragments fly out and strike a
+    3-D drone mesh. It reports <b>which parts are hit, where, when, and with how much kinetic energy</b>,
+    plus coverage — and renders a 3-D animation. Reviewed entirely as live web pages.
+  </div>
+
+  <div class="legend">
+    <span><i class="d-done"></i>Done</span>
+    <span><i class="d-active"></i>Deciding now</span>
+    <span><i class="d-wait"></i>Waiting on data</span>
+    <span><i class="d-next"></i>Next — buildable now</span>
+    <span><i class="d-later"></i>Later — planned</span>
+  </div>
+
+  <!-- DONE -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-done">Done</span><h2>What we have</h2></div>
+    <div class="rows">
+      <div class="row b-done"><h3><span class="dot d-done"></span>Design approved &amp; hardened</h3>
+        <p>The intercept model was specced, then attacked twice (break-spec) and the physics independently re-derived correct; the build plan was attacked too (break-plan).</p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Physics engine — bundles 1–3</h3>
+        <p>Fragment generation, flight with drag/gravity (RK4), 3-D mesh hit-detection, coverage, timing &amp; delay budget, full printed summary. <b>119/119 tests green in Octave <i>and</i> MATLAB</b>, each bundle attacked twice (break-build ×2).</p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Review hub (bundle 5)</h3>
+        <p>This site — front door, plain-English design, the live progress board, real-output charts. <a href="progress.html">progress →</a></p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>3-D animation look (bundle 4 mockup) — approved</h3>
+        <p>The rotatable, energy-coloured animation design, signed off as a live page. <a href="animation.html">mockup →</a></p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Real Bayraktar TB2 — received &amp; shown in 3-D</h3>
+        <p>Your uploaded STL, measured, scaled (length 6.5&nbsp;m · span 8.58&nbsp;m), decimated, and rendered as a live rotatable 3-D viewer. <a href="real-drone-3d.html">real drone 3D →</a></p></div>
+    </div>
+  </div>
+
+  <!-- DECIDING -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-active">Deciding now</span><h2>The burst-geometry choice</h2></div>
+    <div class="rows">
+      <div class="row b-active"><h3><span class="dot d-active"></span>Skin-based miss + any-angle 360° burst</h3>
+        <p>Measure the 5&nbsp;m miss from the drone's <b>skin</b> (not its centreline) and let the burst sit at
+          <b>any</b> position around it — no forbidden zone. Explored in 3-D on the real drone; awaiting your
+          final lock. <a href="real-drone-3d.html">3D viewer →</a> · <a href="wing-geometry-skin.html">why it works →</a></p></div>
+    </div>
+  </div>
+
+  <!-- WAITING -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-wait">Waiting</span><h2>The one external dependency</h2></div>
+    <div class="rows">
+      <div class="row b-wait"><h3><span class="dot d-wait"></span>Real fragmentation data (from the mentor)</h3>
+        <p>The fragments are currently a <b>synthetic placeholder</b>. Real per-fragment directions, speeds and
+          masses come from a warhead break-up simulation (ANSYS Autodyn-type export — the <code>SM-T.xlsx</code>
+          file the mentor's code already reads). This is the <b>only true blocker</b>, and only for final
+          fragment realism — everything else can proceed.</p></div>
+    </div>
+  </div>
+
+  <!-- NEXT -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-next">Next</span><h2>Buildable now — no data needed</h2></div>
+    <div class="rows">
+      <div class="row b-next"><h3><span class="dot d-next"></span>Real TB2 into the engine</h3>
+        <p>A dual-safe STL loader (+ decimate, orient, part-tag) so the engine computes hits on the <b>real</b> drone shape — turning the by-part numbers real.</p></div>
+      <div class="row b-next"><h3><span class="dot d-next"></span>Skin-based offset + free burst placement in the engine</h3>
+        <p>Implement the geometry decision once locked — a friendly burst-position knob, no forbidden zone.</p></div>
+      <div class="row b-next"><h3><span class="dot d-next"></span>The data seam — <code>loadFragments.m</code> + tests</h3>
+        <p>Build and test the 18-column loader against a sample file, so the day the real data arrives it drops straight in.</p></div>
+      <div class="row b-next"><h3><span class="dot d-next"></span>Bundle 4 — real MATLAB 3-D animation + video</h3>
+        <p>The headline output: the actual MATLAB-rendered animation + MP4/GIF around the real drone, posted here.</p></div>
+    </div>
+  </div>
+
+  <!-- LATER -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-later">Later</span><h2>Planned</h2></div>
+    <div class="rows">
+      <div class="row b-later"><h3><span class="dot d-later"></span>Lethality</h3>
+        <p>Kinetic-energy threshold + Sperrazza probability-of-kill per zone (cited, defensible to the instructor).</p></div>
+      <div class="row b-later"><h3><span class="dot d-later"></span>With-drag defensible energy numbers</h3>
+        <p>Report the drag-included impact energy alongside the no-drag upper bound.</p></div>
+      <div class="row b-later"><h3><span class="dot d-later"></span>Other intercept geometries</h3>
+        <p>Generalise beyond head-on to an arbitrary impact angle (the seam already exists).</p></div>
+    </div>
+  </div>
+
+  <footer>
+    Owner reviews remotely (REMOTE 2) — all of the above is live and honest. Neutral academic framing
+    throughout (a student terminal-ballistics assignment). This hub is <b>noindex</b>.
+  </footer>
+</div>
+<script>
+  var btn=document.getElementById('themeToggle');
+  function sync(){ btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀️':'🌙'; }
+  sync();
+  btn.addEventListener('click',function(){
+    var next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('theme',next);}catch(e){} sync();
+  });
+</script>
+</body>
+</html>

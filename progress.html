@@ -146,6 +146,11 @@ const PHASES=[
   desc:"The actual MATLAB-rendered 3-D animation + MP4/GIF, fed by the validated engine - the tool's headline output.",
   note:"Queued - after the hub. You run it in MATLAB; the video gets posted here.",
   steps:[{n:"Plan", s:"todo"},{n:"Break the plan", s:"todo"},{n:"Build", s:"todo"},{n:"Break the build", s:"todo"},{n:"Live verify (video on hub)", s:"todo"}],
+  breaks:[]},
+ {id:"realdrone", title:"Real drone + burst geometry + fragment data", status:"active",
+  desc:"Bringing in the real Bayraktar TB2 shape, deciding how the burst is placed around it, and pinning down the real fragmentation data the model needs.",
+  note:"In progress. Real TB2 STL received, measured, and shown in a live 3-D viewer. Geometry model chosen (measure the 5 m miss from the skin + any-angle 360 burst, no forbidden zone) - awaiting your final lock. Found that the real fragment directions/speeds must come from a warhead break-up export (SM-T.xlsx / ANSYS Autodyn-type) - the mentor's code already reads this format; the current fragments are a labelled placeholder. That data file is the one external dependency.",
+  steps:[{n:"Real STL received + measured", s:"done"},{n:"Real drone shown in 3-D (hub)", s:"done"},{n:"Geometry model chosen", s:"active"},{n:"Lock the decision", s:"todo"},{n:"Real fragment data (from mentor)", s:"todo"},{n:"Wire STL + data into the engine", s:"todo"}],
   breaks:[]}
 ];
 const counts={done:0,active:0,queued:0}; PHASES.forEach(p=>counts[p.status]++);
