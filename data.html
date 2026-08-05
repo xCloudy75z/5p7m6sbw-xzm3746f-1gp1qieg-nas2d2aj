@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Interceptor Engagement Sim — Data & Results</title>
+<script>
+  (function(){ try{ var t=localStorage.getItem('theme'); if(!t) t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    document.documentElement.setAttribute('data-theme',t);}catch(e){} })();
+</script>
+<style>
+  :root{ --ink:#eef1f5; --card:#ffffff; --card2:#f7f9fc; --line:#dde3ea; --txt:#1f2733; --soft:#5a6470; --faint:#8a94a1;
+    --accent:#0e8fb0; --energy:#c9760a; --hit:#1e8a3b; --miss:#9aa4b0; --grid:#e7ecf2; --radius:14px;
+    --shadow:0 10px 30px rgba(16,24,40,.10);
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace; }
+  @media (prefers-color-scheme:dark){ :root{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--energy:#f5a524;--hit:#3fb950;--miss:#5b6570;--grid:#222a34;--shadow:0 10px 30px rgba(0,0,0,.4);} }
+  :root[data-theme="dark"]{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--energy:#f5a524;--hit:#3fb950;--miss:#5b6570;--grid:#222a34;--shadow:0 10px 30px rgba(0,0,0,.4);}
+  :root[data-theme="light"]{ --ink:#eef1f5;--card:#ffffff;--card2:#f7f9fc;--line:#dde3ea;--txt:#1f2733;--soft:#5a6470;--faint:#8a94a1;
+    --accent:#0e8fb0;--energy:#c9760a;--hit:#1e8a3b;--miss:#9aa4b0;--grid:#e7ecf2;--shadow:0 10px 30px rgba(16,24,40,.10);}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--ink);color:var(--txt);font-family:var(--sans);line-height:1.55}
+  .wrap{max-width:960px;margin:0 auto;padding:40px 20px 90px}
+  a.back{font-family:var(--mono);font-size:12.5px;color:var(--accent);text-decoration:none} a.back:hover{text-decoration:underline}
+  h1{font-size:clamp(26px,5vw,38px);margin:10px 0 4px;letter-spacing:-.015em}
+  .soft{color:var(--soft);font-size:15px;margin:2px 0 0}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0 8px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .tile .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .tile .val{font-family:var(--mono);font-size:21px;font-variant-numeric:tabular-nums;margin-top:4px}
+  .tile .val small{font-size:12px;color:var(--soft)}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 12px;box-shadow:0 1px 0 rgba(0,0,0,.03);min-width:0}
+  .card.full{grid-column:1 / -1}
+  .card h2{font-family:var(--mono);font-size:13px;margin:0 0 2px;letter-spacing:.02em}
+  .card .hint{color:var(--soft);font-size:12.5px;margin:2px 0 8px}
+  .svg-hold{width:100%;overflow-x:auto} svg{display:block;width:100%;height:auto} text{font-family:var(--mono)}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--soft)}
+  .legend span{display:inline-flex;align-items:center;gap:6px} .sw{width:10px;height:10px;border-radius:3px;display:inline-block}
+  footer{margin-top:24px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+  .toggle{position:fixed;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+    background:var(--card);color:var(--txt);cursor:pointer;font-size:17px;box-shadow:var(--shadow)}
+  @media (max-width:720px){ .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle light/dark">🌙</button>
+<div class="wrap">
+  <a class="back" href="index.html">← hub</a>
+  <h1>Data &amp; results</h1>
+  <p class="soft">The real engine output, as charts. Default synthetic fragments, drag off. (The by-part
+    numbers refresh once the real drone STL is dropped in.)</p>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="grid">
+    <div class="card"><h2>Impact pattern (target plane)</h2>
+      <div class="hint">Where each fragment crosses the target plane. Centre sits ~1.22 m downstream — the additive head-on drift.</div>
+      <div class="svg-hold"><svg id="scatter" viewBox="0 0 460 320" role="img" aria-label="Impact scatter"></svg></div>
+      <div class="legend"><span><i class="sw" style="background:var(--hit)"></i>on-body</span><span><i class="sw" style="background:var(--miss)"></i>off-body</span><span><i class="sw" style="background:var(--energy)"></i>centroid</span></div>
+    </div>
+    <div class="card"><h2>Delay budget</h2>
+      <div class="hint">Datum → impact. Fragment flight dominates (~88%).</div>
+      <div class="svg-hold"><svg id="budget" viewBox="0 0 460 150" role="img" aria-label="Delay budget"></svg></div>
+    </div>
+    <div class="card"><h2>Sweep A — speed vs miss &amp; energy</h2>
+      <div class="hint">Slower fragment → longer clock → larger downstream miss; energy rises with speed.</div>
+      <div class="svg-hold"><svg id="sweepA" viewBox="0 0 460 240" role="img" aria-label="Speed sweep"></svg></div>
+      <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>miss (m)</span><span><i class="sw" style="background:var(--energy)"></i>mean KE (J)</span></div>
+    </div>
+    <div class="card"><h2>Sweep B — fan width vs density</h2>
+      <div class="hint">A wider fan thins the hit density (the coverage-vs-density trade). Coverage is flat on the placeholder mesh.</div>
+      <div class="svg-hold"><svg id="sweepB" viewBox="0 0 460 240" role="img" aria-label="Fan sweep"></svg></div>
+    </div>
+  </div>
+
+  <footer>Charts drawn from the finished engine's real output (Octave/MATLAB, 119/119). The impact points
+    are generated in-page from the same seeded physics; the sweep &amp; budget values are the tool's actual
+    computed arrays. Placeholder drone — by-part &amp; coverage update with the real STL.</footer>
+</div>
+<script>
+(function(){
+  "use strict";
+  var NS="http://www.w3.org/2000/svg";
+  function el(t,a,p){var e=document.createElementNS(NS,t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+  // ---- stat tiles (real engine numbers) ----
+  var tiles=[["Closing speed","226.4","m/s"],["Impacts","29 / 200","14%"],["KE / hit","528","J (no drag)"],
+    ["Coverage","0.360","of mesh"],["Fire-early lead","6.1–6.6","ms"],["Fragment budget","87.7","% of window"]];
+  var tw=document.getElementById("tiles");
+  tiles.forEach(function(c){var d=document.createElement("div");d.className="tile";
+    d.innerHTML='<div class="lab">'+c[0]+'</div><div class="val">'+c[1]+' <small>'+c[2]+'</small></div>';tw.appendChild(d);});
+
+  // ---- impact scatter: generate the seeded pattern (matches the engine) ----
+  var Vi=138.9,Vt=87.5,OFF=5,CLOSE=Vi+Vt,SR=[800,1200],EJ=15*Math.PI/180,ZS=10*Math.PI/180,N=200,HULLX=1.25,BODY=0.175;
+  function lcg(n,seed){var a=1664525,c=1013904223,m=4294967296,x=seed%m,u=[];for(var i=0;i<n;i++){x=(a*x+c)%m;u.push(x/m);}return u;}
+  var U=lcg(3*N,42),F=[];
+  for(var i=0;i<N;i++){var spd=SR[0]+(SR[1]-SR[0])*U[i];var psi=(-EJ+2*EJ*U[N+i]);var ze=(-ZS+2*ZS*U[2*N+i]);
+    var Vx=spd*Math.sin(psi)*Math.cos(ze),Vy=spd*Math.cos(psi)*Math.cos(ze),Vz=spd*Math.sin(ze),t=OFF/Vy;
+    var mX=(CLOSE+Vx)*t,mZ=Vz*t; F.push({mX:mX,mZ:mZ,on:(Math.abs(mX)<=HULLX&&Math.abs(mZ)<=BODY+0.02)});}
+  var cxm=F.reduce(function(a,f){return a+f.mX;},0)/N, czm=F.reduce(function(a,f){return a+f.mZ;},0)/N;
+  (function(){var s=document.getElementById("scatter"),W=460,H=320,m={l:50,r:14,t:14,b:36};
+    var xr=[-1.5,3.0],zr=[-1.4,1.4];
+    function X(x){return lerp(m.l,W-m.r,(x-xr[0])/(xr[1]-xr[0]));} function Y(z){return lerp(H-m.b,m.t,(z-zr[0])/(zr[1]-zr[0]));}
+    var grid=cssv('--grid'),muted=cssv('--soft');
+    for(var gx=-1;gx<=3;gx++){el("line",{x1:X(gx),y1:m.t,x2:X(gx),y2:H-m.b,stroke:grid,"stroke-width":1},s);
+      el("text",{x:X(gx),y:H-m.b+15,"text-anchor":"middle",fill:muted,"font-size":10},s).textContent=gx;}
+    for(var gz=-1;gz<=1;gz++){el("line",{x1:m.l,y1:Y(gz),x2:W-m.r,y2:Y(gz),stroke:grid,"stroke-width":1},s);
+      el("text",{x:m.l-8,y:Y(gz)+3,"text-anchor":"end",fill:muted,"font-size":10},s).textContent=gz;}
+    el("text",{x:(m.l+W-m.r)/2,y:H-4,"text-anchor":"middle",fill:muted,"font-size":11},s).textContent="along-track miss x (m)";
+    el("rect",{x:X(-HULLX),y:Y(BODY),width:X(HULLX)-X(-HULLX),height:Y(-BODY)-Y(BODY),fill:cssv('--hit'),"fill-opacity":0.12,stroke:cssv('--hit'),"stroke-width":1.1,rx:4},s);
+    F.forEach(function(f){el("circle",{cx:X(f.mX),cy:Y(f.mZ),r:2.5,fill:f.on?cssv('--hit'):cssv('--miss'),opacity:f.on?0.9:0.42},s);});
+    el("circle",{cx:X(cxm),cy:Y(czm),r:3.6,fill:cssv('--energy')},s);
+    el("text",{x:X(cxm)+7,y:Y(czm)-7,fill:cssv('--energy'),"font-size":10},s).textContent="centroid 1.22 m";
+  })();
+
+  // ---- delay budget ----
+  (function(){var s=document.getElementById("budget"),W=460,m=16,y=40,h=34,bw=W-2*m;
+    var terms=[["sensing1",8.8,cssv('--accent')],["sensing2",3.5,"color-mix(in srgb,"+cssv('--accent')+" 55%, "+cssv('--soft')+")"],["fragment flight",87.7,cssv('--energy')]];
+    var x=m; terms.forEach(function(t){var w=bw*t[1]/100;el("rect",{x:x,y:y,width:w,height:h,fill:t[2],opacity:.9},s);
+      if(w>44)el("text",{x:x+w/2,y:y+h/2+4,"text-anchor":"middle",fill:cssv('--ink'),"font-size":11,"font-weight":600},s).textContent=t[1]+"%";x+=w;});
+    var lx=m; terms.forEach(function(t){var g=el("g",{},s);el("rect",{x:lx,y:y+h+14,width:10,height:10,rx:2,fill:t[2]},g);
+      el("text",{x:lx+15,y:y+h+23,fill:cssv('--soft'),"font-size":11},g).textContent=t[0];lx+=t[0].length*7+42;});
+    el("text",{x:W-m,y:30,"text-anchor":"end",fill:cssv('--txt'),"font-size":12},s).textContent="total window ≈ 5.7 ms";
+  })();
+
+  // ---- sweep A (real arrays) ----
+  var speeds=[800,850,900,950,1000,1050,1100,1150,1200], miss=[1.415,1.332,1.258,1.192,1.132,1.078,1.029,0.984,0.943], ke=[321,363,406,451,500,550,604,659,718];
+  (function(){var s=document.getElementById("sweepA"),W=460,H=240,m={l:44,r:44,t:14,b:36};
+    function X(v){return lerp(m.l,W-m.r,(v-800)/400);} function YL(v){return lerp(H-m.b,m.t,(v-0.9)/(1.45-0.9));} function YR(v){return lerp(H-m.b,m.t,(v-300)/(720-300));}
+    var grid=cssv('--grid'),muted=cssv('--soft');
+    [800,900,1000,1100,1200].forEach(function(v){el("line",{x1:X(v),y1:m.t,x2:X(v),y2:H-m.b,stroke:grid,"stroke-width":1},s);
+      el("text",{x:X(v),y:H-m.b+15,"text-anchor":"middle",fill:muted,"font-size":10},s).textContent=v;});
+    var dM=speeds.map(function(v,i){return (i?"L":"M")+X(v)+" "+YL(miss[i]);}).join(" ");
+    var dK=speeds.map(function(v,i){return (i?"L":"M")+X(v)+" "+YR(ke[i]);}).join(" ");
+    el("path",{d:dM,fill:"none",stroke:cssv('--accent'),"stroke-width":2},s);
+    el("path",{d:dK,fill:"none",stroke:cssv('--energy'),"stroke-width":2,"stroke-dasharray":"5 3"},s);
+    el("text",{x:(m.l+W-m.r)/2,y:H-4,"text-anchor":"middle",fill:muted,"font-size":11},s).textContent="fragment speed (m/s)";
+  })();
+
+  // ---- sweep B (real arrays) ----
+  var fan=[0,5,10,15,20,25,30], dens=[70.0,48.8,31.3,26.7,25.8,24.9,22.1];
+  (function(){var s=document.getElementById("sweepB"),W=460,H=240,m={l:44,r:16,t:14,b:36};
+    function X(a){return lerp(m.l,W-m.r,a/30);} function Y(v){return lerp(H-m.b,m.t,(v-20)/(72-20));}
+    var grid=cssv('--grid'),muted=cssv('--soft');
+    [0,10,20,30].forEach(function(a){el("line",{x1:X(a),y1:m.t,x2:X(a),y2:H-m.b,stroke:grid,"stroke-width":1},s);
+      el("text",{x:X(a),y:H-m.b+15,"text-anchor":"middle",fill:muted,"font-size":10},s).textContent=a+"°";});
+    var d=fan.map(function(a,i){return (i?"L":"M")+X(a)+" "+Y(dens[i]);}).join(" ");
+    el("path",{d:d,fill:"none",stroke:cssv('--energy'),"stroke-width":2},s);
+    fan.forEach(function(a,i){el("circle",{cx:X(a),cy:Y(dens[i]),r:3,fill:cssv('--energy')},s);});
+    el("text",{x:(m.l+W-m.r)/2,y:H-4,"text-anchor":"middle",fill:muted,"font-size":11},s).textContent="fan half-angle (deg)";
+    el("text",{x:m.l,y:m.t+2,fill:muted,"font-size":10},s).textContent="hits/m²";
+  })();
+
+  var btn=document.getElementById('themeToggle');
+  function sync(){ btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀️':'🌙'; }
+  sync(); btn.addEventListener('click',function(){var next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);try{localStorage.setItem('theme',next);}catch(e){}sync();
+    // recolor charts on theme change: simplest is reload
+    location.reload();});
+})();
+</script>
+</body>
+</html>

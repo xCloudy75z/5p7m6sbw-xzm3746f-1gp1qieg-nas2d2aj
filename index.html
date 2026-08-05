@@ -42,6 +42,11 @@
   .card .tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
     padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);margin-top:12px}
   .card .tag.live{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;margin-top:22px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .tile .lab{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .tile .val{font-family:var(--mono);font-size:18px;font-variant-numeric:tabular-nums;margin-top:3px}
+  .tile .val small{font-size:11px;color:var(--soft)}
   footer{margin-top:34px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
   .toggle{position:fixed;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
     background:var(--card);color:var(--txt);cursor:pointer;font-size:17px;box-shadow:var(--shadow)}
@@ -58,6 +63,13 @@
     when, and with how much energy. Everything reviewable here, as real web pages.</p>
   <span class="status"><i></i>Engine complete · 119/119 tests green in Octave + MATLAB</span>
 
+  <div class="tiles">
+    <div class="tile"><div class="lab">Closing speed</div><div class="val">226.4 <small>m/s</small></div></div>
+    <div class="tile"><div class="lab">Impacts</div><div class="val">29/200 <small>14%</small></div></div>
+    <div class="tile"><div class="lab">KE / hit</div><div class="val">528 <small>J</small></div></div>
+    <div class="tile"><div class="lab">Fire-early lead</div><div class="val">6.1–6.6 <small>ms</small></div></div>
+  </div>
+
   <div class="grid">
     <a class="card" href="animation.html">
       <div class="ico">🎬</div><h3>3-D animation</h3>
@@ -72,6 +84,11 @@
     <a class="card" href="spec.html">
       <div class="ico">📐</div><h3>Design &amp; results</h3>
       <p>What the tool does, in plain English — the physics, the numbers, and the real engine output.</p>
+      <span class="tag">Ready</span>
+    </a>
+    <a class="card" href="data.html">
+      <div class="ico">📈</div><h3>Data &amp; results</h3>
+      <p>The real output as charts — impact scatter, both sweeps, and the delay budget, with headline stat tiles.</p>
       <span class="tag">Ready</span>
     </a>
   </div>
