@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Wing vs burst — what "1 m inside" means</title>
+<style>
+  :root{
+    --bg:#0c1220; --bg2:#111a2e; --card:#131f38; --line:#25355a;
+    --ink:#eaf1ff; --ink-soft:#9fb2d6; --ink-faint:#6c80a8;
+    --accent:#39b8ff; --good:#37d99a; --bad:#ff6b6b; --warn:#ffcf5c;
+    --fuse:#8fa6d6; --wing:#5b7bd6;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#eef3fb; --bg2:#e4ecf8; --card:#ffffff; --line:#cdd9ee;
+      --ink:#132038; --ink-soft:#41537a; --ink-faint:#7387ad;
+      --accent:#1478d1; --good:#12a06e; --bad:#d94848; --warn:#c98a0a;
+      --fuse:#4a63a0; --wing:#3a58b0;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:26px 16px 60px;}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:1.5rem;line-height:1.25;margin:0 0 6px}
+  .sub{color:var(--ink-soft);margin:0 0 22px}
+  .lead{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 22px}
+  .lead b{color:var(--accent)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 16px 10px;margin:0 0 20px;
+    overflow:hidden}
+  .panel h2{font-size:1.08rem;margin:2px 4px 2px;display:flex;align-items:center;gap:9px}
+  .tag{font-size:.72rem;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+  .tag.bad{background:color-mix(in srgb,var(--bad) 20%,transparent);color:var(--bad)}
+  .tag.good{background:color-mix(in srgb,var(--good) 20%,transparent);color:var(--good)}
+  .cap{color:var(--ink-soft);font-size:.95rem;margin:2px 6px 12px}
+  .cap b{color:var(--ink)}
+  svg{width:100%;height:auto;display:block}
+  .legend{display:flex;flex-wrap:wrap;gap:14px 20px;margin:18px 4px 4px;color:var(--ink-soft);font-size:.9rem}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .sw{width:16px;height:16px;border-radius:4px;flex:none}
+  .foot{color:var(--ink-faint);font-size:.85rem;margin-top:26px;text-align:center}
+  text{font-family:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>What "the burst sits 1 m inside the wingspan" means</h1>
+  <p class="sub">A top-down view (looking straight down on the drone). Left–right = wingspan. The dot on the right is where the warhead goes off.</p>
+
+  <div class="lead">
+    The engine assumes <b>the whole drone is on one side of the burst</b> — every fragment sprays
+    <i>toward</i> the drone. That holds as long as no part of the wing reaches out <i>past</i> the burst point.
+    The question is only: does the near wingtip poke out beyond the 5&nbsp;m burst, or not?
+  </div>
+
+  <!-- ============ PANEL 1 : span-12, half-span 6 m ============ -->
+  <div class="panel">
+    <h2>If we scale by span (12&nbsp;m span → wingtip at 6&nbsp;m) <span class="tag bad">the problem</span></h2>
+    <p class="cap">Burst is <b>5&nbsp;m</b> out. The wingtip reaches <b>6&nbsp;m</b> — so the last
+      <b>1&nbsp;m of wing sticks out past the burst</b> (the red sliver). Fragments only spray inward, so that sliver never gets hit.</p>
+    <svg viewBox="0 0 620 300" role="img" aria-label="Top-down view: wingtip at 6 metres reaches 1 metre past the 5 metre burst point">
+      <!-- ground scale ticks -->
+      <g stroke="var(--line)" stroke-width="1">
+        <line x1="210" y1="262" x2="392" y2="262"/>
+      </g>
+      <g fill="var(--ink-faint)" font-size="11" text-anchor="middle">
+        <text x="210" y="280">0</text>
+        <text x="350" y="280">5 m (burst)</text>
+        <text x="378" y="248">6 m (tip)</text>
+      </g>
+      <g stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3">
+        <line x1="210" y1="150" x2="210" y2="262"/>
+        <line x1="350" y1="150" x2="350" y2="262"/>
+        <line x1="378" y1="150" x2="378" y2="240"/>
+      </g>
+
+      <!-- fragment spray fan (points left / inboard) -->
+      <polygon points="350,150 268,17 208,73 187,150 208,227 268,283"
+               fill="color-mix(in srgb,var(--accent) 16%,transparent)"
+               stroke="color-mix(in srgb,var(--accent) 45%,transparent)" stroke-width="1"/>
+      <g stroke="var(--accent)" stroke-width="1.6" opacity=".8">
+        <line x1="350" y1="150" x2="205" y2="95" marker-end="url(#ah)"/>
+        <line x1="350" y1="150" x2="180" y2="150" marker-end="url(#ah)"/>
+        <line x1="350" y1="150" x2="205" y2="205" marker-end="url(#ah)"/>
+      </g>
+
+      <!-- drone: fuselage (vertical) + wings (horizontal) -->
+      <rect x="200" y="70" width="20" height="160" rx="10" fill="var(--fuse)"/>
+      <!-- left wing (fully inboard) -->
+      <rect x="42" y="140" width="168" height="20" rx="4" fill="var(--wing)"/>
+      <!-- right wing up to burst (5 m) = safe part -->
+      <rect x="210" y="140" width="140" height="20" rx="4" fill="var(--wing)"/>
+      <!-- outboard sliver 5->6 m = the problem -->
+      <rect x="350" y="140" width="28" height="20" rx="4" fill="var(--bad)"/>
+
+      <!-- burst point -->
+      <circle cx="350" cy="150" r="7" fill="var(--warn)" stroke="#000" stroke-opacity=".25"/>
+      <circle cx="350" cy="150" r="13" fill="none" stroke="var(--warn)" stroke-width="1.5" opacity=".6"/>
+
+      <!-- label for sliver -->
+      <text x="392" y="128" fill="var(--bad)" font-size="11.5" font-weight="700">← 1 m outboard,</text>
+      <text x="392" y="142" fill="var(--bad)" font-size="11.5" font-weight="700">never hit</text>
+
+      <defs>
+        <marker id="ah" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ============ PANEL 2 : accurate length, half-span 4.3 m ============ -->
+  <div class="panel">
+    <h2>If we scale by real length (6.5&nbsp;m → wingtip at 4.3&nbsp;m) <span class="tag good">clean</span></h2>
+    <p class="cap">Now the wingtip reaches only <b>4.3&nbsp;m</b> — it stops <b>short of the 5&nbsp;m burst</b>.
+      The whole drone is inboard of the burst, so the validated one-sided model holds with <b>no change</b>.</p>
+    <svg viewBox="0 0 620 300" role="img" aria-label="Top-down view: wingtip at 4.3 metres stops short of the 5 metre burst point">
+      <g stroke="var(--line)" stroke-width="1"><line x1="210" y1="262" x2="392" y2="262"/></g>
+      <g fill="var(--ink-faint)" font-size="11" text-anchor="middle">
+        <text x="210" y="280">0</text>
+        <text x="330" y="248">4.3 m (tip)</text>
+        <text x="350" y="280">5 m (burst)</text>
+      </g>
+      <g stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3">
+        <line x1="210" y1="150" x2="210" y2="262"/>
+        <line x1="330" y1="150" x2="330" y2="240"/>
+        <line x1="350" y1="150" x2="350" y2="262"/>
+      </g>
+
+      <polygon points="350,150 268,17 208,73 187,150 208,227 268,283"
+               fill="color-mix(in srgb,var(--accent) 16%,transparent)"
+               stroke="color-mix(in srgb,var(--accent) 45%,transparent)" stroke-width="1"/>
+      <g stroke="var(--accent)" stroke-width="1.6" opacity=".8">
+        <line x1="350" y1="150" x2="205" y2="95" marker-end="url(#ah2)"/>
+        <line x1="350" y1="150" x2="180" y2="150" marker-end="url(#ah2)"/>
+        <line x1="350" y1="150" x2="205" y2="205" marker-end="url(#ah2)"/>
+      </g>
+
+      <rect x="200" y="70" width="20" height="160" rx="10" fill="var(--fuse)"/>
+      <rect x="90" y="140" width="120" height="20" rx="4" fill="var(--wing)"/>
+      <!-- right wing stops at 4.3 m (x=330), short of burst -->
+      <rect x="210" y="140" width="120" height="20" rx="4" fill="var(--good)"/>
+
+      <!-- gap marker between tip and burst -->
+      <g stroke="var(--good)" stroke-width="1.4">
+        <line x1="330" y1="185" x2="350" y2="185"/>
+      </g>
+      <text x="340" y="204" fill="var(--good)" font-size="11" text-anchor="middle" font-weight="700">clear</text>
+
+      <circle cx="350" cy="150" r="7" fill="var(--warn)" stroke="#000" stroke-opacity=".25"/>
+      <circle cx="350" cy="150" r="13" fill="none" stroke="var(--warn)" stroke-width="1.5" opacity=".6"/>
+
+      <defs>
+        <marker id="ah2" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="legend">
+    <span><span class="sw" style="background:var(--fuse)"></span>Fuselage</span>
+    <span><span class="sw" style="background:var(--wing)"></span>Wing</span>
+    <span><span class="sw" style="background:var(--warn)"></span>Burst point (5 m out)</span>
+    <span><span class="sw" style="background:color-mix(in srgb,var(--accent) 40%,transparent)"></span>Fragment spray (inward only)</span>
+    <span><span class="sw" style="background:var(--bad)"></span>Wing outboard of burst → missed</span>
+  </div>
+
+  <p class="foot">Top-down schematic, not to exact scale — interceptor-engagement-sim · decision aid</p>
+</div>
+</body>
+</html>
