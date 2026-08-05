@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Real MQ-1 Predator — 3D burst geometry</title>
+<title>Real MQ-1 Predator — 3D burst geometry (WebGL, full 28k)</title>
 <style>
   :root{
     --bg:#0c1220; --bg2:#111a2e; --card:#131f38; --line:#25355a;
     --ink:#eaf1ff; --ink-soft:#9fb2d6; --ink-faint:#6c80a8;
     --accent:#39b8ff; --good:#37d99a; --bad:#ff6b6b; --warn:#ffcf5c;
-    --mesh:#6f8bd0; --meshlo:#2b3d68; --grid:#1c2a49; --hit:#ff8a3d;
+    --mesh:#6f8bd0; --meshlo:#243357; --grid:#1c2a49; --hit:#ff8a3d; --stage:#0e1830;
   }
   @media (prefers-color-scheme: light){
     :root{
       --bg:#eef3fb; --bg2:#e4ecf8; --card:#ffffff; --line:#cdd9ee;
       --ink:#132038; --ink-soft:#41537a; --ink-faint:#7387ad;
       --accent:#1478d1; --good:#12a06e; --bad:#d94848; --warn:#c98a0a;
-      --mesh:#5f7ec9; --meshlo:#b9c7e6; --grid:#d3ddef; --hit:#e8641b;
+      --mesh:#5f7ec9; --meshlo:#c3d0ea; --grid:#d3ddef; --hit:#e8641b; --stage:#eef3fb;
     }
   }
   *{box-sizing:border-box}
@@ -27,7 +27,7 @@
   h1{font-size:1.42rem;line-height:1.25;margin:0 0 4px}
   .sub{color:var(--ink-soft);margin:0 0 18px}
   .stage{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;overflow:hidden}
-  canvas{display:block;width:100%;height:clamp(340px,56vh,560px);touch-action:none;cursor:grab;border-radius:10px}
+  canvas{display:block;width:100%;height:clamp(340px,56vh,560px);touch-action:none;cursor:grab;border-radius:10px;background:var(--stage)}
   canvas:active{cursor:grabbing}
   .controls{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin:14px 4px 2px}
   .ctl{display:flex;flex-direction:column;gap:4px;min-width:210px;flex:1}
@@ -50,13 +50,14 @@
 <body>
 <div class="wrap">
   <h1>Real MQ-1 Predator — burst geometry in 3D</h1>
-  <p class="sub">The actual uploaded STL (decimated), at real scale: length 8.3&nbsp;m · span 14.8&nbsp;m · half-span 7.4&nbsp;m. A clean airframe — no base plate. Drag to orbit · scroll/pinch to zoom.</p>
+  <p class="sub">The actual uploaded STL — <b>full resolution, all 28,074 triangles</b> (WebGL), at real scale:
+    length 8.3&nbsp;m · span 14.8&nbsp;m · half-span 7.4&nbsp;m. Clean airframe, no base plate. Drag to orbit · scroll to zoom.</p>
 
   <div class="stage">
     <canvas id="cv"></canvas>
     <div class="controls">
       <div class="ctl">
-        <label>Burst clock position <b id="clkLbl">12 o'clock — above</b></label>
+        <label>Burst clock position <b id="clkLbl">between</b></label>
         <input id="clk" type="range" min="0" max="359" value="45" step="1">
         <div class="chips">
           <button class="chip" data-c="0">12 · above</button>
@@ -72,6 +73,7 @@
       </div>
     </div>
     <div class="readout">
+      <span>Triangles: <b id="nTri">loading…</b></span>
       <span>Miss distance: <b>5.0 m</b> from the skin</span>
       <span>Fragments cast (360°): <b id="nRays">—</b></span>
       <span>Strikes on the drone: <b id="nHits">—</b></span>
@@ -88,142 +90,166 @@
     is measured from the <b>skin</b>, so the burst clears the wingtip. There's <b>no forbidden zone</b>: every position works.
   </div>
   <div class="note" style="background:color-mix(in srgb,var(--warn) 12%,transparent);border-color:color-mix(in srgb,var(--warn) 50%,transparent)">
-    <b style="color:var(--warn)">What's real vs. placeholder here.</b> Real: the drone shape (your STL), the 3D
+    <b style="color:var(--warn)">What's real vs. placeholder here.</b> Real: the drone shape (your STL, full 28k), the 3D
     hit-detection, and the skin-based burst placement. <b>Placeholder:</b> the fragment spray is a uniform
     <b>360°</b> stand-in. A real warhead bursts in a <b>directional</b> pattern — that data comes from a
     hydrocode (e.g. ANSYS Autodyn) fragmentation run, fed through the tool's <code>loadFragments</code> seam.
     Until that data is in, treat the strike <i>counts</i> as illustrative, not final.
   </div>
 
-  <p class="foot">Real STL (3,030-tri decimation) · ray-cast strikes computed live in your browser · interceptor-engagement-sim</p>
+  <p class="foot">Full-resolution STL (28,074 tris, WebGL) · ray-cast strikes computed live in your browser · interceptor-engagement-sim</p>
 </div>
 
-<script src="dronemesh.js"></script>
 <script>
 (function(){
   "use strict";
-  var M=window.TB2; var V=M.V, F=M.F;
-  var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+  var cv=document.getElementById('cv');
+  var gl=cv.getContext('webgl',{antialias:true,alpha:false});
+  if(!gl){ document.querySelector('.stage').innerHTML='<p style="padding:20px">Your browser could not start WebGL.</p>'; return; }
   function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+  function hex(c){c=c.replace('#','');if(c.length===3)c=c.split('').map(function(x){return x+x;}).join('');return [parseInt(c.substr(0,2),16)/255,parseInt(c.substr(2,2),16)/255,parseInt(c.substr(4,2),16)/255];}
 
-  // ---- precompute face centroids + normals ----
-  var FC=new Array(F.length), FN=new Array(F.length);
-  function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]];}
-  function cross(a,b){return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];}
+  function sub(a,b){return[a[0]-b[0],a[1]-b[1],a[2]-b[2]];}
+  function cross(a,b){return[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];}
   function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
-  function norm(a){var l=Math.hypot(a[0],a[1],a[2])||1;return [a[0]/l,a[1]/l,a[2]/l];}
-  for(var i=0;i<F.length;i++){
-    var a=V[F[i][0]], b=V[F[i][1]], c=V[F[i][2]];
-    FC[i]=[(a[0]+b[0]+c[0])/3,(a[1]+b[1]+c[1])/3,(a[2]+b[2]+c[2])/3];
-    FN[i]=norm(cross(sub(b,a),sub(c,a)));
-  }
-  // support radius for burst placement
-  function supportDist(dir){var m=-Infinity;for(var i=0;i<V.length;i++){var d=dot(V[i],dir);if(d>m)m=d;}return m;}
+  function nrm(a){var l=Math.hypot(a[0],a[1],a[2])||1;return[a[0]/l,a[1]/l,a[2]/l];}
+  function perspective(fovy,asp,near,far){var f=1/Math.tan(fovy/2),nf=1/(near-far);
+    return [f/asp,0,0,0, 0,f,0,0, 0,0,(far+near)*nf,-1, 0,0,2*far*near*nf,0];}
+  function lookAt(eye,ctr,up){var z=nrm(sub(eye,ctr)),x=nrm(cross(up,z)),y=cross(z,x);
+    return [x[0],y[0],z[0],0, x[1],y[1],z[1],0, x[2],y[2],z[2],0, -dot(x,eye),-dot(y,eye),-dot(z,eye),1];}
+  function mul(a,b){var o=new Array(16);for(var c=0;c<4;c++)for(var r=0;r<4;r++){var s=0;for(var k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s;}return o;}
 
-  // ---- camera ----
-  var az=-0.75, el=0.36, scale=44, W=0,H=0,cx=0,cy=0,dpr=1;
+  function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s;}
+  function prog(vs,fs){var p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);
+    if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw gl.getProgramInfoLog(p);return p;}
+  var meshP=prog(
+    'attribute vec3 aPos;attribute vec3 aNormal;uniform mat4 uMVP;varying vec3 vN;void main(){vN=aNormal;gl_Position=uMVP*vec4(aPos,1.0);}',
+    'precision mediump float;varying vec3 vN;uniform vec3 uLight,uHi,uLo;void main(){float lam=max(dot(normalize(vN),normalize(uLight)),0.0);float s=0.28+0.72*lam;gl_FragColor=vec4(mix(uLo,uHi,s),1.0);}');
+  var basicP=prog(
+    'attribute vec3 aPos;uniform mat4 uMVP;uniform float uSize;void main(){gl_Position=uMVP*vec4(aPos,1.0);gl_PointSize=uSize;}',
+    'precision mediump float;uniform vec3 uColor;uniform float uRound;void main(){if(uRound>0.5){vec2 c=gl_PointCoord-0.5;if(dot(c,c)>0.25)discard;}gl_FragColor=vec4(uColor,1.0);}');
+  var mA={pos:gl.getAttribLocation(meshP,'aPos'),nor:gl.getAttribLocation(meshP,'aNormal'),
+    mvp:gl.getUniformLocation(meshP,'uMVP'),light:gl.getUniformLocation(meshP,'uLight'),hi:gl.getUniformLocation(meshP,'uHi'),lo:gl.getUniformLocation(meshP,'uLo')};
+  var bA={pos:gl.getAttribLocation(basicP,'aPos'),mvp:gl.getUniformLocation(basicP,'uMVP'),size:gl.getUniformLocation(basicP,'uSize'),color:gl.getUniformLocation(basicP,'uColor'),round:gl.getUniformLocation(basicP,'uRound')};
+
+  var meshPosBuf=gl.createBuffer(), meshNorBuf=gl.createBuffer(), gridBuf=gl.createBuffer(),
+      strikeBuf=gl.createBuffer(), sprayBuf=gl.createBuffer(), burstBuf=gl.createBuffer();
+  var nMeshVerts=0, TRIS=null, nGrid=0, nStrike=0, nSpray=0;
+
+  var REAL_SPAN=14.8;
+  fetch('predator.stl').then(function(r){return r.arrayBuffer();}).then(function(buf){
+    var dv=new DataView(buf); var n=dv.getUint32(80,true); var o=84;
+    var raw=new Float32Array(n*9);
+    var lo=[1e18,1e18,1e18],hi=[-1e18,-1e18,-1e18];
+    for(var i=0;i<n;i++){ o+=12;
+      for(var k=0;k<3;k++){ var x=dv.getFloat32(o,true),y=dv.getFloat32(o+4,true),z=dv.getFloat32(o+8,true); o+=12;
+        raw[i*9+k*3]=x;raw[i*9+k*3+1]=y;raw[i*9+k*3+2]=z;
+        if(x<lo[0])lo[0]=x;if(y<lo[1])lo[1]=y;if(z<lo[2])lo[2]=z;
+        if(x>hi[0])hi[0]=x;if(y>hi[1])hi[1]=y;if(z>hi[2])hi[2]=z; }
+      o+=2;
+    }
+    var ext=[hi[0]-lo[0],hi[1]-lo[1],hi[2]-lo[2]], cen=[(lo[0]+hi[0])/2,(lo[1]+hi[1])/2,(lo[2]+hi[2])/2];
+    var sc=REAL_SPAN/ext[0];
+    function orient(x,y,z){ return [ (z-cen[2])*sc, (x-cen[0])*sc, (y-cen[1])*sc ]; }
+    var pos=new Float32Array(n*9), nor=new Float32Array(n*9);
+    TRIS=new Array(n); var zmin=1e18;
+    for(var i=0;i<n;i++){
+      var a=orient(raw[i*9],raw[i*9+1],raw[i*9+2]);
+      var b=orient(raw[i*9+3],raw[i*9+4],raw[i*9+5]);
+      var c=orient(raw[i*9+6],raw[i*9+7],raw[i*9+8]);
+      var nn=nrm(cross(sub(b,a),sub(c,a)));
+      for(var k=0;k<3;k++){ var v=[a,b,c][k];
+        pos[i*9+k*3]=v[0];pos[i*9+k*3+1]=v[1];pos[i*9+k*3+2]=v[2];
+        nor[i*9+k*3]=nn[0];nor[i*9+k*3+1]=nn[1];nor[i*9+k*3+2]=nn[2]; }
+      TRIS[i]=[a,b,c];
+      if(a[2]<zmin)zmin=a[2];if(b[2]<zmin)zmin=b[2];if(c[2]<zmin)zmin=c[2];
+    }
+    nMeshVerts=n*3;
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshPosBuf); gl.bufferData(gl.ARRAY_BUFFER,pos,gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshNorBuf); gl.bufferData(gl.ARRAY_BUFFER,nor,gl.STATIC_DRAW);
+    var g=[],gz=zmin-1.0;
+    for(var t=-10;t<=10;t++){ g.push(t*2,-20,gz, t*2,20,gz, -20,t*2,gz, 20,t*2,gz); }
+    nGrid=g.length/3; gl.bindBuffer(gl.ARRAY_BUFFER,gridBuf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(g),gl.STATIC_DRAW);
+    document.getElementById('nTri').textContent=n.toLocaleString();
+    setClock(45); resize(); requestAnimationFrame(frame);
+  }).catch(function(e){ document.querySelector('.stage').innerHTML='<p style="padding:20px">Could not load the model: '+e+'</p>'; });
+
+  function support(dir){var m=-1e18;for(var i=0;i<TRIS.length;i++){var t=TRIS[i];for(var k=0;k<3;k++){var d=dot(t[k],dir);if(d>m)m=d;}}return m;}
+  function rayHit(P,d){var best=1e18,bp=null;
+    for(var i=0;i<TRIS.length;i++){var t=TRIS[i],a=t[0],b=t[1],c=t[2];
+      var e1=sub(b,a),e2=sub(c,a),pv=cross(d,e2),det=dot(e1,pv);
+      if(det>-1e-7&&det<1e-7)continue; var inv=1/det,tv=sub(P,a),u=dot(tv,pv)*inv; if(u<0||u>1)continue;
+      var qv=cross(tv,e1),v=dot(d,qv)*inv; if(v<0||u+v>1)continue; var tt=dot(e2,qv)*inv;
+      if(tt>1e-4&&tt<best){best=tt;bp=[P[0]+d[0]*tt,P[1]+d[1]*tt,P[2]+d[2]*tt];} }
+    return bp;}
+  var SPHERE=(function(nn){var p=[],ga=Math.PI*(3-Math.sqrt(5));for(var i=0;i<nn;i++){var z=1-2*(i+0.5)/nn,r=Math.sqrt(Math.max(0,1-z*z)),th=ga*i;p.push([r*Math.cos(th),r*Math.sin(th),z]);}return p;})(560);
+  var burst=[0,0,0];
+  function recompute(deg){
+    if(!TRIS)return;
+    var phi=deg*Math.PI/180, dir=nrm([0,Math.sin(phi),Math.cos(phi)]);
+    var s=support(dir); burst=[dir[0]*(s+5),dir[1]*(s+5),dir[2]*(s+5)];
+    var hits=[]; for(var i=0;i<SPHERE.length;i++){var h=rayHit(burst,SPHERE[i]); if(h)hits.push(h);}
+    var sp=new Float32Array(hits.length*3), spray=[];
+    for(var i=0;i<hits.length;i++){ sp[i*3]=hits[i][0];sp[i*3+1]=hits[i][1];sp[i*3+2]=hits[i][2];
+      if(i%3===0){ spray.push(burst[0],burst[1],burst[2], hits[i][0],hits[i][1],hits[i][2]); } }
+    nStrike=hits.length; gl.bindBuffer(gl.ARRAY_BUFFER,strikeBuf); gl.bufferData(gl.ARRAY_BUFFER,sp,gl.DYNAMIC_DRAW);
+    nSpray=spray.length/3; gl.bindBuffer(gl.ARRAY_BUFFER,sprayBuf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(spray),gl.DYNAMIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER,burstBuf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(burst),gl.DYNAMIC_DRAW);
+    document.getElementById('nRays').textContent='560'; document.getElementById('nHits').textContent=String(hits.length);
+  }
+
+  var az=0.7, el=0.5, dist=30, W=0,H=0,dpr=1;
   function resize(){ dpr=Math.min(window.devicePixelRatio||1,2); var r=cv.getBoundingClientRect(); W=r.width;H=r.height;
-    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); cx=W*0.5; cy=H*0.52;
-    scale=Math.min(W,H)/10.5; }
-  function rot(p){ var ca=Math.cos(az),sa=Math.sin(az); var x1=p[0]*ca-p[1]*sa,y1=p[0]*sa+p[1]*ca,z1=p[2];
-    var ce=Math.cos(el),se=Math.sin(el); var y2=y1*ce-z1*se,z2=y1*se+z1*ce; return [x1,y2,z2]; }
-  function proj(p){var r=rot(p); return [cx+r[0]*scale, cy-r[2]*scale, r[1]];}
-
-  var LIGHT=norm([0.4,-0.7,0.8]);
-
-  // ---- burst + ray-cast strikes (Moller-Trumbore) ----
-  var burst=[0,0,0], hits=[], NRAYS=560;
-  function rayHit(P,d){ // nearest positive intersection with any face
-    var best=Infinity, bp=null;
-    for(var i=0;i<F.length;i++){
-      var a=V[F[i][0]],b=V[F[i][1]],c=V[F[i][2]];
-      var e1=sub(b,a), e2=sub(c,a), pv=cross(d,e2), det=dot(e1,pv);
-      if(det>-1e-7 && det<1e-7) continue;
-      var inv=1/det, tv=sub(P,a), u=dot(tv,pv)*inv; if(u<0||u>1) continue;
-      var qv=cross(tv,e1), v=dot(d,qv)*inv; if(v<0||u+v>1) continue;
-      var t=dot(e2,qv)*inv; if(t>1e-4 && t<best){ best=t; bp=[P[0]+d[0]*t,P[1]+d[1]*t,P[2]+d[2]*t]; }
-    }
-    return bp;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); gl.viewport(0,0,cv.width,cv.height); }
+  function mvp(){
+    var eye=[dist*Math.cos(el)*Math.cos(az), dist*Math.cos(el)*Math.sin(az), dist*Math.sin(el)];
+    var V=lookAt(eye,[0,0,0],[0,0,1]); var P=perspective(45*Math.PI/180, (W/H)||1, 0.1, 400);
+    return mul(P,V);
   }
-  function fib(n){ var pts=[], ga=Math.PI*(3-Math.sqrt(5)); for(var i=0;i<n;i++){ var z=1-2*(i+0.5)/n, r=Math.sqrt(Math.max(0,1-z*z)), th=ga*i; pts.push([r*Math.cos(th), r*Math.sin(th), z]); } return pts; }
-  var SPHERE=fib(NRAYS);
-  function recompute(clkDeg){
-    var phi=clkDeg*Math.PI/180;
-    var dir=norm([0, Math.sin(phi), Math.cos(phi)]);   // front-plane (y,z), abeam (x=0)
-    var s=supportDist(dir);
-    burst=[dir[0]*(s+5), dir[1]*(s+5), dir[2]*(s+5)];
-    hits=[];
-    for(var i=0;i<SPHERE.length;i++){ var hp=rayHit(burst, SPHERE[i]); if(hp) hits.push(hp); }
-    document.getElementById('nRays').textContent=String(NRAYS);
-    document.getElementById('nHits').textContent=String(hits.length);
+  var COL={};
+  function readColors(){ COL.hi=hex(cssv('--mesh')); COL.lo=hex(cssv('--meshlo')); COL.grid=hex(cssv('--grid'));
+    COL.hit=hex(cssv('--hit')); COL.burst=hex(cssv('--warn')); COL.bg=hex(cssv('--stage')); COL.warm=hex(cssv('--warn')); }
+  readColors();
+  function drawArr(buf,mode,count,color,size,round,M){
+    gl.useProgram(basicP); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.enableVertexAttribArray(bA.pos);
+    gl.vertexAttribPointer(bA.pos,3,gl.FLOAT,false,0,0); gl.uniformMatrix4fv(bA.mvp,false,new Float32Array(M));
+    gl.uniform3fv(bA.color,color); gl.uniform1f(bA.size,size||1); gl.uniform1f(bA.round,round?1:0); gl.drawArrays(mode,0,count);
   }
-
-  // ---- ground grid ----
-  function seg(a,b){var pa=proj(a),pb=proj(b);ctx.beginPath();ctx.moveTo(pa[0],pa[1]);ctx.lineTo(pb[0],pb[1]);ctx.stroke();}
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    var zg=-1.3;
-    ctx.strokeStyle=cssv('--grid'); ctx.lineWidth=1;
-    for(var g=-5;g<=5;g++){ seg([g,-5,zg],[g,5,zg]); seg([-5,g,zg],[5,g,zg]); }
-
-    // sort faces back-to-front by rotated depth
-    var order=[]; for(var i=0;i<F.length;i++){ order.push([rot(FC[i])[1], i]); }
-    order.sort(function(a,b){return b[0]-a[0];});
-    var meshHi=cssv('--mesh'), meshLo=cssv('--meshlo');
-    function mix(c1,c2,t){ // c1,c2 hex
-      function h(c){c=c.replace('#','');return [parseInt(c.substr(0,2),16),parseInt(c.substr(2,2),16),parseInt(c.substr(4,2),16)];}
-      var a=h(c1),b=h(c2); return 'rgb('+Math.round(a[0]+(b[0]-a[0])*t)+','+Math.round(a[1]+(b[1]-a[1])*t)+','+Math.round(a[2]+(b[2]-a[2])*t)+')';
-    }
-    for(var k=0;k<order.length;k++){
-      var idx=order[k][1], f=F[idx];
-      var lam=Math.max(0, dot(FN[idx], LIGHT)); var shade=0.25+0.75*lam;
-      var pa=proj(V[f[0]]), pb=proj(V[f[1]]), pc=proj(V[f[2]]);
-      ctx.beginPath(); ctx.moveTo(pa[0],pa[1]); ctx.lineTo(pb[0],pb[1]); ctx.lineTo(pc[0],pc[1]); ctx.closePath();
-      ctx.fillStyle=mix(meshLo, meshHi, shade); ctx.fill();
-      ctx.strokeStyle=ctx.fillStyle; ctx.lineWidth=0.6; ctx.stroke();
-    }
-
-    // strikes (draw those on the near side after mesh; simple over-draw)
-    var hitCol=cssv('--hit');
-    for(var i=0;i<hits.length;i++){ var p=proj(hits[i]); ctx.beginPath(); ctx.arc(p[0],p[1],2.6,0,7); ctx.fillStyle=hitCol; ctx.fill(); }
-
-    // faint spray lines from burst to a subset of strikes
-    ctx.strokeStyle=cssv('--warn'); ctx.globalAlpha=.16; ctx.lineWidth=1;
-    for(var i=0;i<hits.length;i+=3){ seg(burst, hits[i]); } ctx.globalAlpha=1;
-
-    // burst marker
-    var bp=proj(burst);
-    ctx.beginPath(); ctx.arc(bp[0],bp[1],6,0,7); ctx.fillStyle=cssv('--warn'); ctx.fill();
-    ctx.beginPath(); ctx.arc(bp[0],bp[1],12,0,7); ctx.strokeStyle=cssv('--warn'); ctx.globalAlpha=.5; ctx.lineWidth=1.4; ctx.stroke(); ctx.globalAlpha=1;
-  }
-
-  // ---- loop ----
   var spinning=true;
-  function frame(){ if(spinning) az+=0.005; draw(); requestAnimationFrame(frame); }
-
-  // ---- controls ----
-  var clk=document.getElementById('clk'), clkLbl=document.getElementById('clkLbl');
-  function clockName(deg){
-    var c=Math.round(deg/30)%12; if(c===0)c=12;
-    var nm = deg<22||deg>=338?'above': deg<68?'upper-right': deg<112?'right (wing level)': deg<158?'lower-right':
-             deg<202?'below': deg<248?'lower-left': deg<292?'left (wing level)': 'upper-left';
-    return c+" o'clock — "+nm;
+  function frame(){
+    if(spinning) az+=0.005;
+    var M=mvp();
+    gl.enable(gl.DEPTH_TEST); gl.disable(gl.CULL_FACE);
+    gl.clearColor(COL.bg[0],COL.bg[1],COL.bg[2],1); gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+    if(nGrid) drawArr(gridBuf,gl.LINES,nGrid,COL.grid,1,false,M);
+    gl.useProgram(meshP); gl.uniformMatrix4fv(mA.mvp,false,new Float32Array(M));
+    gl.uniform3fv(mA.light,new Float32Array(nrm([0.5,-0.6,0.9]))); gl.uniform3fv(mA.hi,COL.hi); gl.uniform3fv(mA.lo,COL.lo);
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshPosBuf); gl.enableVertexAttribArray(mA.pos); gl.vertexAttribPointer(mA.pos,3,gl.FLOAT,false,0,0);
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshNorBuf); gl.enableVertexAttribArray(mA.nor); gl.vertexAttribPointer(mA.nor,3,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLES,0,nMeshVerts);
+    if(nSpray) drawArr(sprayBuf,gl.LINES,nSpray,COL.warm,1,false,M);
+    if(nStrike) drawArr(strikeBuf,gl.POINTS,nStrike,COL.hit,7*dpr,true,M);
+    drawArr(burstBuf,gl.POINTS,1,COL.burst,15*dpr,true,M);
+    requestAnimationFrame(frame);
   }
+
+  var clk=document.getElementById('clk'), clkLbl=document.getElementById('clkLbl'), pend=null;
+  function clockName(deg){ var c=Math.round(deg/30)%12; if(c===0)c=12;
+    var nm=deg<22||deg>=338?'above':deg<68?'upper-right':deg<112?'right (wing level)':deg<158?'lower-right':deg<202?'below':deg<248?'lower-left':deg<292?'left (wing level)':'upper-left';
+    return c+" o'clock — "+nm; }
   function setClock(deg){ clk.value=deg; clkLbl.textContent=clockName(+deg); recompute(+deg); }
-  clk.addEventListener('input',function(){ clkLbl.textContent=clockName(+clk.value); recompute(+clk.value); });
+  clk.addEventListener('input',function(){ clkLbl.textContent=clockName(+clk.value); if(pend)clearTimeout(pend); pend=setTimeout(function(){recompute(+clk.value);},130); });
   Array.prototype.forEach.call(document.querySelectorAll('.chip[data-c]'),function(b){ b.addEventListener('click',function(){ setClock(+b.getAttribute('data-c')); }); });
   document.getElementById('spin').addEventListener('click',function(){ spinning=!spinning; this.textContent='⟳ spin: '+(spinning?'on':'off'); });
 
-  // orbit + zoom
   var drag=false,lx=0,ly=0;
   cv.addEventListener('pointerdown',function(e){drag=true;spinning=false;document.getElementById('spin').textContent='⟳ spin: off';lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId);});
-  cv.addEventListener('pointermove',function(e){ if(!drag)return; az+=(e.clientX-lx)*0.008; el+=(e.clientY-ly)*0.006; el=Math.max(-0.3,Math.min(1.4,el)); lx=e.clientX;ly=e.clientY; });
+  cv.addEventListener('pointermove',function(e){ if(!drag)return; az-=(e.clientX-lx)*0.008; el+=(e.clientY-ly)*0.006; el=Math.max(-1.4,Math.min(1.4,el)); lx=e.clientX;ly=e.clientY; });
   cv.addEventListener('pointerup',function(){drag=false;});
-  cv.addEventListener('wheel',function(e){e.preventDefault(); scale*=Math.exp(-e.deltaY*0.0011); scale=Math.max(16,Math.min(160,scale));},{passive:false});
+  cv.addEventListener('wheel',function(e){e.preventDefault(); dist*=Math.exp(e.deltaY*0.0011); dist=Math.max(9,Math.min(120,dist));},{passive:false});
   window.addEventListener('resize',resize);
-
-  resize(); setClock(45); requestAnimationFrame(frame);
+  try{ window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',readColors); }catch(e){}
 })();
 </script>
 </body>
