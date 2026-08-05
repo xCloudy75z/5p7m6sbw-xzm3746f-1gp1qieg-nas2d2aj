@@ -86,8 +86,13 @@
   <div class="note">
     <b>Try it:</b> move the burst to <b>3 o'clock</b> (dead level with the wings) — strikes still land, because the 5&nbsp;m
     is measured from the <b>skin</b>, so the burst clears the wingtip. There's <b>no forbidden zone</b>: every position works.
-    You'll also see a real insight — a burst <b>above or below</b> lands many more strikes than an <b>edge-on side</b> burst,
-    because the drone is a flat plate. That's honest physics on the real drone, not a placeholder.
+  </div>
+  <div class="note" style="background:color-mix(in srgb,var(--warn) 12%,transparent);border-color:color-mix(in srgb,var(--warn) 50%,transparent)">
+    <b style="color:var(--warn)">What's real vs. placeholder here.</b> Real: the drone shape (your STL), the 3D
+    hit-detection, and the skin-based burst placement. <b>Placeholder:</b> the fragment spray is a uniform
+    <b>360°</b> stand-in. A real warhead bursts in a <b>directional</b> pattern — that data comes from a
+    hydrocode (e.g. ANSYS Autodyn) fragmentation run, fed through the tool's <code>loadFragments</code> seam.
+    Until that data is in, treat the strike <i>counts</i> as illustrative, not final.
   </div>
 
   <p class="foot">Real STL (3,716-tri decimation) · ray-cast strikes computed live in your browser · interceptor-engagement-sim</p>
