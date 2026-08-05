@@ -51,9 +51,11 @@
   .tval{font-family:var(--mono);font-size:12px;color:var(--txt);font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
 
   .legend{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
-  .legend .ramp{display:inline-flex;align-items:center;gap:8px}
-  .ramp .bar{width:120px;height:10px;border-radius:5px;
+  .legend .ramp{display:inline-flex;align-items:center;gap:10px}
+  .ramp .scale{display:inline-flex;flex-direction:column;gap:3px}
+  .ramp .bar{width:190px;height:10px;border-radius:5px;
     background:linear-gradient(90deg,#3b82f6,#22d3ee,#f5a524,#ef4444)}
+  .ramp .ticks{display:flex;justify-content:space-between;width:190px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
   .legend .k{display:inline-flex;align-items:center;gap:6px}
   .sw{width:11px;height:11px;border-radius:50%;display:inline-block}
 
@@ -89,7 +91,7 @@
   </div>
 
   <div class="legend">
-    <span class="ramp"><span>fragment energy</span><span class="bar"></span><span>low → high KE</span></span>
+    <span class="ramp"><span>fragment KE</span><span class="scale"><span class="bar"></span><span class="ticks"><span>338 J</span><span>538 J</span><span>737 J</span></span></span></span>
     <span class="k"><i class="sw" style="background:var(--burst)"></i>burst point</span>
     <span class="k"><i class="sw" style="background:var(--hit-ring);opacity:.9"></i>impact on body</span>
   </div>
@@ -103,7 +105,8 @@
     <b>UAV = crude placeholder shape</b> (flat plates, swappable). Impacts land on the <b>body &amp; tail</b>, not
     the wings — the thin placeholder wing is edge-on and shadowed by the body (real engine: fuselage 23 / wing 0
     / tail 6). A <b>real drone STL</b> gives the true split. Neutral academic framing (<code>particles · impact ·
-    kinetic energy</code>). Tell me your changes and I'll redeploy to this same link.
+    kinetic energy</code>). The <b>KE scale</b> shows the tool's real hit-energy range (drag off): 338–737 J,
+    mean 528 J. Tell me your changes and I'll redeploy to this same link.
   </footer>
 </div>
 
