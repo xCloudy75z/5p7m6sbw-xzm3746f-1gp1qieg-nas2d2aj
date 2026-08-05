@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>The diagonal burst idea — 5 m radially, off the wing plane</title>
+<style>
+  :root{
+    --bg:#0c1220; --bg2:#111a2e; --card:#131f38; --line:#25355a;
+    --ink:#eaf1ff; --ink-soft:#9fb2d6; --ink-faint:#6c80a8;
+    --accent:#39b8ff; --good:#37d99a; --bad:#ff6b6b; --warn:#ffcf5c;
+    --fuse:#8fa6d6; --wing:#5b7bd6;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#eef3fb; --bg2:#e4ecf8; --card:#ffffff; --line:#cdd9ee;
+      --ink:#132038; --ink-soft:#41537a; --ink-faint:#7387ad;
+      --accent:#1478d1; --good:#12a06e; --bad:#d94848; --warn:#c98a0a;
+      --fuse:#4a63a0; --wing:#3a58b0;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:26px 16px 60px;}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:1.5rem;line-height:1.25;margin:0 0 6px}
+  .sub{color:var(--ink-soft);margin:0 0 22px}
+  .lead{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 22px}
+  .lead b{color:var(--accent)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 16px 12px;margin:0 0 20px;overflow:hidden}
+  .panel h2{font-size:1.08rem;margin:2px 4px 10px}
+  .legend{display:flex;flex-wrap:wrap;gap:12px 20px;margin:14px 4px 4px;color:var(--ink-soft);font-size:.9rem}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .sw{width:16px;height:16px;border-radius:4px;flex:none}
+  .dot{width:14px;height:14px;border-radius:50%;flex:none}
+  svg{width:100%;height:auto;display:block}
+  .take{background:color-mix(in srgb,var(--good) 12%,transparent);border:1px solid color-mix(in srgb,var(--good) 45%,transparent);
+    border-radius:14px;padding:14px 18px;margin:22px 0 0}
+  .take b{color:var(--good)}
+  .foot{color:var(--ink-faint);font-size:.85rem;margin-top:26px;text-align:center}
+  text{font-family:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>The diagonal-burst idea</h1>
+  <p class="sub">Front view — the drone is flying straight at you. Left–right = the 12&nbsp;m wingspan. Up–down = height. The dashed ring is every point that's 5&nbsp;m from the target.</p>
+
+  <div class="lead">
+    The 5&nbsp;m miss distance is <b>radial</b> — the interceptor can pass 5&nbsp;m away in <i>any</i> direction, and the
+    airburst is <b>360°</b>. The drone is a <b>thin, wide plate</b>. So the burst is only a problem in the narrow
+    <b style="color:var(--bad)">red zones</b> (level with the wings, straight out to the side). Everywhere else —
+    the whole <b style="color:var(--good)">green ring</b> — the burst clears the wings and the drone sits cleanly on one side.
+  </div>
+
+  <div class="panel">
+    <h2>Put the burst on a diagonal (green zone) → wings clear, one clean side, no model change</h2>
+    <svg viewBox="0 0 620 470" role="img" aria-label="Front view of the drone with a 5 metre ring; sideways positions are red, diagonal and top/bottom are green; a diagonal burst sprays fragments down onto the whole drone">
+
+      <!-- 5 m ring: green base -->
+      <circle cx="310" cy="250" r="150" fill="none" stroke="var(--good)" stroke-width="2.5"
+              stroke-dasharray="5 6" opacity=".7"/>
+
+      <!-- red danger arcs: level with the wings (3 & 9 o'clock) -->
+      <polyline points="446,285 452,268 454,250 452,232 446,215" fill="none" stroke="var(--bad)" stroke-width="6" stroke-linecap="round"/>
+      <polyline points="174,285 168,268 166,250 168,232 174,215" fill="none" stroke="var(--bad)" stroke-width="6" stroke-linecap="round"/>
+      <text x="486" y="254" fill="var(--bad)" font-size="12" font-weight="700">wing</text>
+      <text x="486" y="269" fill="var(--bad)" font-size="12" font-weight="700">plane</text>
+      <text x="486" y="284" fill="var(--bad)" font-size="11">(pokes past)</text>
+      <text x="150" y="254" fill="var(--bad)" font-size="12" font-weight="700" text-anchor="end">wing</text>
+      <text x="150" y="269" fill="var(--bad)" font-size="12" font-weight="700" text-anchor="end">plane</text>
+
+      <!-- green safe labels -->
+      <text x="310" y="70" fill="var(--good)" font-size="12" font-weight="700" text-anchor="middle">safe: above / below / diagonal</text>
+
+      <!-- fragment spray fan from the diagonal burst, downward onto the plate -->
+      <polygon points="408,120 172,246 172,254 310,258 448,254 448,246"
+               fill="color-mix(in srgb,var(--accent) 15%,transparent)"
+               stroke="color-mix(in srgb,var(--accent) 40%,transparent)" stroke-width="1"/>
+      <g stroke="var(--accent)" stroke-width="1.7" opacity=".85">
+        <line x1="408" y1="120" x2="188" y2="245" marker-end="url(#ah)"/>
+        <line x1="408" y1="120" x2="312" y2="243" marker-end="url(#ah)"/>
+        <line x1="408" y1="120" x2="432" y2="243" marker-end="url(#ah)"/>
+      </g>
+
+      <!-- the drone: thin wide plate (wings) + fuselage -->
+      <rect x="160" y="244" width="300" height="12" rx="5" fill="var(--wing)"/>
+      <ellipse cx="310" cy="250" rx="16" ry="13" fill="var(--fuse)"/>
+      <!-- tips markers at 6 m -->
+      <text x="160" y="285" fill="var(--ink-faint)" font-size="11" text-anchor="middle">−6 m tip</text>
+      <text x="460" y="285" fill="var(--ink-faint)" font-size="11" text-anchor="middle">+6 m tip</text>
+
+      <!-- burst point on the diagonal -->
+      <circle cx="408" cy="120" r="8" fill="var(--warn)" stroke="#000" stroke-opacity=".25"/>
+      <circle cx="408" cy="120" r="15" fill="none" stroke="var(--warn)" stroke-width="1.6" opacity=".6"/>
+      <text x="424" y="112" fill="var(--warn)" font-size="12.5" font-weight="700">burst</text>
+      <text x="424" y="127" fill="var(--ink-soft)" font-size="11">5 m out, up &amp; to the side</text>
+
+      <!-- separating line: whole drone on one side -->
+      <line x1="150" y1="205" x2="500" y2="292" stroke="var(--good)" stroke-width="1.4" stroke-dasharray="6 5" opacity=".8"/>
+      <text x="196" y="330" fill="var(--good)" font-size="11.5" font-weight="700">whole drone on one clean side ↑</text>
+
+      <defs>
+        <marker id="ah" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+    </svg>
+
+    <div class="legend">
+      <span><span class="sw" style="background:var(--wing)"></span>Drone (thin wide plate)</span>
+      <span><span class="dot" style="background:var(--warn)"></span>Burst (5 m out, diagonal)</span>
+      <span><span class="sw" style="background:color-mix(in srgb,var(--good) 60%,transparent)"></span>Safe 5 m positions</span>
+      <span><span class="sw" style="background:var(--bad)"></span>Bad 5 m positions (wing plane)</span>
+    </div>
+  </div>
+
+  <div class="take">
+    <b>The takeaway:</b> your idea is geometrically correct. Keep the 5&nbsp;m miss distance, but place the burst
+    <b>off the wing plane</b> (a realistic diagonal or over-the-top pass). The whole 6&nbsp;m-wing drone then sits on
+    one side of the burst, so the <b>validated one-sided physics holds unchanged</b> — and it's arguably a
+    <i>more</i> realistic intercept than a dead-level side-swipe.
+  </div>
+
+  <p class="foot">Front-view schematic, not to exact scale — interceptor-engagement-sim · decision aid</p>
+</div>
+</body>
+</html>
