@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Real TB2 — 3D burst geometry</title>
+<title>Real MQ-1 Predator — 3D burst geometry</title>
 <style>
   :root{
     --bg:#0c1220; --bg2:#111a2e; --card:#131f38; --line:#25355a;
@@ -49,8 +49,8 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Real Bayraktar TB2 — burst geometry in 3D</h1>
-  <p class="sub">The actual uploaded STL (decimated), at accurate scale: length 6.5&nbsp;m · span 8.58&nbsp;m · half-span 4.29&nbsp;m. Drag to orbit · scroll/pinch to zoom.</p>
+  <h1>Real MQ-1 Predator — burst geometry in 3D</h1>
+  <p class="sub">The actual uploaded STL (decimated), at real scale: length 8.3&nbsp;m · span 14.8&nbsp;m · half-span 7.4&nbsp;m. A clean airframe — no base plate. Drag to orbit · scroll/pinch to zoom.</p>
 
   <div class="stage">
     <canvas id="cv"></canvas>
@@ -77,7 +77,7 @@
       <span>Strikes on the drone: <b id="nHits">—</b></span>
     </div>
     <div class="legend">
-      <span><span class="dot" style="background:var(--mesh)"></span>Real TB2 skin</span>
+      <span><span class="dot" style="background:var(--mesh)"></span>Real Predator skin</span>
       <span><span class="dot" style="background:var(--warn)"></span>Burst point (5 m from skin)</span>
       <span><span class="dot" style="background:var(--hit)"></span>Fragment strike</span>
     </div>
@@ -95,10 +95,10 @@
     Until that data is in, treat the strike <i>counts</i> as illustrative, not final.
   </div>
 
-  <p class="foot">Real STL (3,716-tri decimation) · ray-cast strikes computed live in your browser · interceptor-engagement-sim</p>
+  <p class="foot">Real STL (3,030-tri decimation) · ray-cast strikes computed live in your browser · interceptor-engagement-sim</p>
 </div>
 
-<script src="tb2mesh.js"></script>
+<script src="dronemesh.js"></script>
 <script>
 (function(){
   "use strict";
