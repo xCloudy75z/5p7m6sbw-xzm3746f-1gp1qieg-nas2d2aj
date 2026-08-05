@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Interceptor Engagement Sim — Design & Results</title>
+<script>
+  (function(){ try{ var t=localStorage.getItem('theme'); if(!t) t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    document.documentElement.setAttribute('data-theme',t);}catch(e){} })();
+</script>
+<style>
+  :root{ --ink:#eef1f5; --card:#ffffff; --card2:#f7f9fc; --line:#dde3ea; --txt:#1f2733; --soft:#5a6470; --faint:#8a94a1;
+    --accent:#0e8fb0; --accent-soft:rgba(14,143,176,.10); --green:#1e8a3b; --amber:#c9760a; --radius:14px;
+    --shadow:0 10px 30px rgba(16,24,40,.10);
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace; }
+  @media (prefers-color-scheme:dark){ :root{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--accent-soft:rgba(34,211,238,.12);--green:#3fb950;--amber:#f5a524;--shadow:0 10px 30px rgba(0,0,0,.4);} }
+  :root[data-theme="dark"]{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--accent-soft:rgba(34,211,238,.12);--green:#3fb950;--amber:#f5a524;--shadow:0 10px 30px rgba(0,0,0,.4);}
+  :root[data-theme="light"]{ --ink:#eef1f5;--card:#ffffff;--card2:#f7f9fc;--line:#dde3ea;--txt:#1f2733;--soft:#5a6470;--faint:#8a94a1;
+    --accent:#0e8fb0;--accent-soft:rgba(14,143,176,.10);--green:#1e8a3b;--amber:#c9760a;--shadow:0 10px 30px rgba(16,24,40,.10);}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--ink);color:var(--txt);font-family:var(--sans);line-height:1.62}
+  .wrap{max-width:720px;margin:0 auto;padding:40px 20px 90px}
+  a.back{font-family:var(--mono);font-size:12.5px;color:var(--accent);text-decoration:none} a.back:hover{text-decoration:underline}
+  h1{font-size:clamp(26px,5vw,38px);margin:10px 0 6px;letter-spacing:-.015em}
+  h2{font-size:19px;margin:30px 0 6px;letter-spacing:-.01em}
+  p{color:var(--txt);font-size:15px;margin:8px 0} .soft{color:var(--soft)}
+  ul{margin:8px 0;padding-left:20px} li{font-size:14.5px;margin:6px 0;color:var(--txt)}
+  li b{color:var(--txt)} .accent{color:var(--accent)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:14px 0;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+  pre{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--txt)}
+  .note{border-left:3px solid var(--amber);background:color-mix(in srgb,var(--amber) 8%,transparent);
+    padding:10px 14px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+  .pill{display:inline-block;font-family:var(--mono);font-size:11.5px;color:var(--green);
+    border:1px solid color-mix(in srgb,var(--green) 40%,var(--line));border-radius:999px;padding:4px 10px}
+  .toggle{position:fixed;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+    background:var(--card);color:var(--txt);cursor:pointer;font-size:17px;box-shadow:var(--shadow)}
+  code{font-family:var(--mono);background:var(--card2);padding:1px 5px;border-radius:4px;font-size:.92em}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle light/dark">🌙</button>
+<div class="wrap">
+  <a class="back" href="index.html">← hub</a>
+  <h1>Design &amp; results</h1>
+  <p class="soft">What the tool does, in plain English — and the real numbers it produces.</p>
+  <span class="pill">Engine complete · 119/119 green in Octave + MATLAB</span>
+
+  <h2>The scenario</h2>
+  <p>An interceptor missile flies <b>head-on</b> at a cruising drone; their paths pass about <b>5 m</b> apart.
+    As they draw level, the warhead detonates (after a tiny electronics delay). Hundreds of metal fragments
+    blast outward at 800–1200 m/s and are also carried forward at the interceptor's speed. Over the next few
+    milliseconds the tool follows each fragment and works out <b>which strike the drone, where, when, and with
+    how much energy.</b></p>
+
+  <h2>What it computes</h2>
+  <ul>
+    <li><b>Closing speed</b> — head-on, the interceptor and drone speeds add: <span class="accent">226.4 m/s</span>.</li>
+    <li><b>Fragments</b> — a synthetic placeholder set now; a real fragmentation-data file drops in later.</li>
+    <li><b>Hit detection</b> — each fragment's flight is traced and tested against the drone's 3-D surface (which part, where, when).</li>
+    <li><b>Kinetic energy</b> — the damage-relevant energy at impact, using the closing speed.</li>
+    <li><b>Drag &amp; gravity</b> — optional; drag alone cuts impact energy ~20% over the 5 m, so the tool reports a no-drag upper bound and the realistic with-drag figure.</li>
+    <li><b>Timing &amp; the fire-early lead</b> — how much sooner to fire so the fragment pattern lands on the drone.</li>
+    <li><b>Coverage &amp; density</b> — how much of the drone is struck, and how concentrated the hits are.</li>
+  </ul>
+
+  <h2>The real output</h2>
+  <p class="soft">This is exactly what the finished tool prints (default synthetic fragments, drag off):</p>
+  <pre>INTERCEPTOR ENGAGEMENT SUMMARY  (fragment data: SYNTHETIC)
+  Interceptor 138.9 m/s | UAV 87.5 m/s | closing 226.4 m/s | offset 5.0 m
+  Electronics window 700-1200 us | representative fragment flight t3 = 5.00 ms
+  Delay budget: sensing1 8.8% | sensing2 3.5% | fragment 87.7%
+  Impacts 29 of 200 (14%) | fuselage 23 wing 0 tail 6 | non-crossing 0
+  Kinetic energy: total 15322.4 J | per hit 528.4 J  (no drag - UPPER BOUND)
+  Coverage 0.360 of mesh | density 26.7 hits/m2
+  Electronics delay: target displacement 0.061-0.105 m  vs  along-track closure 0.158-0.272 m  (~2.6x)
+  Forward offset: fragment-carry 1.216 m + electronics-closure 0.158-0.272 m
+  Fire-early lead 1.374-1.487 m  (6.069-6.569 ms) | ideal: centroid on drone</pre>
+
+  <div class="note"><b>Why “wing 0”.</b> The drone is a <b>crude placeholder shape</b> (flat plates, swappable).
+    Its thin wing sits edge-on and is shadowed by the body, and fragments drift ~1.2 m rearward, so hits land
+    on the body &amp; tail. This is a placeholder-shape effect, <b>not a modelling error</b> — the hit-detection
+    is independently validated. A <b>real drone STL</b> (from the mentor) gives the true wing split.</div>
+
+  <h2>Where it runs</h2>
+  <p>The physics core runs unmodified in both <b>GNU Octave 11.3</b> and <b>MATLAB R2022b</b> — <b>119/119</b>
+    validation checks pass in both. The 3-D animation is MATLAB (bundle 4, next); this hub is the web review
+    surface (bundle 5). Every number is sourced from the mentor's proven fragment-dispersion physics.</p>
+</div>
+<script>
+  var btn=document.getElementById('themeToggle');
+  function sync(){ btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀️':'🌙'; }
+  sync();
+  btn.addEventListener('click',function(){ var next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next); try{localStorage.setItem('theme',next);}catch(e){} sync(); });
+</script>
+</body>
+</html>

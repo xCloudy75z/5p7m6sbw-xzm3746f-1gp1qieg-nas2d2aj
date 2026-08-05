@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<meta http-equiv="refresh" content="60" />
+<title>Interceptor Engagement Sim — Build Progress</title>
+<style>
+  :root{
+    --paper:#eef1f5; --card:#ffffff; --ink:#1f2733; --ink-soft:#5a6470; --ink-faint:#8a94a1;
+    --line:#dde3ea; --line-soft:#eef2f6; --accent:#0e8fb0;
+    --green:#1e8a3b; --green-strong:#146b30; --green-soft:#e3f3e7;
+    --amber:#c9760a; --amber-soft:#f7ead0; --radius:14px; --shadow-sm:0 2px 6px rgba(16,24,40,.06);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0d1117; --card:#161b22; --ink:#c9d1d9; --ink-soft:#8b949e; --ink-faint:#69727e;
+      --line:#28303b; --line-soft:#1e2630; --accent:#22d3ee;
+      --green:#3fb950; --green-strong:#56d364; --green-soft:#16301f;
+      --amber:#f5a524; --amber-soft:#2b2412; --shadow-sm:0 2px 8px rgba(0,0,0,.4);
+      color-scheme:dark;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    color:var(--ink);background:var(--paper);line-height:1.6}
+  .wrap{max-width:760px;margin:0 auto;padding:40px 20px 90px}
+  a.back{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;color:var(--accent);text-decoration:none}
+  a.back:hover{text-decoration:underline}
+  h1{font-size:clamp(28px,6vw,40px);margin:10px 0 4px;letter-spacing:-.015em}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0 0 8px;max-width:64ch}
+  .live{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--green-strong)}
+  .live i{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .tally{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 26px}
+  .tally span{font-size:13px;font-weight:700;border-radius:999px;padding:6px 13px;border:1px solid var(--line)}
+  .tally .s-done{background:var(--green-soft);color:var(--green-strong)}
+  .tally .s-active{background:var(--amber-soft);color:var(--amber)}
+  .tally .s-queued{background:var(--line-soft);color:var(--ink-faint)}
+  .phase{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;margin:0 0 16px;box-shadow:var(--shadow-sm);border-left:5px solid var(--line)}
+  .phase.done{border-left-color:var(--green)} .phase.active{border-left-color:var(--amber)} .phase.queued{opacity:.82}
+  .phase .head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .phase h2{font-size:19px;margin:0;letter-spacing:-.01em}
+  .phase .desc{color:var(--ink-soft);font-size:14px;margin:8px 0 0}
+  .phase .note{color:var(--ink-faint);font-size:12.5px;margin:8px 0 0;font-style:italic}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 11px;
+    border-radius:999px;text-transform:uppercase;letter-spacing:.05em}
+  .badge-done{background:var(--green-soft);color:var(--green-strong)}
+  .badge-active{background:var(--amber-soft);color:var(--amber)}
+  .badge-queued{background:var(--line-soft);color:var(--ink-faint)}
+  .badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .steps{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0}
+  .step{font-size:11.5px;font-weight:600;border-radius:8px;padding:5px 9px;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line)}
+  .step.done{background:var(--green-soft);color:var(--green-strong)}
+  .step.active{background:var(--amber-soft);color:var(--amber)}
+  .step.todo{background:var(--line-soft);color:var(--ink-faint)}
+  details.breaks{margin:14px 0 0;border-top:1px dashed var(--line);padding-top:12px}
+  details.breaks>summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--ink);list-style:none}
+  details.breaks>summary::-webkit-details-marker{display:none}
+  details.breaks>summary::before{content:"\25B8  ";color:var(--ink-faint)}
+  details.breaks[open]>summary::before{content:"\25BE  "}
+  .bstage{margin:12px 0 0}
+  .bstage .bt{font-size:12.5px;font-weight:800;color:var(--ink)}
+  .bstage .bv{font-size:11px;font-weight:700;color:var(--green-strong);background:var(--green-soft);border-radius:999px;padding:2px 8px;margin-left:6px}
+  .bstage ul{margin:6px 0 0;padding-left:18px} .bstage li{font-size:12.5px;color:var(--ink-soft);margin:4px 0}
+  .foot{margin-top:34px;color:var(--ink-faint);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="index.html">← hub</a>
+    <h1>Build progress</h1>
+    <p class="sub">Every bundle keeps its <b>own permanent card</b>, in order — nothing is overwritten. Each
+      card preserves the workflow steps and <b>what the &ldquo;break-it&rdquo; passes caught</b>, so you can
+      look back anytime. <span class="live"><i></i>live · auto-refreshes every 60s</span></p>
+    <div class="tally" id="tally"></div>
+    <div id="phases"></div>
+    <p class="foot">Physics core built test-first by fresh agents; every bundle is attacked at plan &amp;
+      build (twice), then folded in. 119/119 checks green in Octave 11.3 + MATLAB R2022b.</p>
+  </div>
+<script>
+const PHASES=[
+ {id:"design", title:"Design · the intercept model", status:"done",
+  desc:"The head-on interceptor-vs-UAV fragment model: what to compute, and defensible physics behind every number.",
+  note:"Approved spec (v3). Physics sourced from the mentor's proven fragment-dispersion code.",
+  steps:[{n:"Brainstorm", s:"done"},{n:"Spec v3", s:"done"},{n:"Break the spec x2", s:"done"}],
+  breaks:[
+    {stage:"Break the SPEC - pass 1", verdict:"blocker + majors fixed", items:[
+      "Blocker: the hit test would have missed fragments striking the far wing (beyond the 5 m plane) - redesigned to trace each fragment's whole flight.",
+      "Drag is ~10% (not under 6%) for our fragment, and cuts impact energy ~20% - the design now reports both a no-drag upper bound and the realistic with-drag figure.",
+      "Impact energy must use the closing (relative) speed, and the 'fire early' lead uses the closing speed as its divisor - both pinned in the design."]},
+    {stage:"Break the SPEC - pass 2", verdict:"physics re-derived correct", items:[
+      "An independent reviewer re-derived all six core physics claims from scratch and confirmed them correct.",
+      "Caught a units slip that would make every fragment 1000x too light (milligrams vs kilograms) - fixed, and a test now guards it."]}
+  ]},
+ {id:"b1", title:"Bundle 1 - Physics core", status:"done",
+  desc:"Config + synthetic fragments + drone mesh + hit detection + energy + coverage + timing budget: the straight-line core.",
+  note:"Shipped - 59/59 checks green in Octave 11.3 AND MATLAB R2022b. Built test-first.",
+  steps:[{n:"Plan", s:"done"},{n:"Break the plan", s:"done"},{n:"Build - 59 checks", s:"done"},{n:"Break the build x2 + confirm", s:"done"},{n:"Live verify (owner run)", s:"todo"}],
+  breaks:[
+    {stage:"Break the PLAN", verdict:"reworked then ready", items:[
+      "Ran the plan's test fixtures in BOTH Octave and MATLAB - caught a dud test and a loose coverage definition before any code was written."]},
+    {stage:"Break the BUILD x2 + confirm", verdict:"physics correct; robustness fixed", items:[
+      "Both reviewers independently re-derived the physics as correct.",
+      "Caught: the random fragment generator gave DIFFERENT results in Octave vs MATLAB - replaced so both runtimes now produce identical fragments.",
+      "The ~0 wing-hits is a property of the crude placeholder drone shape (thin wing, shadowed) - documented, NOT a code bug; a real drone STL resolves it."]}
+  ]},
+ {id:"b2", title:"Bundle 2 - Air physics", status:"done",
+  desc:"Optional drag + gravity, integrated with Euler or RK4 - so impact energy reflects the realistic slow-down.",
+  note:"Shipped - 82/82 green in Octave + MATLAB. Drag over 5 m is ~10% speed / ~20% energy loss.",
+  steps:[{n:"Plan", s:"done"},{n:"Break the plan", s:"done"},{n:"Build - 82 checks", s:"done"},{n:"Break the build x2 + confirm", s:"done"},{n:"Live verify (owner run)", s:"todo"}],
+  breaks:[
+    {stage:"Break the PLAN", verdict:"ready (equations re-run)", items:[
+      "The reviewer ran the actual drag/gravity equations and confirmed every predicted number before building."]},
+    {stage:"Break the BUILD x2 + confirm", verdict:"physics correct; big speed fix", items:[
+      "Physics confirmed correct (the drag decay matched the textbook formula to 13 decimals).",
+      "Caught a real speed problem: a full 200-fragment drag run took over 10 minutes - switched the default to the RK4 method (~10x faster, same accuracy). You confirmed this change.",
+      "Added a guard so a stalled fragment can't masquerade as a clean miss."]}
+  ]},
+ {id:"b3", title:"Bundle 3 - Engagement layer", status:"done",
+  desc:"Realistic-vs-ideal timing + the fire-early lead, the two sweeps, the plain-language summary, and a 2-D schematic.",
+  note:"Shipped - 119/119 green in Octave + MATLAB. The tool now runs end-to-end and prints the full summary.",
+  steps:[{n:"Plan", s:"done"},{n:"Break the plan", s:"done"},{n:"Build - 119 checks", s:"done"},{n:"Break the build x2 + confirm", s:"done"},{n:"Live verify (owner run)", s:"todo"}],
+  breaks:[
+    {stage:"Break the PLAN", verdict:"two blockers caught + fixed", items:[
+      "The pattern-centre was averaged over only the fragments that hit - biased ~40% low, which would make the 'fire early' number wrong. Fixed to use the whole spray.",
+      "The 2-D plots would have failed in Octave (its default renderer can't save a headless image) - fixed."]},
+    {stage:"Break the BUILD x2 + confirm", verdict:"formulas correct; robustness fixed", items:[
+      "Every formula re-derived correct (the ~2.6x timing relationship, the lead divisor, the pattern centre).",
+      "Caught: an odd input (no crossing fragments) could print 'NaN' gibberish; the advertised drag toggle wasn't reachable; plot windows weren't closed. All fixed."]}
+  ]},
+ {id:"b4mock", title:"Bundle 4 mockup - 3-D animation", status:"done",
+  desc:"The look and flow of the 3-D animation: rotatable, fragments coloured by energy, hits lighting up over time, a timeline scrubber.",
+  note:"Approved by the owner as a live web page - the design gate for bundle 4.",
+  steps:[{n:"Mockup built", s:"done"},{n:"Published live (hub)", s:"done"},{n:"Owner approved", s:"done"}],
+  breaks:[]},
+ {id:"b5", title:"Bundle 5 - Review hub", status:"active",
+  desc:"This hub - the front door, the plain-English design, and this progress board so you can see everything remotely.",
+  note:"In progress - building the pages now.",
+  steps:[{n:"Follow the playbook hub spec", s:"done"},{n:"Build the pages", s:"active"},{n:"Publish live + verify", s:"todo"},{n:"Owner review", s:"todo"}],
+  breaks:[]},
+ {id:"b4", title:"Bundle 4 - MATLAB 3-D animation (real)", status:"queued",
+  desc:"The actual MATLAB-rendered 3-D animation + MP4/GIF, fed by the validated engine - the tool's headline output.",
+  note:"Queued - after the hub. You run it in MATLAB; the video gets posted here.",
+  steps:[{n:"Plan", s:"todo"},{n:"Break the plan", s:"todo"},{n:"Build", s:"todo"},{n:"Break the build", s:"todo"},{n:"Live verify (video on hub)", s:"todo"}],
+  breaks:[]}
+];
+const counts={done:0,active:0,queued:0}; PHASES.forEach(p=>counts[p.status]++);
+document.getElementById("tally").innerHTML=
+  `<span class="s-done">check ${counts.done} shipped</span>`+
+  `<span class="s-active">~ ${counts.active} in progress</span>`+
+  `<span class="s-queued">o ${counts.queued} queued</span>`;
+const badgeLabel={done:"Shipped",active:"In progress",queued:"Queued"};
+document.getElementById("phases").innerHTML=PHASES.map(p=>{
+  const badge=`<span class="badge badge-${p.status}"><span class="badge-dot"></span>${badgeLabel[p.status]}</span>`;
+  const steps=p.steps&&p.steps.length?`<div class="steps">${p.steps.map(s=>`<span class="step ${s.s}">${s.s==="done"?"✓":s.s==="active"?"◐":"◦"} ${s.n}</span>`).join("")}</div>`:"";
+  const breaks=p.breaks&&p.breaks.length?`<details class="breaks"><summary>What the break-it passes caught (${p.breaks.length})</summary>${
+      p.breaks.map(b=>`<div class="bstage"><span class="bt">${b.stage}</span><span class="bv">${b.verdict}</span><ul>${b.items.map(it=>`<li>${it}</li>`).join("")}</ul></div>`).join("")}</details>`:"";
+  return `<div class="phase ${p.status}"><div class="head">${badge}<h2>${p.title}</h2></div><p class="desc">${p.desc}</p>${p.note?`<p class="note">${p.note}</p>`:""}${steps}${breaks}</div>`;
+}).join("");
+</script>
+</body>
+</html>

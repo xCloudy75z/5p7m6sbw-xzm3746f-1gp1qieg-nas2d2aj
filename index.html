@@ -4,259 +4,93 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Bundle 4 — 3-D Engagement Animation (mockup)</title>
+<title>Interceptor Engagement Sim — Hub</title>
+<script>
+  (function(){ try{ var t=localStorage.getItem('theme'); if(!t) t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    document.documentElement.setAttribute('data-theme',t);}catch(e){} })();
+</script>
 <style>
-  :root{
-    --ink:#0d1117; --panel:#12171f; --line:#28303b; --txt:#c9d1d9; --muted:#8b949e; --faint:#69727e;
-    --accent:#22d3ee; --burst:#f5a524; --hit-ring:#e6edf3; --chip:#0e141c;
-    --grid:#1a212b; --shadow:0 10px 30px rgba(0,0,0,.4);
+  :root{ --ink:#eef1f5; --card:#ffffff; --card2:#f7f9fc; --line:#dde3ea; --txt:#1f2733; --soft:#5a6470; --faint:#8a94a1;
+    --accent:#0e8fb0; --accent-soft:rgba(14,143,176,.10); --accent-strong:#0a6f8a;
+    --green:#1e8a3b; --amber:#c9760a; --radius:14px; --shadow:0 10px 30px rgba(16,24,40,.10);
     --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
-  }
-  @media (prefers-color-scheme:light){
-    :root{--ink:#eef1f5;--panel:#ffffff;--line:#dde3ea;--txt:#1f2733;--muted:#5a6470;--faint:#8a94a1;
-      --accent:#0e8fb0;--burst:#c9760a;--hit-ring:#1f2733;--chip:#f1f4f8;--grid:#e7ecf2;--shadow:0 10px 30px rgba(16,24,40,.1);}
-  }
-  *{box-sizing:border-box} html,body{margin:0;padding:0}
-  body{background:var(--ink);color:var(--txt);font-family:var(--sans);line-height:1.5;
-    padding:clamp(14px,3vw,32px);}
-  .shell{max-width:1040px;margin:0 auto}
-  header{margin-bottom:14px}
-  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
-  h1{font-family:var(--mono);font-weight:600;font-size:clamp(20px,3vw,28px);margin:6px 0 4px;letter-spacing:-.01em}
-  .sub{color:var(--muted);font-size:14px;max-width:64ch}
-  .badge{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--burst);border:1px solid color-mix(in srgb,var(--burst) 45%,var(--line));
-    background:color-mix(in srgb,var(--burst) 10%,transparent);padding:5px 9px;border-radius:6px;margin-top:8px}
-
-  .stage{position:relative;background:
-      radial-gradient(120% 90% at 70% 0%, color-mix(in srgb,var(--accent) 7%, transparent), transparent 60%),
-      var(--panel);
-    border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:16px}
-  canvas{display:block;width:100%;height:clamp(320px,52vh,520px);touch-action:none;cursor:grab}
-  canvas:active{cursor:grabbing}
-  .hint{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:11px;color:var(--muted);
-    background:color-mix(in srgb,var(--panel) 70%,transparent);padding:3px 7px;border-radius:6px;pointer-events:none}
-  .readout{position:absolute;top:10px;right:12px;display:flex;gap:12px;font-family:var(--mono);font-size:11.5px}
-  .readout b{color:var(--txt);font-variant-numeric:tabular-nums} .readout span{color:var(--muted)}
-
-  .controls{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line);
-    background:var(--chip);flex-wrap:wrap}
-  button.play{font-family:var(--mono);font-size:12px;color:var(--txt);background:var(--panel);
-    border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;min-width:88px}
-  button.play:hover{border-color:var(--accent)} button.play:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .scrub{flex:1;display:flex;align-items:center;gap:10px;min-width:220px}
-  .scrub label{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
-  input[type=range]{flex:1;accent-color:var(--accent);height:22px}
-  .tval{font-family:var(--mono);font-size:12px;color:var(--txt);font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
-
-  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
-  .legend .ramp{display:inline-flex;align-items:center;gap:10px}
-  .ramp .scale{display:inline-flex;flex-direction:column;gap:3px}
-  .ramp .bar{width:190px;height:10px;border-radius:5px;
-    background:linear-gradient(90deg,#3b82f6,#22d3ee,#f5a524,#ef4444)}
-  .ramp .ticks{display:flex;justify-content:space-between;width:190px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-  .legend .k{display:inline-flex;align-items:center;gap:6px}
-  .sw{width:11px;height:11px;border-radius:50%;display:inline-block}
-
-  footer{margin-top:20px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
-  footer b{color:var(--txt)} code{font-family:var(--mono);background:var(--chip);padding:1px 5px;border-radius:4px;font-size:.92em}
-  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace; }
+  @media (prefers-color-scheme:dark){ :root{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--accent-soft:rgba(34,211,238,.12);--accent-strong:#67e8f9;--green:#3fb950;--amber:#f5a524;--shadow:0 10px 30px rgba(0,0,0,.4);} }
+  :root[data-theme="dark"]{ --ink:#0d1117;--card:#161b22;--card2:#12171f;--line:#28303b;--txt:#c9d1d9;--soft:#8b949e;--faint:#69727e;
+    --accent:#22d3ee;--accent-soft:rgba(34,211,238,.12);--accent-strong:#67e8f9;--green:#3fb950;--amber:#f5a524;--shadow:0 10px 30px rgba(0,0,0,.4);}
+  :root[data-theme="light"]{ --ink:#eef1f5;--card:#ffffff;--card2:#f7f9fc;--line:#dde3ea;--txt:#1f2733;--soft:#5a6470;--faint:#8a94a1;
+    --accent:#0e8fb0;--accent-soft:rgba(14,143,176,.10);--accent-strong:#0a6f8a;--green:#1e8a3b;--amber:#c9760a;--shadow:0 10px 30px rgba(16,24,40,.10);}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:
+      radial-gradient(1100px 460px at 78% -10%, var(--accent-soft), transparent 60%), var(--ink);
+    color:var(--txt);font-family:var(--sans);line-height:1.55;min-height:100vh}
+  .wrap{max-width:940px;margin:0 auto;padding:clamp(28px,6vw,64px) 20px 80px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:clamp(28px,5vw,42px);margin:8px 0 6px;letter-spacing:-.02em}
+  .lede{color:var(--soft);font-size:16px;max-width:64ch;margin:0 0 12px}
+  .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:var(--green);
+    border:1px solid color-mix(in srgb,var(--green) 40%,var(--line));border-radius:999px;padding:5px 12px;margin-top:6px}
+  .status i{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:30px}
+  a.card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px;box-shadow:0 1px 0 rgba(0,0,0,.03);transition:transform .15s,box-shadow .15s,border-color .15s}
+  a.card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .card .ico{font-size:26px}
+  .card h3{margin:12px 0 4px;font-size:18px}
+  .card p{margin:0;font-size:13.5px;color:var(--soft)}
+  .card .tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);margin-top:12px}
+  .card .tag.live{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+  footer{margin-top:34px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+  .toggle{position:fixed;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+    background:var(--card);color:var(--txt);cursor:pointer;font-size:17px;box-shadow:var(--shadow)}
+  .toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 </head>
 <body>
-<div class="shell">
-  <h2 class="sr-only">Interactive 3-D mockup of the interceptor engagement animation: fragments fly from a burst point, are coloured by kinetic energy, and light up impact markers on the drone over time; drag to rotate, scroll to zoom, scrub the timeline.</h2>
-  <header>
-    <div class="eyebrow">Interceptor Engagement Sim · Bundle 4 mockup</div>
-    <h1>3-D engagement animation</h1>
-    <div class="sub">A preview of the animation the MATLAB tool will render: the warhead bursts 5 m from the
-      drone, fragments fly out and strike it, and impacts build up over time. <b>Drag to rotate, scroll to
-      zoom, scrub the timeline.</b></div>
-    <div class="badge">Mockup · illustrative motion</div>
-  </header>
+<button class="toggle" id="themeToggle" aria-label="Toggle light/dark">🌙</button>
+<div class="wrap">
+  <div class="eyebrow">Interceptor Engagement Sim</div>
+  <h1>Review hub</h1>
+  <p class="lede">A MATLAB tool (physics core also runs in Octave) that models a head-on air intercept:
+    a warhead bursts near a UAV, fragments fly out and strike it, and the tool reports which parts are hit,
+    when, and with how much energy. Everything reviewable here, as real web pages.</p>
+  <span class="status"><i></i>Engine complete · 119/119 tests green in Octave + MATLAB</span>
 
-  <div class="stage">
-    <div class="hint">drag to rotate · scroll to zoom</div>
-    <div class="readout"><span>t</span><b id="rT">0.00 ms</b><span>in flight</span><b id="rF">0</b><span>hits</span><b id="rH">0</b></div>
-    <canvas id="cv"></canvas>
-    <div class="controls">
-      <button class="play" id="play" aria-pressed="true">⏸ Pause</button>
-      <div class="scrub">
-        <label for="tl">timeline</label>
-        <input type="range" id="tl" min="0" max="1000" value="0" aria-label="animation timeline">
-        <span class="tval" id="tlv">t=0 → last hit</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="legend">
-    <span class="ramp"><span>fragment KE</span><span class="scale"><span class="bar"></span><span class="ticks"><span>338 J</span><span>538 J</span><span>737 J</span></span></span></span>
-    <span class="k"><i class="sw" style="background:var(--burst)"></i>burst point</span>
-    <span class="k"><i class="sw" style="background:var(--hit-ring);opacity:.9"></i>impact on body</span>
+  <div class="grid">
+    <a class="card" href="animation.html">
+      <div class="ico">🎬</div><h3>3-D animation</h3>
+      <p>The engagement animation — drag to rotate, scrub the timeline, watch impacts build up. Colored by kinetic energy.</p>
+      <span class="tag">Mockup · approved</span>
+    </a>
+    <a class="card" href="progress.html">
+      <div class="ico">📊</div><h3>Build progress</h3>
+      <p>The live board — one card per bundle, and every &ldquo;break-it&rdquo; finding, preserved. Auto-refreshes.</p>
+      <span class="tag live">Live</span>
+    </a>
+    <a class="card" href="spec.html">
+      <div class="ico">📐</div><h3>Design &amp; results</h3>
+      <p>What the tool does, in plain English — the physics, the numbers, and the real engine output.</p>
+      <span class="tag">Ready</span>
+    </a>
   </div>
 
   <footer>
-    <b>What this is.</b> A <b>bundle-4 mockup</b> — the look &amp; flow of the 3-D animation, for approval before
-    it's built for real (MATLAB 3-D scene + MP4/GIF). Motion and fragment paths are <b>illustrative</b>. The
-    physics engine is already built &amp; validated (Octave + MATLAB); real runs feed the true impact points,
-    times and energies into this scene.
-    <br><br>
-    <b>UAV = crude placeholder shape</b> (flat plates, swappable). Impacts land on the <b>body &amp; tail</b>, not
-    the wings — the thin placeholder wing is edge-on and shadowed by the body (real engine: fuselage 23 / wing 0
-    / tail 6). A <b>real drone STL</b> gives the true split. Neutral academic framing (<code>particles · impact ·
-    kinetic energy</code>). The <b>KE scale</b> shows the tool's real hit-energy range (drag off): 338–737 J,
-    mean 528 J. Tell me your changes and I'll redeploy to this same link.
+    Owner reviews remotely (REMOTE 2) — everything above is a live web page. Neutral academic framing
+    throughout (a student terminal-ballistics assignment). This hub is <b>noindex</b>; the drone shape is a
+    swappable placeholder pending a real STL.
   </footer>
 </div>
-
 <script>
-(function(){
-  "use strict";
-  var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
-  var rT=document.getElementById('rT'), rF=document.getElementById('rF'), rH=document.getElementById('rH');
-  var playBtn=document.getElementById('play'), tl=document.getElementById('tl'), tlv=document.getElementById('tlv');
-  var prefersReduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-
-  function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
-  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
-
-  // ---- camera ----
-  var az=-0.62, el=0.42, scale=54, W=0, H=0, cx=0, cy=0, dpr=1;
-  function resize(){
-    dpr=Math.min(window.devicePixelRatio||1,2);
-    var r=cv.getBoundingClientRect(); W=r.width; H=r.height;
-    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0); cx=W*0.5; cy=H*0.54;
-  }
-  function rot(p){
-    var ca=Math.cos(az),sa=Math.sin(az);
-    var x1=p[0]*ca-p[1]*sa, y1=p[0]*sa+p[1]*ca, z1=p[2];
-    var ce=Math.cos(el),se=Math.sin(el);
-    var y2=y1*ce-z1*se, z2=y1*se+z1*ce;
-    return [x1,y2,z2];                     // x1=screen-x, y2=depth, z2=screen-y(up)
-  }
-  function proj(p){var r=rot(p); return [cx+r[0]*scale, cy-r[2]*scale, r[1]];}
-
-  // ---- drone (placeholder): fuselage box, wing plate, tail fin -> edge list ----
-  var HL=1.25,BD=0.18,HS=1.5,HC=0.18,TH=0.6;
-  function box(cxp,cyp,czp,sx,sy,sz){
-    var v=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]].map(function(c){
-      return [cxp+c[0]*sx, cyp+c[1]*sy, czp+c[2]*sz];});
-    var e=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
-    return e.map(function(pr){return [v[pr[0]],v[pr[1]]];});
-  }
-  var droneEdges=[].concat(
-    box(0,0,0, HL,BD,BD),                    // fuselage
-    box(0,0,0, HC,HS,0.02),                  // wing plate (thin in z)
-    box(HL-0.15,0,TH/2, 0.14,0.02,TH/2)      // tail fin (vertical, rear)
-  );
-  // surface points to place impact markers on (body & tail only; wing shadowed)
-  function surfPoint(rr){
-    var u=rr();
-    if(u<0.8){ // fuselage, biased rearward (drift)
-      return [ -0.2+1.4*rr(), (rr()-0.5)*BD*1.4, (rr()-0.5)*BD*1.4 ];
-    } else {   // tail fin
-      return [ HL-0.12+0.1*rr(), (rr()-0.5)*0.04, 0.08+rr()*TH*0.9 ];
-    }
-  }
-
-  // ---- fragments (illustrative, seeded) ----
-  var BURST=[0,-5,0], N=68, rf=rng(7), frags=[];
-  for(var i=0;i<N;i++){
-    var speed=800+400*rf();                  // m/s -> energy
-    var energy=(speed*speed-800*800)/(1200*1200-800*800); // 0..1
-    var hit = rf()<0.42;                      // ~40% strike the body/tail
-    var end;
-    if(hit){ end=surfPoint(rf); }
-    else { end=[ -0.5+3.5*rf(), 0.4+2.0*rf(), (rf()-0.5)*2.4 ]; } // miss: fly past
-    var f = 0.42 + 0.58*rf();                 // arrival fraction along the timeline
-    frags.push({end:end, f:f, e:energy, hit:hit});
-  }
-  var lastHitF = frags.filter(function(q){return q.hit;}).reduce(function(m,q){return Math.max(m,q.f);},0.6);
-
-  function energyColor(e){
-    var stops=[[59,130,246],[34,211,238],[245,165,36],[239,68,68]]; // blue->cyan->amber->red
-    var x=Math.max(0,Math.min(1,e))*(stops.length-1); var i0=Math.floor(x), t=x-i0;
-    var a=stops[i0], b=stops[Math.min(i0+1,stops.length-1)];
-    return 'rgb('+Math.round(a[0]+(b[0]-a[0])*t)+','+Math.round(a[1]+(b[1]-a[1])*t)+','+Math.round(a[2]+(b[2]-a[2])*t)+')';
-  }
-  function lerp(a,b,t){return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t];}
-  function seg(a,b){var pa=proj(a),pb=proj(b); ctx.beginPath(); ctx.moveTo(pa[0],pa[1]); ctx.lineTo(pb[0],pb[1]); ctx.stroke();}
-
-  // ---- render one frame at time t in [0,1] ----
-  function draw(t){
-    ctx.clearRect(0,0,W,H);
-    var muted=cssv('--muted'), burst=cssv('--burst'), ring=cssv('--hit-ring');
-    ctx.strokeStyle=cssv('--grid'); ctx.lineWidth=1;
-    for(var gx=-2;gx<=2;gx++){ seg([gx,-5.4,-0.9],[gx,2.2,-0.9]); }
-    for(var gy=-5;gy<=2;gy++){ seg([-2,gy,-0.9],[2,gy,-0.9]); }
-    ctx.strokeStyle=muted; ctx.lineWidth=1.5; ctx.globalAlpha=0.9;
-    droneEdges.forEach(function(ed){ seg(ed[0],ed[1]); });
-    ctx.globalAlpha=1;
-    var bp=proj(BURST);
-    ctx.beginPath(); ctx.arc(bp[0],bp[1],5,0,7); ctx.fillStyle=burst; ctx.fill();
-    ctx.beginPath(); ctx.arc(bp[0],bp[1],10,0,7); ctx.strokeStyle=burst; ctx.globalAlpha=.5; ctx.stroke(); ctx.globalAlpha=1;
-
-    var inflight=0, hits=0, list=[];
-    for(var i=0;i<frags.length;i++){
-      var fr=frags[i], prog=t/fr.f;
-      if(prog>=1){ if(fr.hit){ hits++; list.push({p:proj(fr.end), e:fr.e, kind:'hit'}); } }
-      else {
-        inflight++;
-        var pos=lerp(BURST, fr.end, Math.max(0,prog));
-        var tp=proj(lerp(BURST, fr.end, Math.max(0,prog-0.06)));
-        list.push({p:proj(pos), tp:tp, e:fr.e, kind:'fly'});
-      }
-    }
-    list.sort(function(a,b){return b.p[2]-a.p[2];});
-    list.forEach(function(o){
-      var col=energyColor(o.e);
-      if(o.kind==='fly'){
-        ctx.strokeStyle=col; ctx.globalAlpha=.5; ctx.lineWidth=1.4;
-        ctx.beginPath(); ctx.moveTo(o.tp[0],o.tp[1]); ctx.lineTo(o.p[0],o.p[1]); ctx.stroke(); ctx.globalAlpha=1;
-        ctx.beginPath(); ctx.arc(o.p[0],o.p[1],2.6,0,7); ctx.fillStyle=col; ctx.fill();
-      } else {
-        ctx.beginPath(); ctx.arc(o.p[0],o.p[1],4.2,0,7); ctx.fillStyle=col; ctx.fill();
-        ctx.beginPath(); ctx.arc(o.p[0],o.p[1],6.2,0,7); ctx.strokeStyle=ring; ctx.globalAlpha=.55; ctx.lineWidth=1.2; ctx.stroke(); ctx.globalAlpha=1;
-      }
-    });
-
-    rT.textContent=(t*6.57).toFixed(2)+' ms';
-    rF.textContent=String(inflight);
-    rH.textContent=String(hits);
-  }
-
-  // ---- animation loop + scrubber ----
-  var t=0, playing=true, raf=null, last=null, DUR=4200;
-  function frame(ts){
-    if(last==null) last=ts;
-    if(playing){ t += (ts-last)/DUR; if(t>1.06) t=0; }
-    last=ts;
-    var tt=Math.min(t,1);
-    draw(tt);
-    tl.value=Math.round(tt*1000);
-    tlv.textContent = tt>=lastHitF-0.02 ? 'last hit' : ('t = '+(tt*6.57).toFixed(2)+' ms');
-    raf=requestAnimationFrame(frame);
-  }
-  playBtn.addEventListener('click',function(){
-    playing=!playing; playBtn.textContent=playing?'⏸ Pause':'▶ Play'; playBtn.setAttribute('aria-pressed',String(playing));
+  var btn=document.getElementById('themeToggle');
+  function sync(){ btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀️':'🌙'; }
+  sync();
+  btn.addEventListener('click',function(){
+    var next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('theme',next);}catch(e){} sync();
   });
-  tl.addEventListener('input',function(){ playing=false; playBtn.textContent='▶ Play'; playBtn.setAttribute('aria-pressed','false'); t=tl.value/1000; last=null; });
-
-  // ---- orbit + zoom ----
-  var drag=false, lx=0, ly=0;
-  cv.addEventListener('pointerdown',function(e){drag=true; lx=e.clientX; ly=e.clientY; cv.setPointerCapture(e.pointerId);});
-  cv.addEventListener('pointermove',function(e){ if(!drag)return; az+=(e.clientX-lx)*0.008; el+=(e.clientY-ly)*0.006;
-    el=Math.max(-0.2,Math.min(1.3,el)); lx=e.clientX; ly=e.clientY; });
-  cv.addEventListener('pointerup',function(e){drag=false;});
-  cv.addEventListener('wheel',function(e){e.preventDefault(); scale*=Math.exp(-e.deltaY*0.0011); scale=Math.max(24,Math.min(140,scale));},{passive:false});
-  window.addEventListener('resize',resize);
-
-  resize();
-  if(prefersReduce){ playing=false; playBtn.textContent='▶ Play'; t=Math.min(1,lastHitF); }
-  raf=requestAnimationFrame(frame);
-})();
 </script>
 </body>
 </html>
