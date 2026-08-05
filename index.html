@@ -4,538 +4,255 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Interceptor Engagement — Visual Mockup</title>
-<style>*{box-sizing:border-box} html,body{margin:0;padding:0}</style>
-</head>
-<body>
-<title>Interceptor Engagement — Visual Mockup</title>
+<title>Bundle 4 — 3-D Engagement Animation (mockup)</title>
 <style>
   :root{
-    --ink:#0d1117; --panel:#161b22; --panel2:#1b222c; --line:#2a323d;
-    --txt:#c9d1d9; --muted:#8b949e; --faint:#6b7480;
-    --geo:#22d3ee;      /* geometry / paths */
-    --energy:#f5a524;   /* impact / kinetic energy */
-    --hit:#3fb950;      /* on-body impact */
-    --miss:#5b6570;     /* off-body */
-    --grid:#222a34;
-    --chip:#10161e;
-    --shadow:0 1px 0 rgba(255,255,255,.02), 0 8px 24px rgba(0,0,0,.35);
-    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Consolas,monospace;
+    --ink:#0d1117; --panel:#12171f; --line:#28303b; --txt:#c9d1d9; --muted:#8b949e; --faint:#69727e;
+    --accent:#22d3ee; --burst:#f5a524; --hit-ring:#e6edf3; --chip:#0e141c;
+    --grid:#1a212b; --shadow:0 10px 30px rgba(0,0,0,.4);
     --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
   }
-  @media (prefers-color-scheme: light){
-    :root{
-      --ink:#f4f6f9; --panel:#ffffff; --panel2:#f7f9fc; --line:#dde3ea;
-      --txt:#1f2733; --muted:#5a6470; --faint:#8a94a1;
-      --geo:#0e8fb0; --energy:#c9760a; --hit:#1e8a3b; --miss:#9aa4b0;
-      --grid:#e7ecf2; --chip:#eef2f7;
-      --shadow:0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.08);
-    }
+  @media (prefers-color-scheme:light){
+    :root{--ink:#eef1f5;--panel:#ffffff;--line:#dde3ea;--txt:#1f2733;--muted:#5a6470;--faint:#8a94a1;
+      --accent:#0e8fb0;--burst:#c9760a;--hit-ring:#1f2733;--chip:#f1f4f8;--grid:#e7ecf2;--shadow:0 10px 30px rgba(16,24,40,.1);}
   }
-  :root[data-theme="dark"]{
-    --ink:#0d1117; --panel:#161b22; --panel2:#1b222c; --line:#2a323d;
-    --txt:#c9d1d9; --muted:#8b949e; --faint:#6b7480;
-    --geo:#22d3ee; --energy:#f5a524; --hit:#3fb950; --miss:#5b6570;
-    --grid:#222a34; --chip:#10161e;
-    --shadow:0 1px 0 rgba(255,255,255,.02), 0 8px 24px rgba(0,0,0,.35);
-  }
-  :root[data-theme="light"]{
-    --ink:#f4f6f9; --panel:#ffffff; --panel2:#f7f9fc; --line:#dde3ea;
-    --txt:#1f2733; --muted:#5a6470; --faint:#8a94a1;
-    --geo:#0e8fb0; --energy:#c9760a; --hit:#1e8a3b; --miss:#9aa4b0;
-    --grid:#e7ecf2; --chip:#eef2f7;
-    --shadow:0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.08);
-  }
-  *{box-sizing:border-box}
-  body,.wrap{margin:0}
-  .wrap{
-    background:
-      radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb,var(--geo) 8%, transparent), transparent 60%),
-      var(--ink);
-    color:var(--txt); font-family:var(--sans); line-height:1.5;
-    min-height:100vh; padding:clamp(16px,3vw,40px);
-  }
-  .shell{max-width:1120px; margin:0 auto}
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{background:var(--ink);color:var(--txt);font-family:var(--sans);line-height:1.5;
+    padding:clamp(14px,3vw,32px);}
+  .shell{max-width:1040px;margin:0 auto}
+  header{margin-bottom:14px}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+  h1{font-family:var(--mono);font-weight:600;font-size:clamp(20px,3vw,28px);margin:6px 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:14px;max-width:64ch}
+  .badge{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--burst);border:1px solid color-mix(in srgb,var(--burst) 45%,var(--line));
+    background:color-mix(in srgb,var(--burst) 10%,transparent);padding:5px 9px;border-radius:6px;margin-top:8px}
 
-  header.top{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; justify-content:space-between; margin-bottom:6px}
-  .brand{display:flex; flex-direction:column; gap:6px}
-  .kicker{font-family:var(--mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--geo)}
-  h1{font-family:var(--mono); font-weight:600; font-size:clamp(22px,3.4vw,32px); margin:0; letter-spacing:-.01em; text-wrap:balance}
-  .sub{color:var(--muted); font-size:14px; max-width:60ch}
-  .badge{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--energy); border:1px solid color-mix(in srgb,var(--energy) 45%, var(--line));
-    background:color-mix(in srgb,var(--energy) 10%, transparent); padding:6px 10px; border-radius:6px; white-space:nowrap}
+  .stage{position:relative;background:
+      radial-gradient(120% 90% at 70% 0%, color-mix(in srgb,var(--accent) 7%, transparent), transparent 60%),
+      var(--panel);
+    border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:16px}
+  canvas{display:block;width:100%;height:clamp(320px,52vh,520px);touch-action:none;cursor:grab}
+  canvas:active{cursor:grabbing}
+  .hint{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:11px;color:var(--muted);
+    background:color-mix(in srgb,var(--panel) 70%,transparent);padding:3px 7px;border-radius:6px;pointer-events:none}
+  .readout{position:absolute;top:10px;right:12px;display:flex;gap:12px;font-family:var(--mono);font-size:11.5px}
+  .readout b{color:var(--txt);font-variant-numeric:tabular-nums} .readout span{color:var(--muted)}
 
-  .readout{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin:20px 0 26px}
-  .chip{background:var(--chip); border:1px solid var(--line); border-radius:8px; padding:10px 12px}
-  .chip .lab{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint)}
-  .chip .val{font-family:var(--mono); font-size:18px; font-variant-numeric:tabular-nums; margin-top:3px}
-  .chip .val small{font-size:11px; color:var(--muted); font-weight:400}
+  .controls{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line);
+    background:var(--chip);flex-wrap:wrap}
+  button.play{font-family:var(--mono);font-size:12px;color:var(--txt);background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;min-width:88px}
+  button.play:hover{border-color:var(--accent)} button.play:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .scrub{flex:1;display:flex;align-items:center;gap:10px;min-width:220px}
+  .scrub label{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+  input[type=range]{flex:1;accent-color:var(--accent);height:22px}
+  .tval{font-family:var(--mono);font-size:12px;color:var(--txt);font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
 
-  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px}
-  .card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 16px 14px; box-shadow:var(--shadow); min-width:0}
-  .card.full{grid-column:1 / -1}
-  .card h2{font-family:var(--mono); font-size:13px; font-weight:600; letter-spacing:.04em; margin:0; color:var(--txt); display:flex; align-items:center; gap:8px}
-  .card h2 .dot{width:8px; height:8px; border-radius:50%; background:var(--geo)}
-  .card h2 .dot.e{background:var(--energy)}
-  .card .hint{color:var(--muted); font-size:12.5px; margin:4px 0 10px}
-  .svg-hold{width:100%; overflow-x:auto}
-  svg{display:block; width:100%; height:auto}
-  text{font-family:var(--mono)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .legend .ramp{display:inline-flex;align-items:center;gap:8px}
+  .ramp .bar{width:120px;height:10px;border-radius:5px;
+    background:linear-gradient(90deg,#3b82f6,#22d3ee,#f5a524,#ef4444)}
+  .legend .k{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:11px;height:11px;border-radius:50%;display:inline-block}
 
-  .legend{display:flex; flex-wrap:wrap; gap:14px; margin-top:10px; font-family:var(--mono); font-size:11.5px; color:var(--muted)}
-  .legend span{display:inline-flex; align-items:center; gap:6px}
-  .sw{width:11px; height:11px; border-radius:3px; display:inline-block}
-
-  .summ{display:grid; grid-template-columns:1fr 1fr; gap:10px 18px}
-  .row{display:flex; justify-content:space-between; gap:12px; border-bottom:1px dashed var(--line); padding:6px 0; font-size:13px}
-  .row .k{color:var(--muted)}
-  .row .v{font-family:var(--mono); font-variant-numeric:tabular-nums}
-  .row .v b{color:var(--energy)}
-
-  .controls{display:flex; gap:8px; align-items:center}
-  button.play{font-family:var(--mono); font-size:11.5px; color:var(--txt); background:var(--chip);
-    border:1px solid var(--line); border-radius:6px; padding:5px 10px; cursor:pointer}
-  button.play:hover{border-color:var(--geo)}
-  button.play:focus-visible{outline:2px solid var(--geo); outline-offset:2px}
-
-  footer.note{margin-top:24px; color:var(--muted); font-size:12.5px; border-top:1px solid var(--line); padding-top:14px}
-  footer.note b{color:var(--txt)}
-  code{font-family:var(--mono); background:var(--chip); padding:1px 5px; border-radius:4px; font-size:.92em}
-
-  @media (max-width:720px){ .grid{grid-template-columns:1fr} .summ{grid-template-columns:1fr} }
-  @media (prefers-reduced-motion: reduce){ *{animation:none !important} }
+  footer{margin-top:20px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+  footer b{color:var(--txt)} code{font-family:var(--mono);background:var(--chip);padding:1px 5px;border-radius:4px;font-size:.92em}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
-
-<div class="wrap">
- <div class="shell">
-  <header class="top">
-    <div class="brand">
-      <div class="kicker">Interceptor Engagement Sim · design mockup</div>
-      <h1>Fragment dispersion &amp; on-body impact</h1>
-      <div class="sub">A preview of the tool's planned visuals — the head-on intercept, where fragments
-        strike the UAV, and the delay/energy read-outs. This locks the <em>look &amp; flow</em> before the
-        3-D animation and web hub get built.</div>
-    </div>
-    <div class="badge">Mockup · illustrative data</div>
+</head>
+<body>
+<div class="shell">
+  <h2 class="sr-only">Interactive 3-D mockup of the interceptor engagement animation: fragments fly from a burst point, are coloured by kinetic energy, and light up impact markers on the drone over time; drag to rotate, scroll to zoom, scrub the timeline.</h2>
+  <header>
+    <div class="eyebrow">Interceptor Engagement Sim · Bundle 4 mockup</div>
+    <h1>3-D engagement animation</h1>
+    <div class="sub">A preview of the animation the MATLAB tool will render: the warhead bursts 5 m from the
+      drone, fragments fly out and strike it, and impacts build up over time. <b>Drag to rotate, scroll to
+      zoom, scrub the timeline.</b></div>
+    <div class="badge">Mockup · illustrative motion</div>
   </header>
 
-  <div class="readout" id="readout"></div>
-
-  <!-- HERO: engagement animation -->
-  <div class="card full">
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
-      <h2><span class="dot"></span> Engagement view — top-down (along-track × across-track)</h2>
-      <div class="controls"><button class="play" id="playBtn" aria-pressed="true">⏸ Pause</button></div>
-    </div>
-    <div class="hint">The warhead bursts on the interceptor axis, 5 m from the UAV. Particles fan out,
-      cross the gap, and strike the airframe. This is the motion the 3-D animation will show.</div>
-    <div class="svg-hold"><svg id="hero" viewBox="0 0 900 400" role="img"
-      aria-label="Top-down view: burst point five metres from a UAV, fragments crossing to strike it."></svg></div>
-    <div class="legend">
-      <span><i class="sw" style="background:var(--geo)"></i> fragment path</span>
-      <span><i class="sw" style="background:var(--hit)"></i> on-body impact</span>
-      <span><i class="sw" style="background:var(--miss)"></i> off-body</span>
-      <span><i class="sw" style="background:var(--energy)"></i> burst point</span>
-    </div>
-  </div>
-
-  <div class="grid" style="margin-top:18px">
-    <!-- impact scatter -->
-    <div class="card">
-      <h2><span class="dot"></span> Impact pattern on the target plane</h2>
-      <div class="hint">Where each particle crosses the target's plane (along-track × vertical). The pattern
-        centre sits ~1.2 m downstream — the additive head-on drift the report explains.</div>
-      <div class="svg-hold"><svg id="scatter" viewBox="0 0 460 340" role="img" aria-label="Impact scatter plot"></svg></div>
-    </div>
-
-    <!-- on-mesh breakdown -->
-    <div class="card">
-      <h2><span class="dot"></span> On-body impacts by part</h2>
-      <div class="hint">Impacts mapped onto the airframe (top-down), shaded by kinetic energy, with the
-        per-part tally the summary reports.</div>
-      <div class="svg-hold"><svg id="mesh" viewBox="0 0 460 340" role="img" aria-label="UAV silhouette with impacts by part"></svg></div>
-    </div>
-
-    <!-- delay budget -->
-    <div class="card">
-      <h2><span class="dot e"></span> Timing / delay budget</h2>
-      <div class="hint">From datum to impact. Fragment flight dominates (~88%) — the point the budget table makes.</div>
-      <div class="svg-hold"><svg id="budget" viewBox="0 0 460 200" role="img" aria-label="Delay budget bar"></svg></div>
-    </div>
-
-    <!-- sweep A -->
-    <div class="card">
-      <h2><span class="dot"></span> Sweep A — fragment speed vs along-track miss</h2>
-      <div class="hint">Slower fragment → longer clock → larger downstream miss.</div>
-      <div class="svg-hold"><svg id="sweepA" viewBox="0 0 460 240" role="img" aria-label="Fragment speed sweep"></svg></div>
-    </div>
-
-    <!-- sweep B -->
-    <div class="card">
-      <h2><span class="dot"></span> Sweep B — fan width vs coverage &amp; density</h2>
-      <div class="hint">A wider fan covers more area but thins the density — the coverage-vs-density trade.</div>
-      <div class="svg-hold"><svg id="sweepB" viewBox="0 0 460 240" role="img" aria-label="Fan width sweep"></svg></div>
-      <div class="legend">
-        <span><i class="sw" style="background:var(--geo)"></i> coverage</span>
-        <span><i class="sw" style="background:var(--energy)"></i> density</span>
+  <div class="stage">
+    <div class="hint">drag to rotate · scroll to zoom</div>
+    <div class="readout"><span>t</span><b id="rT">0.00 ms</b><span>in flight</span><b id="rF">0</b><span>hits</span><b id="rH">0</b></div>
+    <canvas id="cv"></canvas>
+    <div class="controls">
+      <button class="play" id="play" aria-pressed="true">⏸ Pause</button>
+      <div class="scrub">
+        <label for="tl">timeline</label>
+        <input type="range" id="tl" min="0" max="1000" value="0" aria-label="animation timeline">
+        <span class="tval" id="tlv">t=0 → last hit</span>
       </div>
     </div>
-
-    <!-- summary -->
-    <div class="card">
-      <h2><span class="dot e"></span> Summary read-out</h2>
-      <div class="hint">The formatted text summary the tool prints (illustrative values shown).</div>
-      <div class="summ" id="summ"></div>
-    </div>
   </div>
 
-  <footer class="note">
-    <b>What this is.</b> A <b>mockup for approval</b> of the look &amp; flow — the animation and scatter are
-    <b>illustrative motion</b>. The <b>physics engine is now built and validated</b> (runs in Octave + MATLAB),
-    so the read-out figures below match the real tool: closing 226.4 m/s, budget fragment-dominated, and
-    the real by-part split <b>fuselage 23 / wing 0 / tail 6</b>.
+  <div class="legend">
+    <span class="ramp"><span>fragment energy</span><span class="bar"></span><span>low → high KE</span></span>
+    <span class="k"><i class="sw" style="background:var(--burst)"></i>burst point</span>
+    <span class="k"><i class="sw" style="background:var(--hit-ring);opacity:.9"></i>impact on body</span>
+  </div>
+
+  <footer>
+    <b>What this is.</b> A <b>bundle-4 mockup</b> — the look &amp; flow of the 3-D animation, for approval before
+    it's built for real (MATLAB 3-D scene + MP4/GIF). Motion and fragment paths are <b>illustrative</b>. The
+    physics engine is already built &amp; validated (Octave + MATLAB); real runs feed the true impact points,
+    times and energies into this scene.
     <br><br>
-    <b>Why wing = 0.</b> The <b>UAV is a crude placeholder shape</b> (flat plates — 2.5 m long, 3.0 m span,
-    swappable). Its thin wing sits edge-on and is shadowed by the body, and fragments drift ~1.2 m rearward,
-    so hits land on the body &amp; tail. This is a placeholder-shape artifact, <b>not a modelling error</b> —
-    the hit-detection is independently validated. A <b>real drone STL</b> gives the true wing split.
-    <br><br>
-    Tell me your changes and I'll redeploy to this same link. Neutral academic framing throughout
-    (<code>particles · impact · kinetic energy · coverage</code>).
+    <b>UAV = crude placeholder shape</b> (flat plates, swappable). Impacts land on the <b>body &amp; tail</b>, not
+    the wings — the thin placeholder wing is edge-on and shadowed by the body (real engine: fuselage 23 / wing 0
+    / tail 6). A <b>real drone STL</b> gives the true split. Neutral academic framing (<code>particles · impact ·
+    kinetic energy</code>). Tell me your changes and I'll redeploy to this same link.
   </footer>
- </div>
 </div>
 
 <script>
 (function(){
   "use strict";
-  var NS="http://www.w3.org/2000/svg";
-  function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);if(attrs)for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+  var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+  var rT=document.getElementById('rT'), rF=document.getElementById('rF'), rH=document.getElementById('rH');
+  var playBtn=document.getElementById('play'), tl=document.getElementById('tl'), tlv=document.getElementById('tlv');
+  var prefersReduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
   function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
-  // deterministic PRNG (mulberry32)
   function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 
-  // ---- locked parameters ----
-  var Vi=138.9, Vt=87.5, OFF=5.0, CLOSE=Vi+Vt;      // 226.4
-  var SPD=[800,1200], EJECT=15*Math.PI/180, ZS=10*Math.PI/180, N=200;
-  var MASS=9.8125e-4;                                 // 5mm steel cube (kg)
-  // UAV silhouette (m): fuselage len 2.5, body dia .35, span 3.0, tail
-  var HULL_X=1.25, BODY=0.175, SEMISPAN=1.5, CHORD=0.175, TAIL_X=[0.75,1.15], TAIL_HW=0.45;
+  // ---- camera ----
+  var az=-0.62, el=0.42, scale=54, W=0, H=0, cx=0, cy=0, dpr=1;
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    var r=cv.getBoundingClientRect(); W=r.width; H=r.height;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0); cx=W*0.5; cy=H*0.54;
+  }
+  function rot(p){
+    var ca=Math.cos(az),sa=Math.sin(az);
+    var x1=p[0]*ca-p[1]*sa, y1=p[0]*sa+p[1]*ca, z1=p[2];
+    var ce=Math.cos(el),se=Math.sin(el);
+    var y2=y1*ce-z1*se, z2=y1*se+z1*ce;
+    return [x1,y2,z2];                     // x1=screen-x, y2=depth, z2=screen-y(up)
+  }
+  function proj(p){var r=rot(p); return [cx+r[0]*scale, cy-r[2]*scale, r[1]];}
 
-  // ---- generate fragments ----
-  var r=rng(42), F=[];
+  // ---- drone (placeholder): fuselage box, wing plate, tail fin -> edge list ----
+  var HL=1.25,BD=0.18,HS=1.5,HC=0.18,TH=0.6;
+  function box(cxp,cyp,czp,sx,sy,sz){
+    var v=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]].map(function(c){
+      return [cxp+c[0]*sx, cyp+c[1]*sy, czp+c[2]*sz];});
+    var e=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+    return e.map(function(pr){return [v[pr[0]],v[pr[1]]];});
+  }
+  var droneEdges=[].concat(
+    box(0,0,0, HL,BD,BD),                    // fuselage
+    box(0,0,0, HC,HS,0.02),                  // wing plate (thin in z)
+    box(HL-0.15,0,TH/2, 0.14,0.02,TH/2)      // tail fin (vertical, rear)
+  );
+  // surface points to place impact markers on (body & tail only; wing shadowed)
+  function surfPoint(rr){
+    var u=rr();
+    if(u<0.8){ // fuselage, biased rearward (drift)
+      return [ -0.2+1.4*rr(), (rr()-0.5)*BD*1.4, (rr()-0.5)*BD*1.4 ];
+    } else {   // tail fin
+      return [ HL-0.12+0.1*rr(), (rr()-0.5)*0.04, 0.08+rr()*TH*0.9 ];
+    }
+  }
+
+  // ---- fragments (illustrative, seeded) ----
+  var BURST=[0,-5,0], N=68, rf=rng(7), frags=[];
   for(var i=0;i<N;i++){
-    var spd=SPD[0]+(SPD[1]-SPD[0])*r();
-    var psi=(-EJECT+2*EJECT*r());
-    var zeta=(-ZS+2*ZS*r());
-    var Vx=spd*Math.sin(psi)*Math.cos(zeta);
-    var Vy=spd*Math.cos(psi)*Math.cos(zeta);
-    var Vz=spd*Math.sin(zeta);
-    var t=OFF/Vy;                                     // cross time to target plane
-    var vrelx=CLOSE+Vx;
-    var missX=vrelx*t, missZ=Vz*t;
-    var vrel=Math.sqrt(vrelx*vrelx+Vy*Vy+Vz*Vz);
-    var KE=0.5*MASS*vrel*vrel;
-    // on-body test on the (x,z) target plane: fuselage cross-section box
-    var onBody=(Math.abs(missX)<=HULL_X)&&(Math.abs(missZ)<=BODY+0.02);
-    F.push({Vx:Vx,Vy:Vy,Vz:Vz,psi:psi,zeta:zeta,spd:spd,t:t,missX:missX,missZ:missZ,KE:KE,onBody:onBody});
+    var speed=800+400*rf();                  // m/s -> energy
+    var energy=(speed*speed-800*800)/(1200*1200-800*800); // 0..1
+    var hit = rf()<0.42;                      // ~40% strike the body/tail
+    var end;
+    if(hit){ end=surfPoint(rf); }
+    else { end=[ -0.5+3.5*rf(), 0.4+2.0*rf(), (rf()-0.5)*2.4 ]; } // miss: fly past
+    var f = 0.42 + 0.58*rf();                 // arrival fraction along the timeline
+    frags.push({end:end, f:f, e:energy, hit:hit});
   }
-  var KEs=F.map(function(f){return f.KE;}), KEmin=Math.min.apply(0,KEs), KEmax=Math.max.apply(0,KEs);
+  var lastHitF = frags.filter(function(q){return q.hit;}).reduce(function(m,q){return Math.max(m,q.f);},0.6);
 
-  // part assignment (illustrative) for on-mesh view: seeded, realistic split ~45/40/15
-  var parts={fuselage:0,wing:0,tail:0}, hits=[], rpart=rng(99);
-  F.forEach(function(f){
-    if(!f.onBody) return;
-    var pr=rpart(), part = pr<0.79?'fuselage':'tail';  // placeholder shape shadows the thin wing -> ~0 wing hits (real engine: fuselage 23 / wing 0 / tail 6)
-    parts[part]++; hits.push({x:f.missX,KE:f.KE,part:part,psi:f.psi});
-  });
-  var nHits=hits.length, nCross=N;
-
-  // centroid / spread
-  var mx=0,mz=0; F.forEach(function(f){mx+=f.missX;mz+=f.missZ;}); mx/=N; mz/=N;
-  var sx=0,sz=0; F.forEach(function(f){sx+=(f.missX-mx)*(f.missX-mx);sz+=(f.missZ-mz)*(f.missZ-mz);});
-  sx=Math.sqrt(sx/N); sz=Math.sqrt(sz/N);
-  var KEtot=hits.reduce(function(a,h){return a+h.KE;},0), KEavg=nHits?KEtot/nHits:0;
-
-  // ---- readout chips ----
-  var chips=[
-    ["Interceptor",Vi.toFixed(1),"m/s"],["UAV (target)",Vt.toFixed(1),"m/s"],
-    ["Closing speed",CLOSE.toFixed(1),"m/s"],["Radial offset",OFF.toFixed(1),"m"],
-    ["Fragments",String(N),"particles"],["Frag speed",SPD[0]+"–"+SPD[1],"m/s"]
-  ];
-  var ro=document.getElementById("readout");
-  chips.forEach(function(c){
-    var d=document.createElement("div"); d.className="chip";
-    d.innerHTML='<div class="lab">'+c[0]+'</div><div class="val">'+c[1]+' <small>'+c[2]+'</small></div>';
-    ro.appendChild(d);
-  });
-
-  function lerp(a,b,t){return a+(b-a)*t;}
-  function keColor(ke){ // amber ramp by KE
-    var t=(ke-KEmin)/Math.max(1,(KEmax-KEmin));
-    var base=cssv('--energy');
-    return {c:base,op:(0.45+0.55*t).toFixed(2)};
+  function energyColor(e){
+    var stops=[[59,130,246],[34,211,238],[245,165,36],[239,68,68]]; // blue->cyan->amber->red
+    var x=Math.max(0,Math.min(1,e))*(stops.length-1); var i0=Math.floor(x), t=x-i0;
+    var a=stops[i0], b=stops[Math.min(i0+1,stops.length-1)];
+    return 'rgb('+Math.round(a[0]+(b[0]-a[0])*t)+','+Math.round(a[1]+(b[1]-a[1])*t)+','+Math.round(a[2]+(b[2]-a[2])*t)+')';
   }
+  function lerp(a,b,t){return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t];}
+  function seg(a,b){var pa=proj(a),pb=proj(b); ctx.beginPath(); ctx.moveTo(pa[0],pa[1]); ctx.lineTo(pb[0],pb[1]); ctx.stroke();}
 
-  // =================== HERO (top-down animation) ===================
-  var hero=document.getElementById("hero");
-  var HW=900,HH=400;
-  // world: x(along) [-3,3] -> svgX[70,830]; y(across) [-5.6,2.1] -> svgY[360,40]
-  function hx(x){return lerp(70,830,(x+3)/6);}
-  function hy(y){return lerp(360,40,(y+5.6)/7.7);}
-  function drawHeroStatic(){
-    hero.innerHTML="";
-    var line=cssv('--line'), grid=cssv('--grid'), muted=cssv('--muted'), geo=cssv('--geo');
-    // grid
-    for(var gx=-3;gx<=3;gx++){el("line",{x1:hx(gx),y1:hy(-5.6),x2:hx(gx),y2:hy(2.1),stroke:grid,"stroke-width":1},hero);}
-    for(var gy=-5;gy<=2;gy++){el("line",{x1:hx(-3),y1:hy(gy),x2:hx(3),y2:hy(gy),stroke:grid,"stroke-width":1},hero);}
-    // axes labels
-    el("text",{x:hx(3),y:hy(0)-6,"text-anchor":"end",fill:muted,"font-size":11},hero).textContent="target axis (y=0)";
-    el("text",{x:hx(3),y:hy(-5)-6,"text-anchor":"end",fill:muted,"font-size":11},hero).textContent="interceptor axis";
-    // interceptor path (dashed) at y=-5
-    el("line",{x1:hx(-3),y1:hy(-5),x2:hx(3),y2:hy(-5),stroke:geo,"stroke-width":1.4,"stroke-dasharray":"6 5",opacity:.7},hero);
-    el("polygon",{points:(hx(2.7))+","+(hy(-5))+" "+(hx(2.5))+","+(hy(-5)-5)+" "+(hx(2.5))+","+(hy(-5)+5),fill:geo,opacity:.8},hero);
-    // offset bracket
-    var bx=hx(-2.4);
-    el("line",{x1:bx,y1:hy(-5),x2:bx,y2:hy(0),stroke:muted,"stroke-width":1},hero);
-    el("line",{x1:bx-4,y1:hy(-5),x2:bx+4,y2:hy(-5),stroke:muted,"stroke-width":1},hero);
-    el("line",{x1:bx-4,y1:hy(0),x2:bx+4,y2:hy(0),stroke:muted,"stroke-width":1},hero);
-    el("text",{x:bx-8,y:(hy(-5)+hy(0))/2,"text-anchor":"end",fill:muted,"font-size":12,"dominant-baseline":"middle"},hero).textContent="5 m";
-    // UAV silhouette (cross: fuselage along x, wings along y)
-    var uav=cssv('--txt');
-    el("rect",{x:hx(-HULL_X),y:hy(BODY),width:hx(HULL_X)-hx(-HULL_X),height:hy(-BODY)-hy(BODY),rx:5,fill:"none",stroke:uav,"stroke-width":1.6,opacity:.85},hero);
-    el("rect",{x:hx(-CHORD),y:hy(SEMISPAN),width:hx(CHORD)-hx(-CHORD),height:hy(-SEMISPAN)-hy(SEMISPAN),rx:3,fill:"none",stroke:uav,"stroke-width":1.6,opacity:.85},hero);
-    el("rect",{x:hx(TAIL_X[0]),y:hy(TAIL_HW),width:hx(TAIL_X[1])-hx(TAIL_X[0]),height:hy(-TAIL_HW)-hy(TAIL_HW),rx:2,fill:"none",stroke:uav,"stroke-width":1.4,opacity:.7},hero);
-    el("text",{x:hx(0),y:hy(1.85),"text-anchor":"middle",fill:muted,"font-size":11},hero).textContent="UAV — 3.0 m span";
-    // burst point
-    el("circle",{cx:hx(0),cy:hy(-5),r:6,fill:cssv('--energy')},hero);
-    el("circle",{cx:hx(0),cy:hy(-5),r:11,fill:"none",stroke:cssv('--energy'),"stroke-width":1.2,opacity:.5},hero);
-    el("text",{x:hx(0),y:hy(-5)+22,"text-anchor":"middle",fill:cssv('--energy'),"font-size":11},hero).textContent="burst";
-  }
+  // ---- render one frame at time t in [0,1] ----
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    var muted=cssv('--muted'), burst=cssv('--burst'), ring=cssv('--hit-ring');
+    ctx.strokeStyle=cssv('--grid'); ctx.lineWidth=1;
+    for(var gx=-2;gx<=2;gx++){ seg([gx,-5.4,-0.9],[gx,2.2,-0.9]); }
+    for(var gy=-5;gy<=2;gy++){ seg([-2,gy,-0.9],[2,gy,-0.9]); }
+    ctx.strokeStyle=muted; ctx.lineWidth=1.5; ctx.globalAlpha=0.9;
+    droneEdges.forEach(function(ed){ seg(ed[0],ed[1]); });
+    ctx.globalAlpha=1;
+    var bp=proj(BURST);
+    ctx.beginPath(); ctx.arc(bp[0],bp[1],5,0,7); ctx.fillStyle=burst; ctx.fill();
+    ctx.beginPath(); ctx.arc(bp[0],bp[1],10,0,7); ctx.strokeStyle=burst; ctx.globalAlpha=.5; ctx.stroke(); ctx.globalAlpha=1;
 
-  // fragment rays for hero (subset)
-  var rays=[];
-  (function(){
-    var sub=F.filter(function(_,k){return k%4===0;}).slice(0,50);
-    sub.forEach(function(f){
-      // direction in x-y top-down; predominantly +y
-      var dirx=f.Vx, diry=f.Vy, mag=Math.sqrt(dirx*dirx+diry*diry);
-      dirx/=mag; diry/=mag;
-      var s0=5/diry;                           // param to reach the y=0 fuselage plane from burst (0,-5)
-      var xAt0=dirx*s0;                         // along-track position at that plane
-      var onBodyTD=Math.abs(xAt0)<=HULL_X;      // strikes the fuselage silhouette (top-down)
-      var end=onBodyTD ? s0 : 7.1/diry;         // stop at body, else fly past far wing (y=+2.1)
-      rays.push({dirx:dirx,diry:diry,end:end,onBody:onBodyTD});
-    });
-  })();
-
-  var animId=null, playing=true, t0=null;
-  function frame(ts){
-    if(!t0) t0=ts;
-    var T=((ts-t0)/2600)%1;                     // 2.6s loop
-    drawHeroStatic();
-    var geo=cssv('--geo'), hitc=cssv('--hit'), missc=cssv('--miss');
-    rays.forEach(function(ry,idx){
-      var stagger=(idx/rays.length)*0.5;
-      var local=(T-stagger); if(local<0) local+=1;
-      var travel=Math.min(local/0.55,1);         // fraction of ray drawn
-      var s=ry.end*travel;
-      var x=0+ry.dirx*s, y=-5+ry.diry*s;
-      // path so far
-      el("line",{x1:hx(0),y1:hy(-5),x2:hx(x),y2:hy(y),stroke:geo,"stroke-width":1,opacity:0.22},hero);
-      // head dot
-      var c=el("circle",{cx:hx(x),cy:hy(y),r:2.4,fill:geo,opacity:0.9},hero);
-      // impact flash when done
-      if(travel>=1){
-        var col=ry.onBody?hitc:missc;
-        el("circle",{cx:hx(x),cy:hy(y),r:ry.onBody?4.2:2.6,fill:col,opacity:ry.onBody?0.95:0.5},hero);
-        if(ry.onBody){el("circle",{cx:hx(x),cy:hy(y),r:4.2+3*(1-Math.abs(local-0.6)),fill:"none",stroke:hitc,"stroke-width":1,opacity:0.4},hero);}
+    var inflight=0, hits=0, list=[];
+    for(var i=0;i<frags.length;i++){
+      var fr=frags[i], prog=t/fr.f;
+      if(prog>=1){ if(fr.hit){ hits++; list.push({p:proj(fr.end), e:fr.e, kind:'hit'}); } }
+      else {
+        inflight++;
+        var pos=lerp(BURST, fr.end, Math.max(0,prog));
+        var tp=proj(lerp(BURST, fr.end, Math.max(0,prog-0.06)));
+        list.push({p:proj(pos), tp:tp, e:fr.e, kind:'fly'});
+      }
+    }
+    list.sort(function(a,b){return b.p[2]-a.p[2];});
+    list.forEach(function(o){
+      var col=energyColor(o.e);
+      if(o.kind==='fly'){
+        ctx.strokeStyle=col; ctx.globalAlpha=.5; ctx.lineWidth=1.4;
+        ctx.beginPath(); ctx.moveTo(o.tp[0],o.tp[1]); ctx.lineTo(o.p[0],o.p[1]); ctx.stroke(); ctx.globalAlpha=1;
+        ctx.beginPath(); ctx.arc(o.p[0],o.p[1],2.6,0,7); ctx.fillStyle=col; ctx.fill();
+      } else {
+        ctx.beginPath(); ctx.arc(o.p[0],o.p[1],4.2,0,7); ctx.fillStyle=col; ctx.fill();
+        ctx.beginPath(); ctx.arc(o.p[0],o.p[1],6.2,0,7); ctx.strokeStyle=ring; ctx.globalAlpha=.55; ctx.lineWidth=1.2; ctx.stroke(); ctx.globalAlpha=1;
       }
     });
-    if(playing) animId=requestAnimationFrame(frame);
+
+    rT.textContent=(t*6.57).toFixed(2)+' ms';
+    rF.textContent=String(inflight);
+    rH.textContent=String(hits);
   }
-  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function startAnim(){ if(animId){cancelAnimationFrame(animId);animId=null;} if(reduce){drawHeroStatic(); drawHeroFinal(); return;} playing=true; t0=null; animId=requestAnimationFrame(frame);}
-  function drawHeroFinal(){
-    var hitc=cssv('--hit'),missc=cssv('--miss'),geo=cssv('--geo');
-    rays.forEach(function(ry){
-      var s=ry.end, x=ry.dirx*s, y=-5+ry.diry*s;
-      el("line",{x1:hx(0),y1:hy(-5),x2:hx(x),y2:hy(y),stroke:geo,"stroke-width":1,opacity:0.25},hero);
-      var col=ry.onBody?hitc:missc;
-      el("circle",{cx:hx(x),cy:hy(y),r:ry.onBody?4:2.4,fill:col,opacity:ry.onBody?0.95:0.5},hero);
-    });
+
+  // ---- animation loop + scrubber ----
+  var t=0, playing=true, raf=null, last=null, DUR=4200;
+  function frame(ts){
+    if(last==null) last=ts;
+    if(playing){ t += (ts-last)/DUR; if(t>1.06) t=0; }
+    last=ts;
+    var tt=Math.min(t,1);
+    draw(tt);
+    tl.value=Math.round(tt*1000);
+    tlv.textContent = tt>=lastHitF-0.02 ? 'last hit' : ('t = '+(tt*6.57).toFixed(2)+' ms');
+    raf=requestAnimationFrame(frame);
   }
-  var btn=document.getElementById("playBtn");
-  btn.addEventListener("click",function(){
-    playing=!playing;
-    btn.textContent=playing?"⏸ Pause":"▶ Play"; btn.setAttribute("aria-pressed",String(playing));
-    if(playing){t0=null;animId=requestAnimationFrame(frame);} else if(animId){cancelAnimationFrame(animId);}
+  playBtn.addEventListener('click',function(){
+    playing=!playing; playBtn.textContent=playing?'⏸ Pause':'▶ Play'; playBtn.setAttribute('aria-pressed',String(playing));
   });
-  if(reduce){btn.style.display="none";}
+  tl.addEventListener('input',function(){ playing=false; playBtn.textContent='▶ Play'; playBtn.setAttribute('aria-pressed','false'); t=tl.value/1000; last=null; });
 
-  // =================== SCATTER ===================
-  (function(){
-    var s=document.getElementById("scatter"); var W=460,H=340, m={l:52,r:16,t:16,b:40};
-    var xr=[-1.5,3.0], zr=[-1.4,1.4];
-    function X(x){return lerp(m.l,W-m.r,(x-xr[0])/(xr[1]-xr[0]));}
-    function Y(z){return lerp(H-m.b,m.t,(z-zr[0])/(zr[1]-zr[0]));}
-    var grid=cssv('--grid'),muted=cssv('--muted'),line=cssv('--line');
-    // grid + ticks
-    for(var gx=-1;gx<=3;gx++){el("line",{x1:X(gx),y1:m.t,x2:X(gx),y2:H-m.b,stroke:grid,"stroke-width":1},s);
-      el("text",{x:X(gx),y:H-m.b+16,"text-anchor":"middle",fill:muted,"font-size":10},s).textContent=gx;}
-    for(var gz=-1;gz<=1;gz++){el("line",{x1:m.l,y1:Y(gz),x2:W-m.r,y2:Y(gz),stroke:grid,"stroke-width":1},s);
-      el("text",{x:m.l-8,y:Y(gz)+3,"text-anchor":"end",fill:muted,"font-size":10},s).textContent=gz;}
-    el("text",{x:(m.l+W-m.r)/2,y:H-6,"text-anchor":"middle",fill:muted,"font-size":11},s).textContent="along-track miss  x  (m)";
-    el("text",{x:14,y:(m.t+H-m.b)/2,"text-anchor":"middle",fill:muted,"font-size":11,transform:"rotate(-90 14 "+((m.t+H-m.b)/2)+")"},s).textContent="vertical miss  z  (m)";
-    // target cross-section box
-    el("rect",{x:X(-HULL_X),y:Y(BODY),width:X(HULL_X)-X(-HULL_X),height:Y(-BODY)-Y(BODY),fill:cssv('--hit'),"fill-opacity":0.12,stroke:cssv('--hit'),"stroke-width":1.2,rx:4},s);
-    el("text",{x:X(HULL_X)-4,y:Y(BODY)-5,"text-anchor":"end",fill:cssv('--hit'),"font-size":10},s).textContent="UAV body";
-    // aim point
-    el("line",{x1:X(0)-6,y1:Y(0),x2:X(0)+6,y2:Y(0),stroke:muted,"stroke-width":1.2},s);
-    el("line",{x1:X(0),y1:Y(0)-6,x2:X(0),y2:Y(0)+6,stroke:muted,"stroke-width":1.2},s);
-    // points
-    F.forEach(function(f){
-      el("circle",{cx:X(f.missX),cy:Y(f.missZ),r:2.6,fill:f.onBody?cssv('--hit'):cssv('--miss'),opacity:f.onBody?0.9:0.45},s);
-    });
-    // centroid + spread ellipse
-    el("ellipse",{cx:X(mx),cy:Y(mz),rx:Math.abs(X(mx+sx)-X(mx)),ry:Math.abs(Y(mz+sz)-Y(mz)),fill:"none",stroke:cssv('--energy'),"stroke-width":1.4,"stroke-dasharray":"4 3",opacity:.9},s);
-    el("circle",{cx:X(mx),cy:Y(mz),r:3.4,fill:cssv('--energy')},s);
-    el("text",{x:X(mx)+8,y:Y(mz)-8,fill:cssv('--energy'),"font-size":10},s).textContent="centroid ("+mx.toFixed(2)+", "+mz.toFixed(2)+")";
-  })();
+  // ---- orbit + zoom ----
+  var drag=false, lx=0, ly=0;
+  cv.addEventListener('pointerdown',function(e){drag=true; lx=e.clientX; ly=e.clientY; cv.setPointerCapture(e.pointerId);});
+  cv.addEventListener('pointermove',function(e){ if(!drag)return; az+=(e.clientX-lx)*0.008; el+=(e.clientY-ly)*0.006;
+    el=Math.max(-0.2,Math.min(1.3,el)); lx=e.clientX; ly=e.clientY; });
+  cv.addEventListener('pointerup',function(e){drag=false;});
+  cv.addEventListener('wheel',function(e){e.preventDefault(); scale*=Math.exp(-e.deltaY*0.0011); scale=Math.max(24,Math.min(140,scale));},{passive:false});
+  window.addEventListener('resize',resize);
 
-  // =================== MESH (top-down UAV with impacts by part) ===================
-  (function(){
-    var s=document.getElementById("mesh"); var W=460,H=340;
-    // draw UAV top-down centered, x along horizontal
-    var cx=230, scale=118;                       // px per metre
-    function PX(x){return cx+x*scale;}
-    function PY(y){return 150 - y*scale;}         // across-track vertical, small
-    var uav=cssv('--txt'),muted=cssv('--muted');
-    // wings (span vertical here for display)
-    el("rect",{x:PX(-CHORD),y:PY(SEMISPAN),width:PX(CHORD)-PX(-CHORD),height:PY(-SEMISPAN)-PY(SEMISPAN),rx:4,fill:uav,"fill-opacity":0.06,stroke:uav,"stroke-width":1.3,opacity:.8},s);
-    // fuselage
-    el("rect",{x:PX(-HULL_X),y:PY(BODY),width:PX(HULL_X)-PX(-HULL_X),height:PY(-BODY)-PY(BODY),rx:7,fill:uav,"fill-opacity":0.09,stroke:uav,"stroke-width":1.5,opacity:.9},s);
-    // tail
-    el("rect",{x:PX(TAIL_X[0]),y:PY(TAIL_HW),width:PX(TAIL_X[1])-PX(TAIL_X[0]),height:PY(-TAIL_HW)-PY(TAIL_HW),rx:3,fill:"none",stroke:uav,"stroke-width":1.2,opacity:.7},s);
-    el("text",{x:PX(0),y:PY(SEMISPAN)-8,"text-anchor":"middle",fill:muted,"font-size":10},s).textContent="nose ◀   fuselage 2.5 m   ▶ tail";
-    // place impacts by part region (illustrative positions)
-    var rr=rng(7);
-    hits.forEach(function(h){
-      var x,y;
-      if(h.part==='fuselage'){x=(-0.9+1.8*rr()); y=(-BODY+2*BODY*rr());}
-      else if(h.part==='wing'){x=(-CHORD+2*CHORD*rr()); y=(rr()<0.5?-1:1)*(0.25+1.15*rr());}
-      else {x=TAIL_X[0]+(TAIL_X[1]-TAIL_X[0])*rr(); y=(-TAIL_HW+2*TAIL_HW*rr());}
-      var kc=keColor(h.KE);
-      el("circle",{cx:PX(x),cy:PY(y),r:3.1,fill:kc.c,opacity:kc.op},s);
-    });
-    // per-part bars (bottom)
-    var by=272, bx=40, bw=120;
-    var maxp=Math.max(parts.fuselage,parts.wing,parts.tail,1);
-    [["fuselage",parts.fuselage],["wing",parts.wing],["tail",parts.tail]].forEach(function(p,i){
-      var yy=by+i*20;
-      el("text",{x:bx-6,y:yy+9,"text-anchor":"end",fill:muted,"font-size":10.5},s).textContent=p[0];
-      el("rect",{x:bx,y:yy,width:bw,height:12,rx:3,fill:cssv('--chip'),stroke:cssv('--line'),"stroke-width":1},s);
-      el("rect",{x:bx,y:yy,width:bw*p[1]/maxp,height:12,rx:3,fill:cssv('--energy'),opacity:.85},s);
-      el("text",{x:bx+bw+8,y:yy+9,fill:cssv('--txt'),"font-size":10.5},s).textContent=p[1];
-    });
-    el("text",{x:bx+bw+40,y:by-6,fill:muted,"font-size":10},s).textContent="dot shade = kinetic energy";
-  })();
-
-  // =================== DELAY BUDGET ===================
-  (function(){
-    var s=document.getElementById("budget"); var W=460,H=200, m={l:16,r:16,t:24,b:30};
-    var terms=[["sensing 1",0.5,cssv('--geo')],["sensing 2",0.2,"color-mix(in srgb,var(--geo) 55%, var(--muted))"],["fragment flight",5.0,cssv('--energy')]];
-    var tot=terms.reduce(function(a,t){return a+t[1];},0);   // 5.7 ms
-    var y=44, h=34, x=m.l, bw=W-m.l-m.r;
-    terms.forEach(function(t){
-      var w=bw*t[1]/tot;
-      el("rect",{x:x,y:y,width:w,height:h,fill:t[2],opacity:.9,stroke:cssv('--ink'),"stroke-width":1},s);
-      if(w>60){el("text",{x:x+w/2,y:y+h/2+4,"text-anchor":"middle",fill:cssv('--ink'),"font-size":11,"font-weight":600},s).textContent=(100*t[1]/tot).toFixed(1)+"%";}
-      x+=w;
-    });
-    // labels
-    var lx=m.l, ly=y+h+22;
-    terms.forEach(function(t,i){
-      var g=el("g",{},s);
-      el("rect",{x:lx,y:ly-9,width:10,height:10,rx:2,fill:t[2]},g);
-      el("text",{x:lx+15,y:ly,fill:cssv('--muted'),"font-size":11},g).textContent=t[0]+" ("+t[1]+" ms)";
-      lx+=t[0].length*7+58;
-    });
-    el("text",{x:W-m.r,y:30,"text-anchor":"end",fill:cssv('--txt'),"font-size":12},s).textContent="total window ≈ 5.7 ms";
-  })();
-
-  // =================== SWEEP A ===================
-  (function(){
-    var s=document.getElementById("sweepA"); var W=460,H=240,m={l:52,r:16,t:16,b:38};
-    function X(v){return lerp(m.l,W-m.r,(v-800)/(1200-800));}
-    var ys=[]; for(var v=800;v<=1200;v+=20){ys.push([v, CLOSE*(OFF/v)]);}  // along-track miss (perp)
-    var ymin=CLOSE*(OFF/1200), ymax=CLOSE*(OFF/800);
-    function Y(y){return lerp(H-m.b,m.t,(y-ymin)/(ymax-ymin));}
-    var grid=cssv('--grid'),muted=cssv('--muted');
-    [800,900,1000,1100,1200].forEach(function(v){el("line",{x1:X(v),y1:m.t,x2:X(v),y2:H-m.b,stroke:grid,"stroke-width":1},s);
-      el("text",{x:X(v),y:H-m.b+15,"text-anchor":"middle",fill:muted,"font-size":10},s).textContent=v;});
-    [ymin,(ymin+ymax)/2,ymax].forEach(function(y){el("line",{x1:m.l,y1:Y(y),x2:W-m.r,y2:Y(y),stroke:grid,"stroke-width":1},s);
-      el("text",{x:m.l-8,y:Y(y)+3,"text-anchor":"end",fill:muted,"font-size":10},s).textContent=y.toFixed(2);});
-    var d=ys.map(function(p,i){return (i?"L":"M")+X(p[0])+" "+Y(p[1]);}).join(" ");
-    el("path",{d:d,fill:"none",stroke:cssv('--geo'),"stroke-width":2},s);
-    el("circle",{cx:X(1000),cy:Y(CLOSE*OFF/1000),r:3.5,fill:cssv('--geo')},s);
-    el("text",{x:X(1000)+6,y:Y(CLOSE*OFF/1000)-6,fill:cssv('--geo'),"font-size":10},s).textContent="nominal 1000 m/s";
-    el("text",{x:(m.l+W-m.r)/2,y:H-4,"text-anchor":"middle",fill:muted,"font-size":11},s).textContent="fragment speed (m/s)";
-    el("text",{x:13,y:(m.t+H-m.b)/2,"text-anchor":"middle",fill:muted,"font-size":11,transform:"rotate(-90 13 "+((m.t+H-m.b)/2)+")"},s).textContent="along-track miss (m)";
-  })();
-
-  // =================== SWEEP B ===================
-  (function(){
-    var s=document.getElementById("sweepB"); var W=460,H=240,m={l:44,r:44,t:16,b:38};
-    function X(a){return lerp(m.l,W-m.r,a/30);}
-    function YL(v){return lerp(H-m.b,m.t,v);}          // 0..1 coverage
-    function YR(v){return lerp(H-m.b,m.t,v);}          // 0..1 density (normalised)
-    var grid=cssv('--grid'),muted=cssv('--muted');
-    [0,10,20,30].forEach(function(a){el("line",{x1:X(a),y1:m.t,x2:X(a),y2:H-m.b,stroke:grid,"stroke-width":1},s);
-      el("text",{x:X(a),y:H-m.b+15,"text-anchor":"middle",fill:muted,"font-size":10},s).textContent=a+"°";});
-    var cov=[],den=[];
-    for(var a=0;a<=30;a+=2){
-      var c=1-Math.exp(-a/11);            // rises, saturates
-      var dfrac=1/(1+a*a/70);             // falls
-      cov.push([a,0.15+0.8*c]); den.push([a,dfrac]);
-    }
-    var dc=cov.map(function(p,i){return (i?"L":"M")+X(p[0])+" "+YL(p[1]);}).join(" ");
-    var dd=den.map(function(p,i){return (i?"L":"M")+X(p[0])+" "+YR(p[1]);}).join(" ");
-    el("path",{d:dc,fill:"none",stroke:cssv('--geo'),"stroke-width":2},s);
-    el("path",{d:dd,fill:"none",stroke:cssv('--energy'),"stroke-width":2,"stroke-dasharray":"5 3"},s);
-    el("text",{x:m.l-8,y:YL(1)+3,"text-anchor":"end",fill:cssv('--geo'),"font-size":10},s).textContent="high";
-    el("text",{x:m.l-8,y:YL(0.15)+3,"text-anchor":"end",fill:cssv('--geo'),"font-size":10},s).textContent="low";
-    el("text",{x:(m.l+W-m.r)/2,y:H-4,"text-anchor":"middle",fill:muted,"font-size":11},s).textContent="fan half-angle (deg)";
-  })();
-
-  // =================== SUMMARY ===================
-  (function(){
-    var box=document.getElementById("summ");
-    var rows=[
-      ["Closing speed",CLOSE.toFixed(1)+" m/s"],
-      ["Electronics window","700 – 1200 µs"],
-      ["Representative flight","5.0 ms  (at 1000 m/s)"],
-      ["Total window","≈ 5.7 ms"],
-      ["Particles / non-crossing",N+" / "+ (N-nCross)],
-      ["On-body impacts","<b>"+nHits+"</b> of "+N+"  ("+(100*nHits/N).toFixed(0)+"%)"],
-      ["By part","fus "+parts.fuselage+" · wing "+parts.wing+" · tail "+parts.tail],
-      ["Pattern centroid","("+mx.toFixed(2)+", "+mz.toFixed(2)+") m"],
-      ["Pattern spread","σx "+sx.toFixed(2)+" · σz "+sz.toFixed(2)+" m"],
-      ["Kinetic energy","Σ "+ (KEtot/1000).toFixed(1)+" kJ · avg "+KEavg.toFixed(0)+" J"]
-    ];
-    rows.forEach(function(r){
-      var d=document.createElement("div"); d.className="row";
-      d.innerHTML='<span class="k">'+r[0]+'</span><span class="v">'+r[1]+'</span>';
-      box.appendChild(d);
-    });
-  })();
-
-  // theme re-render on toggle
-  var mo=new MutationObserver(function(){ /* colors are CSS vars; only canvas-like hero needs redraw */ startAnim(); });
-  mo.observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
-
-  startAnim();
+  resize();
+  if(prefersReduce){ playing=false; playBtn.textContent='▶ Play'; t=Math.min(1,lastHitF); }
+  raf=requestAnimationFrame(frame);
 })();
 </script>
 </body>
