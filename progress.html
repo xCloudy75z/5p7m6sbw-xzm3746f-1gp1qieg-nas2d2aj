@@ -150,8 +150,24 @@ const PHASES=[
  {id:"realdrone", title:"Real drone + burst geometry + fragment data", status:"active",
   desc:"Bringing in the real Bayraktar TB2 shape, deciding how the burst is placed around it, and pinning down the real fragmentation data the model needs.",
   note:"In progress. Real TB2 STL received, measured, and shown in a live 3-D viewer. Geometry model chosen (measure the 5 m miss from the skin + any-angle 360 burst, no forbidden zone) - awaiting your final lock. Found that the real fragment directions/speeds must come from a warhead break-up export (SM-T.xlsx / ANSYS Autodyn-type) - the mentor's code already reads this format; the current fragments are a labelled placeholder. That data file is the one external dependency.",
-  steps:[{n:"Real STL received + measured", s:"done"},{n:"Real drone shown in 3-D (hub)", s:"done"},{n:"Geometry model chosen", s:"active"},{n:"Lock the decision", s:"todo"},{n:"Real fragment data (from mentor)", s:"todo"},{n:"Wire STL + data into the engine", s:"todo"}],
-  breaks:[]}
+  steps:[{n:"Real STL received + measured", s:"done"},{n:"Real drone shown in 3-D (hub)", s:"done"},{n:"Geometry model chosen", s:"done"},{n:"Lock the decision", s:"done"},{n:"Real fragment data (from mentor)", s:"done"},{n:"Wire STL + data into the engine", s:"active"}],
+  breaks:[]},
+ {id:"loadfrag", title:"Real fragment loader (loadFragments.m)", status:"done",
+  desc:"The reader that turns the mentor's real ANSYS/hydrocode fragment table into clean engine data (real per-fragment mass, direction and speed), replacing the made-up placeholder fragments.",
+  note:"Shipped through the full gated flow - 147/147 tests green in Octave AND MATLAB. Verified a 40-fragment real sample (units cross-checked against the file's own speed and energy columns). Robust to the messy ways a real export can arrive (Windows/Excel line-endings, byte-order marks, blank cells, trailing commas) and refuses to silently misread a mis-formatted file.",
+  steps:[{n:"Design approved", s:"done"},{n:"Break the spec", s:"done"},{n:"Plan", s:"done"},{n:"Break the plan", s:"done"},{n:"Build (TDD)", s:"done"},{n:"Break the build x2 + confirm", s:"done"}],
+  breaks:[
+    {stage:"Break the SPEC", verdict:"1 major + 3 minor fixed", items:[
+      "Pinned exactly how the file is parsed (line-endings, byte-order marks, header, trailing commas) instead of leaving it vague.",
+      "Documented that the loader is built and tested on its own and is deliberately not yet wired into the main tool (that is the next step)."]},
+    {stage:"Break the PLAN", verdict:"1 blocker + 2 major fixed", items:[
+      "Resolved a contradiction over how to treat malformed rows: they are dropped and counted, and a wrong file format now fails loudly.",
+      "Added the missing tests for the error cases (all-rows-bad, short rows) and made the byte-order-mark test actually prove the stripping works."]},
+    {stage:"Break the BUILD x2 + confirm", verdict:"1 blocker + 2 major fixed", items:[
+      "Fixed a parser setting that could silently misalign columns when a real export leaves blank cells.",
+      "Added a self-check: each row's direction+speed must agree with the file's own speed column, so a locale/decimal-comma or shifted-column file is caught instead of silently giving wrong numbers.",
+      "Confirm pass: all fixes verified, no regressions."]}
+  ]}
 ];
 const counts={done:0,active:0,queued:0}; PHASES.forEach(p=>counts[p.status]++);
 document.getElementById("tally").innerHTML=
