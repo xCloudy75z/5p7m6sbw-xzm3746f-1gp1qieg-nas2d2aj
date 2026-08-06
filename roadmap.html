@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Project line — Interceptor Engagement Sim</title>
+<title>Project roadmap — Interceptor Engagement Sim</title>
 <script>
   (function(){ try{ var t=localStorage.getItem('theme'); if(!t) t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
     document.documentElement.setAttribute('data-theme',t);}catch(e){} })();
@@ -24,49 +24,37 @@
   *{box-sizing:border-box} html,body{margin:0}
   body{background:radial-gradient(1100px 460px at 78% -10%, var(--accent-soft), transparent 60%), var(--ink);
     color:var(--txt);font-family:var(--sans);line-height:1.55;min-height:100vh}
-  .wrap{max-width:820px;margin:0 auto;padding:clamp(28px,6vw,60px) 20px 90px}
+  .wrap{max-width:940px;margin:0 auto;padding:clamp(28px,6vw,64px) 20px 80px}
   .back{font-family:var(--mono);font-size:12px;color:var(--accent);text-decoration:none}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-top:14px}
   h1{font-size:clamp(28px,5vw,40px);margin:8px 0 6px;letter-spacing:-.02em}
-  .lede{color:var(--soft);font-size:16px;max-width:64ch;margin:0 0 18px}
-  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:16px 0 26px;font-family:var(--mono);font-size:11.5px}
-  .legend span{display:inline-flex;align-items:center;gap:7px;color:var(--soft)}
-  .key{width:14px;height:14px;border-radius:50%;flex:none;border:3px solid var(--green);background:var(--green)}
-  .key.done{border-color:var(--green);background:var(--green)}
-  .key.here{border-color:var(--amber);background:var(--card)}
-  .key.next{border-color:var(--accent);background:var(--card)}
-  .key.later{border-color:var(--faint);background:var(--card)}
-
-  /* the line */
-  .line{position:relative;margin-left:8px;padding-left:0}
-  .station{position:relative;padding:0 0 30px 58px;min-height:56px}
-  /* the vertical track */
-  .station::before{content:"";position:absolute;left:19px;top:6px;bottom:-6px;width:5px;border-radius:3px;background:var(--track,var(--line))}
-  .station:last-child::before{display:none}
-  .station.seg-done{--track:var(--green)}
-  .station.seg-next{--track:linear-gradient(var(--green),var(--line))}
-  /* node */
-  .node{position:absolute;left:9px;top:2px;width:25px;height:25px;border-radius:50%;background:var(--card);
-    border:5px solid var(--faint);z-index:2}
-  .st-done .node{border-color:var(--green);background:var(--green)}
-  .st-done .node::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    color:#fff;font-size:12px;font-weight:800}
-  .st-here .node{border-color:var(--amber);box-shadow:0 0 0 6px color-mix(in srgb,var(--amber) 22%,transparent)}
-  .st-next .node{border-color:var(--accent)}
-  .st-later .node{border-color:var(--faint)}
-  /* card */
-  .stt{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .stt h3{margin:0;font-size:16px}
-  .badge{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
-  .b-done{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green)}
-  .b-here{background:color-mix(in srgb,var(--amber) 18%,transparent);color:var(--amber)}
-  .b-next{background:var(--accent-soft);color:var(--accent-strong)}
-  .b-later{background:color-mix(in srgb,var(--faint) 20%,transparent);color:var(--soft)}
-  .b-arr{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green)}
-  .station p{margin:5px 0 0;font-size:13.5px;color:var(--soft)}
-  .station p a{color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:12.5px}
-  .station p a:hover{text-decoration:underline}
-  footer{margin-top:20px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+  .lede{color:var(--soft);font-size:16px;max-width:66ch;margin:0 0 18px}
+  .goal{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:0 0 8px}
+  .goal b{color:var(--accent-strong)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:22px 0 6px;font-family:var(--mono);font-size:11.5px}
+  .legend span{display:inline-flex;align-items:center;gap:6px;color:var(--soft)}
+  .legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .sec{margin-top:26px}
+  .sec-h{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+  .sec-h h2{font-size:16px;margin:0}
+  .sec-h .pill{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+  .rows{display:flex;flex-direction:column;gap:10px}
+  .row{background:var(--card);border:1px solid var(--line);border-left-width:4px;border-radius:12px;padding:13px 16px}
+  .row h3{margin:0 0 3px;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .row p{margin:0;font-size:13.5px;color:var(--soft)}
+  .row a{color:var(--accent);text-decoration:none;font-size:12.5px;font-family:var(--mono)}
+  .row a:hover{text-decoration:underline}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .d-done{background:var(--green)} .d-active{background:var(--amber)} .d-wait{background:var(--red)}
+  .d-next{background:var(--accent)} .d-later{background:var(--purple)}
+  .b-done{border-left-color:var(--green)} .b-active{border-left-color:var(--amber)} .b-wait{border-left-color:var(--red)}
+  .b-next{border-left-color:var(--accent)} .b-later{border-left-color:var(--purple)}
+  .p-done{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green)}
+  .p-active{background:color-mix(in srgb,var(--amber) 16%,transparent);color:var(--amber)}
+  .p-wait{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+  .p-next{background:var(--accent-soft);color:var(--accent-strong)}
+  .p-later{background:color-mix(in srgb,var(--purple) 15%,transparent);color:var(--purple)}
+  footer{margin-top:36px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
   .toggle{position:fixed;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
     background:var(--card);color:var(--txt);cursor:pointer;font-size:17px;box-shadow:var(--shadow)}
 </style>
@@ -76,84 +64,96 @@
 <div class="wrap">
   <a class="back" href="index.html">← hub</a>
   <div class="eyebrow">Interceptor Engagement Sim</div>
-  <h1>The project line</h1>
-  <p class="lede">Every milestone is a station. Green stations are done, the amber station is where we are now,
-    and the line continues to what's ahead. One ride from idea to finished tool.</p>
+  <h1>Project roadmap</h1>
+  <p class="lede">The whole picture on one page: what the tool is, what's already built, what we're deciding
+    now, the one thing we're waiting on, and what we can keep building meanwhile.</p>
 
-  <div class="legend">
-    <span><i class="key done"></i>Done</span>
-    <span><i class="key here"></i>You are here</span>
-    <span><i class="key next"></i>Next</span>
-    <span><i class="key later"></i>Later</span>
+  <div class="goal">
+    <b>The goal.</b> A MATLAB tool (physics core also runs in Octave) that models a head-on air intercept:
+    a proximity-fuzed warhead bursts a few metres from a UAV, hundreds of fragments fly out and strike a
+    3-D drone mesh. It reports <b>which parts are hit, where, when, and with how much kinetic energy</b>,
+    plus coverage — and renders a 3-D animation. Reviewed entirely as live web pages.
   </div>
 
-  <div class="line">
+  <div class="legend">
+    <span><i class="d-done"></i>Done</span>
+    <span><i class="d-active"></i>Deciding now</span>
+    <span><i class="d-wait"></i>Waiting on data</span>
+    <span><i class="d-next"></i>Next — buildable now</span>
+    <span><i class="d-later"></i>Later — planned</span>
+  </div>
 
-    <div class="station st-done seg-done">
-      <div class="node"></div>
-      <div class="stt"><h3>Design</h3><span class="badge b-done">Done</span></div>
-      <p>The intercept model, specced and attacked twice (break-spec), physics independently re-derived correct.</p>
+  <!-- DONE -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-done">Done</span><h2>What we have</h2></div>
+    <div class="rows">
+      <div class="row b-done"><h3><span class="dot d-done"></span>Design approved &amp; hardened</h3>
+        <p>The intercept model was specced, then attacked twice (break-spec) and the physics independently re-derived correct; the build plan was attacked too (break-plan).</p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Physics engine — bundles 1–3</h3>
+        <p>Fragment generation, flight with drag/gravity (RK4), 3-D mesh hit-detection, coverage, timing &amp; delay budget, full printed summary. <b>119/119 tests green in Octave <i>and</i> MATLAB</b>, each bundle attacked twice (break-build ×2).</p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Review hub (bundle 5)</h3>
+        <p>This site — front door, plain-English design, the live progress board, real-output charts. <a href="progress.html">progress →</a></p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>3-D animation look (bundle 4 mockup) — approved</h3>
+        <p>The rotatable, energy-coloured animation design, signed off as a live page. <a href="animation.html">mockup →</a></p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Real MQ-1 Predator (clean airframe) — received &amp; shown in 3-D</h3>
+        <p>Your uploaded STL (MQ-1 Predator), measured, scaled to real size (length 8.3&nbsp;m · span 14.8&nbsp;m), and rendered as a live rotatable 3-D viewer. <a href="real-drone-3d.html">real drone 3D →</a></p></div>
     </div>
+  </div>
 
-    <div class="station st-done seg-done">
-      <div class="node"></div>
-      <div class="stt"><h3>Physics engine</h3><span class="badge b-done">Done</span></div>
-      <p>Bundles 1–3: fragments → flight (drag/gravity, RK4) → 3-D hit-detection → coverage/timing. 119/119 tests green in Octave &amp; MATLAB.</p>
+  <!-- DECIDING -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-active">Deciding now</span><h2>The burst-geometry choice</h2></div>
+    <div class="rows">
+      <div class="row b-active"><h3><span class="dot d-active"></span>Skin-based miss + any-angle 360° burst</h3>
+        <p>Measure the 5&nbsp;m miss from the drone's <b>skin</b> (not its centreline) and let the burst sit at
+          <b>any</b> position around it — no forbidden zone. Explored in 3-D on the real drone; awaiting your
+          final lock. <a href="real-drone-3d.html">3D viewer →</a> · <a href="wing-geometry-skin.html">why it works →</a></p></div>
     </div>
+  </div>
 
-    <div class="station st-done seg-done">
-      <div class="node"></div>
-      <div class="stt"><h3>Review hub</h3><span class="badge b-done">Done</span></div>
-      <p>This site — where you review everything as live web pages. <a href="progress.html">progress →</a></p>
+  <!-- WAITING -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-wait">Waiting</span><h2>The one external dependency</h2></div>
+    <div class="rows">
+      <div class="row b-wait"><h3><span class="dot d-wait"></span>Real fragmentation data (from the mentor)</h3>
+        <p>The fragments are currently a <b>synthetic placeholder</b>. Real per-fragment directions, speeds and
+          masses come from a warhead break-up simulation (ANSYS Autodyn-type export — the <code>SM-T.xlsx</code>
+          file the mentor's code already reads). This is the <b>only true blocker</b>, and only for final
+          fragment realism — everything else can proceed.</p></div>
     </div>
+  </div>
 
-    <div class="station st-done seg-done">
-      <div class="node"></div>
-      <div class="stt"><h3>Real drone in 3-D</h3><span class="badge b-done">Done</span></div>
-      <p>The real MQ-1 Predator (full 28k triangles), rotatable, with the burst placeable at any angle. <a href="real-drone-3d.html">open →</a></p>
+  <!-- NEXT -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-next">Next</span><h2>Buildable now — no data needed</h2></div>
+    <div class="rows">
+      <div class="row b-next"><h3><span class="dot d-next"></span>Real TB2 into the engine</h3>
+        <p>A dual-safe STL loader (+ decimate, orient, part-tag) so the engine computes hits on the <b>real</b> drone shape — turning the by-part numbers real.</p></div>
+      <div class="row b-next"><h3><span class="dot d-next"></span>Skin-based offset + free burst placement in the engine</h3>
+        <p>Implement the geometry decision once locked — a friendly burst-position knob, no forbidden zone.</p></div>
+      <div class="row b-next"><h3><span class="dot d-next"></span>The data seam — <code>loadFragments.m</code> + tests</h3>
+        <p>Build and test the 18-column loader against a sample file, so the day the real data arrives it drops straight in.</p></div>
+      <div class="row b-next"><h3><span class="dot d-next"></span>Bundle 4 — real MATLAB 3-D animation + video</h3>
+        <p>The headline output: the actual MATLAB-rendered animation + MP4/GIF around the real drone, posted here.</p></div>
     </div>
+  </div>
 
-    <div class="station st-done seg-done">
-      <div class="node"></div>
-      <div class="stt"><h3>Fragment data from the mentor</h3><span class="badge b-arr">Just arrived</span></div>
-      <p>The real ANSYS/hydrocode burst data (1,004 fragments — mass, direction, speed). This was the one blocker — now in hand. Next: load the Excel into the tool.</p>
+  <!-- LATER -->
+  <div class="sec">
+    <div class="sec-h"><span class="pill p-later">Later</span><h2>Planned</h2></div>
+    <div class="rows">
+      <div class="row b-later"><h3><span class="dot d-later"></span>Lethality</h3>
+        <p>Kinetic-energy threshold + Sperrazza probability-of-kill per zone (cited, defensible to the instructor).</p></div>
+      <div class="row b-later"><h3><span class="dot d-later"></span>With-drag defensible energy numbers</h3>
+        <p>Report the drag-included impact energy alongside the no-drag upper bound.</p></div>
+      <div class="row b-later"><h3><span class="dot d-later"></span>Other intercept geometries</h3>
+        <p>Generalise beyond head-on to an arbitrary impact angle (the seam already exists).</p></div>
     </div>
-
-    <div class="station st-here seg-next">
-      <div class="node"></div>
-      <div class="stt"><h3>Lock the geometry model</h3><span class="badge b-here">You are here</span></div>
-      <p>Your final yes on: measure the 5 m miss from the skin + burst at any angle. Then it's settled and I build on it.</p>
-    </div>
-
-    <div class="station st-next seg-next">
-      <div class="node"></div>
-      <div class="stt"><h3>Real drone into the engine</h3><span class="badge b-next">Next</span></div>
-      <p>A dual-safe STL loader so the engine computes hits on the real Predator shape — real by-part numbers.</p>
-    </div>
-
-    <div class="station st-next seg-next">
-      <div class="node"></div>
-      <div class="stt"><h3>Real fragments into the engine</h3><span class="badge b-next">Next</span></div>
-      <p>The <code>loadFragments</code> seam reads the mentor's data — real directions/speeds/masses replace the placeholder.</p>
-    </div>
-
-    <div class="station st-next seg-next">
-      <div class="node"></div>
-      <div class="stt"><h3>MATLAB 3-D animation + video</h3><span class="badge b-next">Next</span></div>
-      <p>The headline output: the real animation + MP4/GIF around the Predator, posted here.</p>
-    </div>
-
-    <div class="station st-later">
-      <div class="node"></div>
-      <div class="stt"><h3>Lethality</h3><span class="badge b-later">Later</span></div>
-      <p>Kinetic-energy threshold + probability-of-kill per zone (cited, defensible to the instructor).</p>
-    </div>
-
   </div>
 
   <footer>
-    Reviewed remotely (REMOTE 2) as live web pages. Neutral academic framing (a student terminal-ballistics
-    assignment). This hub is <b>noindex</b>. Prefer the plain list? The earlier layout is in the page history.
+    Owner reviews remotely (REMOTE 2) — all of the above is live and honest. Neutral academic framing
+    throughout (a student terminal-ballistics assignment). This hub is <b>noindex</b>.
   </footer>
 </div>
 <script>
