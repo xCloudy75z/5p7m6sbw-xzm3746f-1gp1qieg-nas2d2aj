@@ -167,6 +167,22 @@ const PHASES=[
       "Fixed a parser setting that could silently misalign columns when a real export leaves blank cells.",
       "Added a self-check: each row's direction+speed must agree with the file's own speed column, so a locale/decimal-comma or shifted-column file is caught instead of silently giving wrong numbers.",
       "Confirm pass: all fixes verified, no regressions."]}
+  ]},
+ {id:"mapping", title:"Real fragments into the engine (mapping/aiming)", status:"done",
+  desc:"Connects the real fragments to the validated engine: orients the warhead's spray relative to the drone, places the burst 5 m from the skin at a chosen clock position, and carries each fragment's real mass into the energy numbers.",
+  note:"Shipped through the full gated flow - 182/182 tests green in Octave AND MATLAB, with the existing engine kept byte-identical. Real fragments now flow end-to-end and the tool prints a REAL-DATA summary. On the sample it shows 0 of 40 hits - this is honestly flagged as a placeholder-drone artifact (the tiny stand-in mesh, not the real Predator, is still in the engine), not a bug. Owner locked the geometry (skin-based miss, any angle) and approved the warhead orientation + a 12-o'clock default burst.",
+  steps:[{n:"Design approved (owner A + B)", s:"done"},{n:"Break the spec", s:"done"},{n:"Plan", s:"done"},{n:"Break the plan", s:"done"},{n:"Build (TDD)", s:"done"},{n:"Break the build x2 + confirm", s:"done"}],
+  breaks:[
+    {stage:"Break the SPEC", verdict:"2 blockers + 2 major fixed", items:[
+      "Pinned the exact rotation (which way the warhead points) so it can't be built as a mirror image, with a maths check.",
+      "Pinned how the engine function changes so all 119 existing physics tests stay identical."]},
+    {stage:"Break the PLAN", verdict:"2 blockers fixed", items:[
+      "Fixed a test that expected a hit where the fragment actually misses (the closing speed drifts it sideways).",
+      "Stopped the real-data run from printing 'NaN' in the timing line."]},
+    {stage:"Break the BUILD x2 + confirm", verdict:"1 severe + majors fixed", items:[
+      "Honesty fix: the real-data summary no longer prints synthetic-model timing/fire-early numbers under a REAL-DATA banner - it omits them and says why.",
+      "The 0-hits result now clearly says the drone is still a placeholder and the count depends on burst position, so it doesn't look broken.",
+      "Added validation on the burst-position knob. Confirm pass: all resolved, no regressions."]}
   ]}
 ];
 const counts={done:0,active:0,queued:0}; PHASES.forEach(p=>counts[p.status]++);
