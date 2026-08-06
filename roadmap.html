@@ -100,26 +100,25 @@
     </div>
   </div>
 
-  <!-- DECIDING -->
+  <!-- LOCKED -->
   <div class="sec">
-    <div class="sec-h"><span class="pill p-active">Deciding now</span><h2>The burst-geometry choice</h2></div>
+    <div class="sec-h"><span class="pill p-done">Locked</span><h2>The burst-geometry choice</h2></div>
     <div class="rows">
-      <div class="row b-active"><h3><span class="dot d-active"></span>Skin-based miss + any-angle 360° burst</h3>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Skin-based miss + any-angle burst — LOCKED</h3>
         <p>Measure the 5&nbsp;m miss from the drone's <b>skin</b> (not its centreline) and let the burst sit at
-          <b>any</b> position around it — no forbidden zone. Explored in 3-D on the real drone; awaiting your
-          final lock. <a href="real-drone-3d.html">3D viewer →</a> · <a href="wing-geometry-skin.html">why it works →</a></p></div>
+          <b>any</b> position around it — no forbidden zone. Verified in 3-D on the real drone and <b>locked by the owner</b>.
+          <a href="real-drone-3d.html">3D viewer →</a> · <a href="wing-geometry-skin.html">why it works →</a></p></div>
     </div>
   </div>
 
-  <!-- WAITING -->
+  <!-- ARRIVED -->
   <div class="sec">
-    <div class="sec-h"><span class="pill p-wait">Waiting</span><h2>The one external dependency</h2></div>
+    <div class="sec-h"><span class="pill p-done">Arrived</span><h2>Real fragmentation data</h2></div>
     <div class="rows">
-      <div class="row b-wait"><h3><span class="dot d-wait"></span>Real fragmentation data (from the mentor)</h3>
-        <p>The fragments are currently a <b>synthetic placeholder</b>. Real per-fragment directions, speeds and
-          masses come from a warhead break-up simulation (ANSYS Autodyn-type export — the <code>SM-T.xlsx</code>
-          file the mentor's code already reads). This is the <b>only true blocker</b>, and only for final
-          fragment realism — everything else can proceed.</p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Real burst data received from the mentor</h3>
+        <p>The real ANSYS/hydrocode fragmentation output — <b>1,004 fragments</b> with per-fragment mass, direction and
+          speed (the 18-column schema the tool was built for). Units verified (velocity = momentum ÷ mass = the given
+          speed). This was the one blocker — now resolved. Next: load it into the engine via <code>loadFragments</code>.</p></div>
     </div>
   </div>
 
@@ -127,7 +126,7 @@
   <div class="sec">
     <div class="sec-h"><span class="pill p-next">Next</span><h2>Buildable now — no data needed</h2></div>
     <div class="rows">
-      <div class="row b-next"><h3><span class="dot d-next"></span>Real TB2 into the engine</h3>
+      <div class="row b-next"><h3><span class="dot d-next"></span>Real Predator into the engine</h3>
         <p>A dual-safe STL loader (+ decimate, orient, part-tag) so the engine computes hits on the <b>real</b> drone shape — turning the by-part numbers real.</p></div>
       <div class="row b-next"><h3><span class="dot d-next"></span>Skin-based offset + free burst placement in the engine</h3>
         <p>Implement the geometry decision once locked — a friendly burst-position knob, no forbidden zone.</p></div>
