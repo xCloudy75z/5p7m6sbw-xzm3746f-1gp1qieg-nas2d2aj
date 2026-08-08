@@ -150,7 +150,7 @@ const PHASES=[
  {id:"realdrone", title:"Real drone + burst geometry + fragment data", status:"active",
   desc:"Bringing in the real Bayraktar TB2 shape, deciding how the burst is placed around it, and pinning down the real fragmentation data the model needs.",
   note:"In progress. Real TB2 STL received, measured, and shown in a live 3-D viewer. Geometry model chosen (measure the 5 m miss from the skin + any-angle 360 burst, no forbidden zone) - awaiting your final lock. Found that the real fragment directions/speeds must come from a warhead break-up export (SM-T.xlsx / ANSYS Autodyn-type) - the mentor's code already reads this format; the current fragments are a labelled placeholder. That data file is the one external dependency.",
-  steps:[{n:"Real STL received + measured", s:"done"},{n:"Real drone shown in 3-D (hub)", s:"done"},{n:"Geometry model chosen", s:"done"},{n:"Lock the decision", s:"done"},{n:"Real fragment data (from mentor)", s:"done"},{n:"Wire STL + data into the engine", s:"active"}],
+  steps:[{n:"Real STL received + measured", s:"done"},{n:"Real drone shown in 3-D (hub)", s:"done"},{n:"Geometry model chosen", s:"done"},{n:"Lock the decision", s:"done"},{n:"Real fragment data (from mentor)", s:"done"},{n:"Wire the real STL into the engine", s:"done"},{n:"Wire the full 1,004-fragment file (needs your MATLAB upload)", s:"active"}],
   breaks:[]},
  {id:"loadfrag", title:"Real fragment loader (loadFragments.m)", status:"done",
   desc:"The reader that turns the mentor's real ANSYS/hydrocode fragment table into clean engine data (real per-fragment mass, direction and speed), replacing the made-up placeholder fragments.",
@@ -183,6 +183,26 @@ const PHASES=[
       "Honesty fix: the real-data summary no longer prints synthetic-model timing/fire-early numbers under a REAL-DATA banner - it omits them and says why.",
       "The 0-hits result now clearly says the drone is still a placeholder and the count depends on burst position, so it doesn't look broken.",
       "Added validation on the burst-position knob. Confirm pass: all resolved, no regressions."]}
+  ]},
+ {id:"loadstl", title:"Real Predator drone into the engine (loadSTLmesh.m)", status:"done",
+  desc:"Loads the real 28,074-triangle MQ-1 Predator 3-D model into the engine, so the hit count, coverage and fuselage/wing/tail breakdown are computed against the real drone shape instead of the crude placeholder.",
+  note:"Shipped through the full gated flow - 214/214 tests green in Octave AND MATLAB. The real drone now runs end-to-end in about 0.6 seconds (the naive way would have taken ~47 minutes). The fast hit-detector was proven to give bit-for-bit identical answers to the trusted slow one on the real drone - on both hits and misses. On the 40-fragment sample it still shows a low hit count, now honestly flagged as a SAMPLING artifact (a thin fragment sample against a thin target, and about half the spray goes the other way) - the full 1,004-fragment file will give the real coverage picture.",
+  steps:[{n:"Design approved", s:"done"},{n:"Break the spec", s:"done"},{n:"Plan", s:"done"},{n:"Break the plan", s:"done"},{n:"Build (TDD)", s:"done"},{n:"Break the build x2 + confirm", s:"done"}],
+  breaks:[
+    {stage:"Speed check (measured, not assumed)", verdict:"real drone was ~47 min - fixed to under 1 s", items:[
+      "You asked why the big model was a problem, so we timed it on your machine: the naive method took 129 s for 40 fragments (about 47 min for the full set). The cause was an un-optimised loop, not the drone's size.",
+      "Rewrote the hit-detector to test all triangles at once and skip the ones a fragment can't reach - the full drone now runs in under a second, keeping every one of the 28,074 triangles (no shape sacrificed), with results proven identical to the trusted method."]},
+    {stage:"Break the SPEC", verdict:"1 blocker + 4 major fixed", items:[
+      "The 'identical results' claim was only tested on a toy shape - added a test that proves it on the REAL drone at full scale.",
+      "Measured the real drone for zero-area junk triangles (found 56) so they are dropped safely at load instead of causing rounding disagreements.",
+      "Caught that a mirrored or upside-down load could slip past a size-only check - added direction checks and a maths guard against mirror-loading."]},
+    {stage:"Break the PLAN", verdict:"1 blocker fixed", items:[
+      "A test meant to tolerate a harmless tie was written so it could never fail - rewrote it so a genuinely wrong part label (e.g. calling a fuselage hit a wing hit) is now caught."]},
+    {stage:"Break the BUILD x2 + confirm", verdict:"1 major + fixes", items:[
+      "The drone loaded FRONT-TO-BACK REVERSED (nose where the tail should be) yet passed every size check - caught by the nose-direction test, fixed with a 180-degree rotation.",
+      "A reviewer then built a still-valid rotation that loaded the drone UPSIDE-DOWN and it slipped through - added an up/down check (this airframe's tail sits low) so every orientation flip is now caught.",
+      "The summary was still printing 'placeholder drone' while actually running the REAL one - fixed to state the truth for each run, and to note the part labels are a geometric estimate, not a CAD breakdown.",
+      "Confirm pass: all fixes verified, 214/214 in both runtimes, no regressions."]}
   ]}
 ];
 const counts={done:0,active:0,queued:0}; PHASES.forEach(p=>counts[p.status]++);

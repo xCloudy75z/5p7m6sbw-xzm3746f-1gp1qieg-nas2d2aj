@@ -124,14 +124,19 @@
 
   <!-- NEXT -->
   <div class="sec">
-    <div class="sec-h"><span class="pill p-next">Next</span><h2>Buildable now — no data needed</h2></div>
+    <div class="sec-h"><span class="pill p-done">Just shipped</span><h2>Real drone + real fragments, wired into the engine</h2></div>
     <div class="rows">
-      <div class="row b-next"><h3><span class="dot d-next"></span>Real Predator into the engine</h3>
-        <p>A dual-safe STL loader (+ decimate, orient, part-tag) so the engine computes hits on the <b>real</b> drone shape — turning the by-part numbers real.</p></div>
-      <div class="row b-next"><h3><span class="dot d-next"></span>Skin-based offset + free burst placement in the engine</h3>
-        <p>Implement the geometry decision once locked — a friendly burst-position knob, no forbidden zone.</p></div>
-      <div class="row b-next"><h3><span class="dot d-next"></span>The data seam — <code>loadFragments.m</code> + tests</h3>
-        <p>Build and test the 18-column loader against a sample file, so the day the real data arrives it drops straight in.</p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Real Predator into the engine — SHIPPED</h3>
+        <p>A dual-safe STL loader that puts the real 28,074-triangle Predator into the engine (oriented, scaled, part-tagged). The full drone now runs in <b>~0.6&nbsp;s</b> (the naive way would take ~47&nbsp;min); a fast hit-detector was proven <b>bit-for-bit identical</b> to the trusted one. <b>214/214 tests green in Octave <i>and</i> MATLAB.</b> <a href="progress.html">the break-it trail →</a></p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>Skin-based offset + free burst placement — SHIPPED</h3>
+        <p>The locked geometry is live: burst measured 5&nbsp;m from the real skin, at any clock position (a friendly knob), no forbidden zone.</p></div>
+      <div class="row b-done"><h3><span class="dot d-done"></span>The data seam — <code>loadFragments.m</code> + real mapping — SHIPPED</h3>
+        <p>The 18-column loader and the mapping that carries real per-fragment mass/direction into the engine, both fully gated. Real fragments flow end-to-end.</p></div>
+    </div>
+    <div class="sec-h" style="margin-top:1.4rem"><span class="pill p-next">Next</span><h2>What's left</h2></div>
+    <div class="rows">
+      <div class="row b-next"><h3><span class="dot d-next"></span>Your full 1,004-fragment file → MATLAB</h3>
+        <p>The sample is 40 fragments (a low hit count is a sampling artifact); dropping the full 1,004-row file into MATLAB gives the real coverage picture. Only you can do this (no browser upload).</p></div>
       <div class="row b-next"><h3><span class="dot d-next"></span>Bundle 4 — real MATLAB 3-D animation + video</h3>
         <p>The headline output: the actual MATLAB-rendered animation + MP4/GIF around the real drone, posted here.</p></div>
     </div>
