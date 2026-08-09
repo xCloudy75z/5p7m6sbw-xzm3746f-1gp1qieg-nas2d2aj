@@ -126,6 +126,8 @@
   <div class="sec">
     <div class="sec-h"><span class="pill p-done">Just shipped</span><h2>Real drone + real fragments, wired into the engine</h2></div>
     <div class="rows">
+      <div class="row b-done"><h3><span class="dot d-done"></span>▶ 3-D engagement animation (native MATLAB) — <a href="engagement.html"><b>watch it</b></a></h3>
+        <p>The interceptor closes head-on, the warhead bursts 5&nbsp;m from the skin, and the fragments strike the real Predator — impacts coloured by kinetic energy. <b>Final answer:</b> detonate <b>1.44&nbsp;m</b> before closest approach (6.34&nbsp;ms early) to land the pattern. Runs in MATLAB via <code>runInterceptorSim.mlx</code>. <a href="engagement.html">watch the video →</a></p></div>
       <div class="row b-done"><h3><span class="dot d-done"></span>Real Predator into the engine — SHIPPED</h3>
         <p>A dual-safe STL loader that puts the real 28,074-triangle Predator into the engine (oriented, scaled, part-tagged). The full drone now runs in <b>~0.6&nbsp;s</b> (the naive way would take ~47&nbsp;min); a fast hit-detector was proven <b>bit-for-bit identical</b> to the trusted one. <b>214/214 tests green in Octave <i>and</i> MATLAB.</b> <a href="progress.html">the break-it trail →</a> · <a href="interceptorSim.m" download><b>⬇ download the single-file simulator (interceptorSim.m)</b></a></p>
         <p style="font-size:.86em;opacity:.75;margin-top:.3rem">One self-contained MATLAB/Octave file (all 30 functions). Save it next to <code>Predator.STL</code> and your fragment CSV, then in MATLAB run <code>interceptorSim(struct('mesh_source','stl','stl_file','Predator.STL','source','file','file','data/fragments-full.csv'))</code>.</p></div>

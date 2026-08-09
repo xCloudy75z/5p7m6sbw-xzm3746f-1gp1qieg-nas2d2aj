@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>3-D Engagement — MQ-1 Predator</title>
+<style>
+  :root{--bg:#0a0d14;--panel:#111725;--ink:#e8eef7;--dim:#93a1b5;--acc:#5cc7ff;--hot:#ffb347}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 700px at 50% -10%,#132033,#0a0d14 60%);color:var(--ink);
+       font:16px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1000px;margin:0 auto;padding:2.4rem 1.2rem 4rem}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .kick{letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;color:var(--dim)}
+  h1{font-size:2rem;margin:.2rem 0 .3rem;font-weight:800}
+  .sub{color:var(--dim);margin:0 0 1.6rem}
+  video{width:100%;border-radius:14px;border:1px solid #23324a;background:#000;box-shadow:0 20px 60px #0008}
+  .answer{margin:1.6rem 0;padding:1.1rem 1.3rem;border:1px solid #2a5a44;border-radius:14px;
+          background:linear-gradient(180deg,#0e2119,#0c1a15)}
+  .answer .lab{color:#7ee0b0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+  .answer .big{font-size:1.7rem;font-weight:800;margin:.2rem 0}
+  .answer .rng{color:var(--dim);font-size:.92rem}
+  .stats{display:flex;gap:.6rem;flex-wrap:wrap;margin:1.1rem 0}
+  .chip{background:var(--panel);border:1px solid #22304a;border-radius:999px;padding:.35rem .8rem;font-size:.86rem}
+  .chip b{color:var(--hot)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1.4rem 0}
+  .grid img{width:100%;border-radius:12px;border:1px solid #23324a}
+  .cap{color:var(--dim);font-size:.82rem;margin:.3rem 0 0}
+  .note{color:var(--dim);font-size:.9rem;border-top:1px solid #1c2740;margin-top:2rem;padding-top:1.2rem}
+  code{background:#0e1626;border:1px solid #22304a;border-radius:6px;padding:.08rem .35rem;font-size:.9em}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap">
+  <div class="kick">Interceptor Engagement Simulator · native MATLAB 3-D</div>
+  <h1>Fragment intercept on the real MQ-1 Predator</h1>
+  <p class="sub">The interceptor closes head-on, the warhead detonates 5 m from the skin, and the fragment
+     spray strikes the real 28,074-triangle drone — impacts coloured by kinetic energy.</p>
+
+  <video src="engagement.mp4" autoplay muted loop controls playsinline poster="engagement-hero.png"></video>
+
+  <div class="answer">
+    <div class="lab">Final answer — fire-early lead to land the fragments</div>
+    <div class="big">Detonate 1.44 m before closest approach &nbsp;·&nbsp; 6.34 ms early</div>
+    <div class="rng">range across the spray 1.07–2.49 m &nbsp;|&nbsp; lead = closing speed (226.4 m/s) × fragment time-of-flight</div>
+  </div>
+
+  <div class="stats">
+    <span class="chip">fragments <b>900</b></span>
+    <span class="chip">impacts <b>431</b></span>
+    <span class="chip">fuselage <b>347</b></span>
+    <span class="chip">wing <b>80</b></span>
+    <span class="chip">tail <b>4</b></span>
+    <span class="chip">burst <b>5.0 m</b> from skin</span>
+    <span class="chip">closing <b>226.4 m/s</b></span>
+  </div>
+
+  <div class="grid">
+    <div><img src="engagement-approach.png" alt="interceptor inbound"><p class="cap">Interceptor inbound — detonation at the datum, 5 m above the drone.</p></div>
+    <div><img src="engagement-hero.png" alt="impacts on the drone"><p class="cap">Impacts mapped onto the airframe, coloured by impact kinetic energy.</p></div>
+  </div>
+
+  <p class="note">This runs natively in MATLAB — open <code>runInterceptorSim.mlx</code> and press <b>Run</b>; the 3-D
+     view appears in a MATLAB figure you can rotate, and the lead-distance answer prints to the command window.
+     Edit the numbers in Section&nbsp;1 (burst distance, speeds, fragment count) and re-run. The burst shown is a
+     representative aimed spray for the 3-D study; drop in the mentor's full 1,004-fragment file for the
+     definitive coverage numbers. &nbsp;·&nbsp; <a href="roadmap.html">← project roadmap</a></p>
+</div></body></html>
