@@ -60,6 +60,19 @@
     <div><img src="engagement-hero.png" alt="impacts on the drone"><p class="cap">Impacts mapped onto the airframe, coloured by impact kinetic energy.</p></div>
   </div>
 
+  <h2 style="font-size:1.1rem;margin:2rem 0 .4rem">Play with the numbers (Section 1)</h2>
+  <p class="cap" style="font-size:.95rem;color:var(--dim)">Every input is live — edit and re-run:</p>
+  <div class="stats">
+    <span class="chip">burst <b>clock</b> — 0 top · 90 side · 180 below</span>
+    <span class="chip">burst <b>along</b> — −1 nose/front · +1 tail/rear</span>
+    <span class="chip"><b>section</b> — whole drone or a tight front/rear band</span>
+    <span class="chip"><b>fuze delays</b> — sensing 1 &amp; 2</span>
+    <span class="chip">both <b>speeds</b></span>
+    <span class="chip">real <b>fragment file</b> (.csv/.xlsx)</span>
+  </div>
+  <img src="engagement-sweep.png" alt="impacts vs burst clock angle" style="width:100%;max-width:760px;border-radius:12px;border:1px solid #23324a;margin-top:.8rem">
+  <p class="cap">Built-in <b>clock sweep</b> (set one flag): impacts vs burst angle — here the best is around 150–180° (from below).</p>
+
   <p class="note">This runs natively in MATLAB — open <code>runInterceptorSim.mlx</code> and press <b>Run</b>; the 3-D
      view appears in a MATLAB figure you can rotate, and the lead-distance answer prints to the command window.
      Edit the numbers in Section&nbsp;1 (burst distance, speeds, fragment count) and re-run. The burst shown is a
